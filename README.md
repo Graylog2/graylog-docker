@@ -1,12 +1,13 @@
 # Graylog Docker Image
 
-[![ImageLayers](https://imagelayers.io/badge/graylog2/server:latest.svg)](https://imagelayers.io/?images=graylog2/server:latest 'Get your own badge on imagelayers.io')
-[![Docker Stars](https://img.shields.io/docker/stars/graylog2/server.svg)][hub]
-[![Docker Pulls](https://img.shields.io/docker/pulls/graylog2/server.svg)][hub]
-[![Image Size](https://images.microbadger.com/badges/image/graylog2/server.svg)][microbadger]
-[![Image Version](https://images.microbadger.com/badges/version/graylog2/server.svg)][microbadger]
-[![Image License](https://images.microbadger.com/badges/license/graylog2/server.svg)][microbadger]
+[![Docker Stars](https://img.shields.io/docker/stars/graylog2/graylog.svg)][hub]
+[![Docker Pulls](https://img.shields.io/docker/pulls/graylog2/graylog.svg)][hub]
+[![Image Size](https://images.microbadger.com/badges/image/graylog2/graylog.svg)][microbadger]
+[![Image Version](https://images.microbadger.com/badges/version/graylog2/graylog.svg)][microbadger]
+[![Image License](https://images.microbadger.com/badges/license/graylog2/graylog.svg)][microbadger]
 
+[hub]: https://hub.docker.com/r/graylog2/graylog/
+[microbadger]: https://microbadger.com/images/graylog2/graylog
 
 ## What is Graylog?
 

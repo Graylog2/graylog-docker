@@ -21,7 +21,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 ENV GRAYLOG_VERSION 2.2.1
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/jre
 ENV GRAYLOG_SERVER_JAVA_OPTS "-Xms1g -Xmx2g -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
-ENV GOSU_VERSION 1.7
+ENV GOSU_VERSION 1.10
 
 RUN set -x \
   && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \

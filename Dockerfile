@@ -1,7 +1,6 @@
 FROM openjdk:8-jre
 MAINTAINER Graylog, Inc. <hello@graylog.com>
 
-
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
 ARG VCS_REF
@@ -33,11 +32,6 @@ RUN set -x \
   && rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
   && chmod +x /usr/local/bin/gosu \
   && gosu nobody true
-
-RUN set -x \
-  && apt-get update \
-  && apt-get dist-upgrade -y \
-  && rm -rf /var/lib/apt/lists/*
 
 RUN set -x \
   && addgroup --gid 1100 graylog \

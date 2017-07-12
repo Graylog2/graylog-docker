@@ -21,7 +21,7 @@ Take a look at the minimal [Graylog architecture](http://docs.graylog.org/en/lat
 
 Start the MongoDB container
 ```
-$ docker run --name some-mongo -d mongo:2
+$ docker run --name some-mongo -d mongo:3
 ```
 
 Start Elasticsearch

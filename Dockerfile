@@ -26,7 +26,7 @@ RUN set -ex \
   && export GNUPGHOME="$(mktemp -d)" \
   && gpg --keyserver keyserver.ubuntu.com --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
   && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
-  && rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
+  && rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc \
   && chmod +x /usr/local/bin/gosu \
   && gosu nobody true
 
@@ -38,10 +38,11 @@ RUN set -ex \
   && wget -nv -O /usr/share/graylog.tgz "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz" \
   && tar xfz /usr/share/graylog.tgz --strip-components=1 -C /usr/share/graylog \
   && chown -R graylog:graylog /usr/share/graylog \
-  && rm /usr/share/graylog.tgz \
+  && rm -f /usr/share/graylog.tgz \
+  && apt-get update && apt-get -y install libcap2-bin \
   && setcap 'cap_net_bind_service=+ep' $JAVA_HOME/bin/java
 
-ENV GRAYLOG_SERVER_JAVA_OPTS "-Xms1g -Xmx2g -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
+ENV GRAYLOG_SERVER_JAVA_OPTS "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
 ENV PATH /usr/share/graylog/bin:$PATH
 WORKDIR /usr/share/graylog
 

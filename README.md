@@ -1,13 +1,13 @@
 # Graylog Docker Image
 
-[![Docker Stars](https://img.shields.io/docker/stars/graylog2/graylog.svg)][hub]
-[![Docker Pulls](https://img.shields.io/docker/pulls/graylog2/graylog.svg)][hub]
-[![Image Size](https://images.microbadger.com/badges/image/graylog2/graylog.svg)][microbadger]
-[![Image Version](https://images.microbadger.com/badges/version/graylog2/graylog.svg)][microbadger]
-[![Image License](https://images.microbadger.com/badges/license/graylog2/graylog.svg)][microbadger]
+[![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub]
+[![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub]
+[![Image Size](https://images.microbadger.com/badges/image/graylog/graylog.svg)][microbadger]
+[![Image Version](https://images.microbadger.com/badges/version/graylog/graylog.svg)][microbadger]
+[![Image License](https://images.microbadger.com/badges/license/graylog/graylog.svg)][microbadger]
 
-[hub]: https://hub.docker.com/r/graylog2/graylog/
-[microbadger]: https://microbadger.com/images/graylog2/graylog
+[hub]: https://hub.docker.com/r/graylog/graylog/
+[microbadger]: https://microbadger.com/images/graylog/graylog
 
 ## What is Graylog?
 
@@ -31,7 +31,7 @@ $ docker run --name some-elasticsearch -d elasticsearch:2 elasticsearch -Des.clu
 
 Run Graylog server and link with the other two
 ```
-$ docker run --link some-mongo:mongo --link some-elasticsearch:elasticsearch -p 9000:9000 -e GRAYLOG_WEB_ENDPOINT_URI="http://127.0.0.1:9000/api" -d graylog2/server
+$ docker run --link some-mongo:mongo --link some-elasticsearch:elasticsearch -p 9000:9000 -e GRAYLOG_WEB_ENDPOINT_URI="http://127.0.0.1:9000/api" -d graylog/graylog
 ```
 
 ### Settings
@@ -60,7 +60,7 @@ services:
     image: "elasticsearch:2"
     command: "elasticsearch -Des.cluster.name='graylog'"
   graylog:
-    image: graylog2/server:2.1.1-1
+    image: graylog/graylog:2.3.0-rc.2-1
     environment:
       GRAYLOG_PASSWORD_SECRET: somepasswordpepper
       GRAYLOG_ROOT_PASSWORD_SHA2: 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
@@ -85,8 +85,8 @@ Create the configuration directory and copy the default files:
 ```
 mkdir /graylog/config
 cd /graylog/config
-wget https://raw.githubusercontent.com/Graylog2/graylog2-images/2.1/docker/config/graylog.conf
-wget https://raw.githubusercontent.com/Graylog2/graylog2-images/2.1/docker/config/log4j2.xml
+wget https://raw.githubusercontent.com/Graylog2/graylog2-images/2.3/docker/config/graylog.conf
+wget https://raw.githubusercontent.com/Graylog2/graylog2-images/2.3/docker/config/log4j2.xml
 ```
 
 The `docker-compose.yml` file looks like this:
@@ -104,7 +104,7 @@ services:
     volumes:
       - /graylog/data/elasticsearch:/usr/share/elasticsearch/data
   graylog:
-    image: graylog2/server:2.1.1-1
+    image: graylog/graylog:2.3.0-rc.2-1
     volumes:
       - /graylog/data/journal:/usr/share/graylog/data/journal
       - /graylog/config:/usr/share/graylog/data/config

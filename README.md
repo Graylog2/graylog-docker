@@ -117,8 +117,8 @@ services:
       - some-elasticsearch:elasticsearch
     ports:
       - "9000:9000"
-      - "12201/udp:12201/udp"
-      - "1514/udp:1514/udp"
+      - "12201:12201/udp"
+      - "1514:1514/udp"
 ```
 
 Start all services with:

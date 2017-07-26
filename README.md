@@ -60,7 +60,7 @@ services:
     image: "elasticsearch:2"
     command: "elasticsearch -Des.cluster.name='graylog'"
   graylog:
-    image: graylog/graylog:2.3.0-rc.2-1
+    image: graylog/graylog:2.3.0-1
     environment:
       GRAYLOG_PASSWORD_SECRET: somepasswordpepper
       GRAYLOG_ROOT_PASSWORD_SHA2: 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
@@ -104,7 +104,7 @@ services:
     volumes:
       - /graylog/data/elasticsearch:/usr/share/elasticsearch/data
   graylog:
-    image: graylog/graylog:2.3.0-rc.2-1
+    image: graylog/graylog:2.3.0-1
     volumes:
       - /graylog/data/journal:/usr/share/graylog/data/journal
       - /graylog/config:/usr/share/graylog/data/config

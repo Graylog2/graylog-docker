@@ -126,6 +126,113 @@ Start all services with:
 ```
 docker-compose up
 ```
+
+## Nginx as SSL-Reverse-Proxy
+
+Another example with nginx as ssl-enabled reverse proxy for graylog:
+
+```
+version: '2.1'
+services:
+  GRAYLOGSERVER-REVPROXY:
+    image: "nginx"
+    volumes:
+      - ./site.template:/etc/nginx/conf.d/site.template
+      - ./cert_or_certchain.crt:/etc/nginx/cert.crt
+      - ./private.key:/etc/nginx/key.key
+    environment:
+     - NGINX_HOST=graylog.example.org
+     - NGINX_PORT=80
+     - NGINX_SSLPORT=443
+     - NGINX_REV_PROXY_DEST=http://GRAYLOGSERVER:9000
+     - NGINX_CERTPATH=/etc/nginx/cert.crt
+     - NGINX_KEYPATH=/etc/nginx/key.key
+    ports:
+     - "443:443"
+    links:
+      - GRAYLOGSERVER:graylog2
+    command: /bin/bash -c "envsubst '$$NGINX_HOST $$NGINX_PORT $$NGINX_SSLPORT $$NGINX_REV_PROXY_DEST $$NGINX_CERTPATH $$NGINX_KEYPATH' < /etc/nginx/conf.d/site.template > /etc/nginx/conf.d/default.conf && cat /etc/nginx/conf.d/default.conf && nginx -g 'da
+emon off;'"
+  GRAYLOGSERVER-MONGO:
+    image: "mongo:3"
+    environment:
+      TZ: /usr/share/zoneinfo/Etc/UTC
+    volumes:
+      - graylog_mongodata:/data/db
+  GRAYLOGSERVER-ELASTIC:
+    image: "elasticsearch:2"
+    environment:
+      TZ: /usr/share/zoneinfo/Etc/UTC
+    command: "elasticsearch -Des.cluster.name='graylog'"
+    volumes:
+      - graylog_elasticdata:/usr/share/elasticsearch/data
+  GRAYLOGSERVER:
+    container_name: GRAYLOGSERVER
+    hostname: GRAYLOGSERVER
+    image: graylog2/server:2.1.1-1
+    ports: 
+       - "9000:9000"
+       - "12201/udp:1201/udp"
+       - "1514/udp:1514/udp"
+    restart: unless-stopped
+    environment:
+      TZ: /usr/share/zoneinfo/Etc/UTC
+      GRAYLOG_PASSWORD_SECRET: somepasswordpepper
+      GRAYLOG_ROOT_PASSWORD_SHA2: 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      GRAYLOG_WEB_ENDPOINT_URI: http://0.0.0.0:9000/api
+    links:
+      - GRAYLOGSERVER-MONGO:mongo
+      - GRAYLOGSERVER-ELASTIC:elasticsearch
+    volumes:
+      - graylog_journal:/usr/share/graylog/data/journal
+      - graylog_config:/usr/share/graylog/data/config
+
+volumes:
+   graylog_mongodata:
+   graylog_elasticdata:
+   graylog_journal:
+   graylog_config:
+```
+
+Put site.template and the certificate/key files in the directory where your docker-compose.yml is located, an example site.template files could look like this:
+
+```
+server {
+  listen                    $NGINX_PORT;
+  server_name               ${NGINX_HOST};
+  server_tokens             off;
+  root                      /dev/null;
+
+  client_max_body_size      40m;
+
+  location / {
+    proxy_read_timeout      300;
+    proxy_connect_timeout   300;
+    proxy_redirect          off;
+
+    proxy_set_header        X-Forwarded-Proto $scheme;
+    proxy_set_header        Host              $http_host;
+    proxy_set_header        X-Real-IP         $remote_addr;
+    proxy_set_header        X-Forwarded-For   $proxy_add_x_forwarded_for;
+    proxy_set_header        X-Frame-Options   SAMEORIGIN;
+    proxy_set_header        X-Forwarded-Protocol $scheme;
+    proxy_set_header        X-Forwarded-Port "${NGINX_SSLPORT}";
+    proxy_set_header        X-Graylog-Server-URL "https://${NGINX_HOST}/api/";
+
+    proxy_pass              ${NGINX_REV_PROXY_DEST};
+  }
+
+   listen ${NGINX_SSLPORT} ssl; 
+   ssl_certificate ${NGINX_CERTPATH};
+   ssl_certificate_key ${NGINX_KEYPATH};
+
+   if ($scheme != "https") {
+       return 301 https://$host$request_uri;
+   } 
+
+}
+
+```
  
 ## Configuration
 

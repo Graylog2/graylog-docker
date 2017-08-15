@@ -1,4 +1,4 @@
-FROM openjdk:8-jre
+FROM openjdk:8-jre-alpine
 MAINTAINER Graylog, Inc. <hello@graylog.com>
 
 # Build-time metadata as defined at http://label-schema.org
@@ -18,29 +18,17 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       com.microscaling.docker.dockerfile="/Dockerfile" \
       com.microscaling.license="Apache 2.0"
 
-
-ENV GOSU_VERSION 1.10
 RUN set -ex \
-  && wget -nv -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
-  && wget -nv -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
-  && export GNUPGHOME="$(mktemp -d)" \
-  && gpg --keyserver keyserver.ubuntu.com --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-  && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
-  && rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc \
-  && chmod +x /usr/local/bin/gosu \
-  && gosu nobody true
-
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/jre
-RUN set -ex \
-  && addgroup --gid 1100 graylog \
-  && adduser --disabled-password --disabled-login --gecos '' --uid 1100 --gid 1100 graylog \
+  && apk add --update su-exec openssl tar libcap wget \
+  && addgroup -g 1100 graylog \
+  && adduser -D -s /sbin/nologin -u 1100 -G graylog graylog \
   && mkdir /usr/share/graylog \
   && wget -nv -O /usr/share/graylog.tgz "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz" \
   && tar xfz /usr/share/graylog.tgz --strip-components=1 -C /usr/share/graylog \
   && chown -R graylog:graylog /usr/share/graylog \
   && rm -f /usr/share/graylog.tgz \
-  && apt-get update && apt-get -y install libcap2-bin \
   && setcap 'cap_net_bind_service=+ep' $JAVA_HOME/bin/java
+  && rm -rf /tmp/* /var/tmp/* /var/cache/apk/*
 
 ENV GRAYLOG_SERVER_JAVA_OPTS "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
 ENV PATH /usr/share/graylog/bin:$PATH

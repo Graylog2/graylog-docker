@@ -54,22 +54,45 @@ This all can be put in a `docker-compose` file, like:
 ```
 version: '2'
 services:
-  some-mongo:
-    image: "mongo:3"
-  some-elasticsearch:
-    image: "elasticsearch:2"
-    command: "elasticsearch -Des.cluster.name='graylog'"
-  graylog:
-    image: graylog/graylog:2.3.0-1
+  # MongoDB: https://hub.docker.com/_/mongo/
+  mongo:
+    image: mongo:3
+  # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/docker.html
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.2
     environment:
-      GRAYLOG_PASSWORD_SECRET: somepasswordpepper
-      GRAYLOG_ROOT_PASSWORD_SHA2: 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
-      GRAYLOG_WEB_ENDPOINT_URI: http://127.0.0.1:9000/api
+      - http.host=0.0.0.0
+      # Disable X-Pack security: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/security-settings.html#general-security-settings
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+  # Graylog: https://hub.docker.com/r/graylog/graylog/
+  graylog:
+    image: graylog/graylog:2.3.1-1
+    environment:
+      # CHANGE ME!
+      - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
+      # Password: admin
+      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      - GRAYLOG_WEB_ENDPOINT_URI=http://127.0.0.1:9000/api
     links:
-      - some-mongo:mongo
-      - some-elasticsearch:elasticsearch
+      - mongo
+      - elasticsearch
     ports:
-      - "9000:9000"
+      # Graylog web interface and REST API
+      - 9000:9000
+      # Syslog TCP
+      - 514:514
+      # Syslog UDP
+      - 514:514/udp
+      # GELF TCP
+      - 12201:12201
+      # GELF UDP
+      - 12201:12201/udp
 ```
 
 After starting the three containers with `docker-compose up` open your browser with the URL `http://127.0.0.1:9000` and login with `admin:admin`
@@ -83,8 +106,8 @@ If you need to customize the configuration files for Graylog (such as the Log4j 
 Create the configuration directory and copy the default files:
 
 ```
-mkdir /graylog/config
-cd /graylog/config
+mkdir -p ./graylog/config
+cd ./graylog/config
 wget https://raw.githubusercontent.com/Graylog2/graylog2-images/2.3/docker/config/graylog.conf
 wget https://raw.githubusercontent.com/Graylog2/graylog2-images/2.3/docker/config/log4j2.xml
 ```
@@ -94,31 +117,63 @@ The `docker-compose.yml` file looks like this:
 ```
 version: '2'
 services:
-  some-mongo:
-    image: "mongo:3"
+  # MongoDB: https://hub.docker.com/_/mongo/
+  mongo:
+    image: mongo:3
     volumes:
-      - /graylog/data/mongo:/data/db
-  some-elasticsearch:
-    image: "elasticsearch:2"
-    command: "elasticsearch -Des.cluster.name='graylog'"
+      - mongo_data:/data/db
+  # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/docker.html
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.2
     volumes:
-      - /graylog/data/elasticsearch:/usr/share/elasticsearch/data
-  graylog:
-    image: graylog/graylog:2.3.0-1
-    volumes:
-      - /graylog/data/journal:/usr/share/graylog/data/journal
-      - /graylog/config:/usr/share/graylog/data/config
+      - es_data:/usr/share/elasticsearch/data
     environment:
-      GRAYLOG_PASSWORD_SECRET: somepasswordpepper
-      GRAYLOG_ROOT_PASSWORD_SHA2: 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
-      GRAYLOG_WEB_ENDPOINT_URI: http://127.0.0.1:9000/api
+      - http.host=0.0.0.0
+      - transport.host=localhost
+      - network.host=0.0.0.0
+      # Disable X-Pack security: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/security-settings.html#general-security-settings
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+  # Graylog: https://hub.docker.com/r/graylog/graylog/
+  graylog:
+    image: graylog/graylog:2.3.1-1
+    volumes:
+      - graylog_journal:/usr/share/graylog/data/journal
+      - ./graylog/config:/usr/share/graylog/data/config
+    environment:
+      # CHANGE ME!
+      - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
+      # Password: admin
+      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      - GRAYLOG_WEB_ENDPOINT_URI=http://127.0.0.1:9000/api
     links:
-      - some-mongo:mongo
-      - some-elasticsearch:elasticsearch
+      - mongo
+      - elasticsearch
     ports:
-      - "9000:9000"
-      - "12201:12201/udp"
-      - "1514:1514/udp"
+      # Graylog web interface and REST API
+      - 9000:9000
+      # Syslog TCP
+      - 514:514
+      # Syslog UDP
+      - 514:514/udp
+      # GELF TCP
+      - 12201:12201
+      # GELF UDP
+      - 12201:12201/udp
+
+# Volumes for persisting data, see https://docs.docker.com/engine/admin/volumes/volumes/
+volumes:
+  mongo_data:
+    driver: local
+  es_data:
+    driver: local
+  graylog_journal:
+    driver: local
 ```
 
 Start all services with:

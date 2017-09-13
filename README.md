@@ -26,7 +26,7 @@ $ docker run --name some-mongo -d mongo:3
 
 Start Elasticsearch
 ```
-$ docker run --name some-elasticsearch -d elasticsearch:2 elasticsearch -Des.cluster.name="graylog"
+$ docker run --name some-elasticsearch -d elasticsearch:2 elasticsearch -Des.cluster.name="graylog" -Dhttp.compression=true
 ```
 
 Run Graylog server and link with the other two

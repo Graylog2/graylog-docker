@@ -19,19 +19,21 @@ Take a look at the minimal [Graylog architecture](http://docs.graylog.org/en/lat
 
 ## How to use this image
 
-Start the MongoDB container
-```
-$ docker run --name some-mongo -d mongo:3
-```
+Please refer to the [Graylog Docker documentation](http://docs.graylog.org/en/2.3/pages/installation/docker.html) for a comprehensive overview and a detailed description of the Graylog Docker image.
 
-Start Elasticsearch
-```
-$ docker run --name some-elasticsearch -d elasticsearch:2 elasticsearch -Des.cluster.name="graylog"
-```
+### Quick start
 
-Run Graylog server and link with the other two
+If you simply want to checkout Graylog without any further customization, you can run the following three commands to create the necessary environment:
+
 ```
-$ docker run --link some-mongo:mongo --link some-elasticsearch:elasticsearch -p 9000:9000 -e GRAYLOG_WEB_ENDPOINT_URI="http://127.0.0.1:9000/api" -d graylog/graylog
+$ docker run --name mongo -d mongo:3
+$ docker run --name elasticsearch \
+    -e "http.host=0.0.0.0" -e "xpack.security.enabled=false" \
+    -d docker.elastic.co/elasticsearch/elasticsearch:5.5.1
+$ docker run --link mongo --link elasticsearch \
+    -p 9000:9000 -p 12201:12201 -p 514:514 \
+    -e GRAYLOG_WEB_ENDPOINT_URI="http://127.0.0.1:9000/api" \
+    -d graylog/graylog:2.3.1-1
 ```
 
 ### Settings
@@ -188,7 +190,7 @@ Every configuration option can be set via environment variables, take a look [he
 
 ## Documentation
 
-Documentation for Graylog is hosted [here](http://docs.graylog.org/en/latest/). Please read through the docs and familiarize yourself with the functionality before opening an [issue on GitHub](https://github.com/Graylog2/graylog2-server/issues).
+Documentation for Graylog is hosted [here](http://docs.graylog.org/). Please read through the docs and familiarize yourself with the functionality before opening an [issue on GitHub](https://github.com/Graylog2/graylog2-server/issues).
 
 ## License
 

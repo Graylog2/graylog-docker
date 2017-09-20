@@ -27,7 +27,7 @@ if [ "$1" = 'graylog' -a "$(id -u)" = '0' ]; then
       -Djava.library.path=/usr/share/graylog/lib/sigar/ \
       -Dgraylog2.installation_source=docker /usr/share/graylog/graylog.jar \
       server \
-      -f /usr/share/graylog/data/config/graylog.conf
+      -f /usr/share/graylog/data/config/graylog.conf ${GRAYLOG_SERVER_OPTS}
 fi
 
 # Allow the user to run arbitrarily commands like bash

@@ -9,6 +9,10 @@ fi
 # Delete outdated PID file
 rm -f /tmp/graylog.pid
 
+if [[ ! -v GRAYLOG_REST_TRANSPORT_URI ]]; then
+    export GRAYLOG_REST_TRANSPORT_URI=$(hostname -i)
+fi
+
 # Create data directories
 if [ "$1" = 'graylog' -a "$(id -u)" = '0' ]; then
   for d in journal log plugin config contentpacks; do

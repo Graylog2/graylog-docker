@@ -10,7 +10,8 @@ fi
 rm -f /tmp/graylog.pid
 
 if [[ ! -v GRAYLOG_REST_TRANSPORT_URI ]]; then
-    export GRAYLOG_REST_TRANSPORT_URI=$(hostname -i)
+  export GRAYLOG_REST_TRANSPORT_URI="http://$(hostname -i):9000/api/"
+  echo "Using GRAYLOG_REST_TRANSPORT_URI=${GRAYLOG_REST_TRANSPORT_URI}"
 fi
 
 # Create data directories

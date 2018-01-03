@@ -29,11 +29,11 @@ If you simply want to checkout Graylog without any further customization, you ca
 $ docker run --name mongo -d mongo:3
 $ docker run --name elasticsearch \
     -e "http.host=0.0.0.0" -e "xpack.security.enabled=false" \
-    -d docker.elastic.co/elasticsearch/elasticsearch:5.6.4
+    -d docker.elastic.co/elasticsearch/elasticsearch:5.6.5
 $ docker run --link mongo --link elasticsearch \
     -p 9000:9000 -p 12201:12201 -p 514:514 \
     -e GRAYLOG_WEB_ENDPOINT_URI="http://127.0.0.1:9000/api" \
-    -d graylog/graylog:2.4.0-beta.3-1
+    -d graylog/graylog:2.4.0-1
 ```
 
 ### Settings
@@ -61,7 +61,7 @@ services:
     image: mongo:3
   # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/docker.html
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.4
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.5
     environment:
       - http.host=0.0.0.0
       # Disable X-Pack security: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/security-settings.html#general-security-settings
@@ -74,7 +74,7 @@ services:
     mem_limit: 1g
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   graylog:
-    image: graylog/graylog:2.4.0-beta.3-1
+    image: graylog/graylog:2.4.0-1
     environment:
       # CHANGE ME!
       - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
@@ -126,7 +126,7 @@ services:
       - mongo_data:/data/db
   # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/docker.html
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.4
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.5
     volumes:
       - es_data:/usr/share/elasticsearch/data
     environment:
@@ -143,7 +143,7 @@ services:
     mem_limit: 1g
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   graylog:
-    image: graylog/graylog:2.4.0-beta.3-1
+    image: graylog/graylog:2.4.0-1
     volumes:
       - graylog_journal:/usr/share/graylog/data/journal
       - ./graylog/config:/usr/share/graylog/data/config

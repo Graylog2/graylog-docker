@@ -110,8 +110,8 @@ Create the configuration directory and copy the default files:
 ```
 mkdir -p ./graylog/config
 cd ./graylog/config
-wget https://raw.githubusercontent.com/Graylog2/graylog2-images/2.3/docker/config/graylog.conf
-wget https://raw.githubusercontent.com/Graylog2/graylog2-images/2.3/docker/config/log4j2.xml
+wget https://raw.githubusercontent.com/Graylog2/graylog-docker/2.3/config/graylog.conf
+wget https://raw.githubusercontent.com/Graylog2/graylog-docker/2.3/config/log4j2.xml
 ```
 
 The `docker-compose.yml` file looks like this:

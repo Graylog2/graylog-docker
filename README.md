@@ -83,10 +83,10 @@ If you need to customize the configuration files for Graylog (such as the Log4j 
 Create the configuration directory and copy the default files:
 
 ```
-mkdir /graylog/config
-cd /graylog/config
-wget https://raw.githubusercontent.com/Graylog2/graylog2-images/2.1/docker/config/graylog.conf
-wget https://raw.githubusercontent.com/Graylog2/graylog2-images/2.1/docker/config/log4j2.xml
+mkdir -p ./graylog/config
+cd ./graylog/config
+wget https://raw.githubusercontent.com/Graylog2/graylog-docker/2.2/config/graylog.conf
+wget https://raw.githubusercontent.com/Graylog2/graylog-docker/2.2/config/log4j2.xml
 ```
 
 The `docker-compose.yml` file looks like this:

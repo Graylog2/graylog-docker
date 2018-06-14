@@ -19,7 +19,7 @@ Take a look at the minimal [Graylog architecture](http://docs.graylog.org/en/lat
 
 ## How to use this image
 
-Please refer to the [Graylog Docker documentation](http://docs.graylog.org/en/2.4/pages/installation/docker.html) for a comprehensive overview and a detailed description of the Graylog Docker image.
+Please refer to the [Graylog Docker documentation](http://docs.graylog.org/en/3.0/pages/installation/docker.html) for a comprehensive overview and a detailed description of the Graylog Docker image.
 
 ### Quick start
 
@@ -32,8 +32,8 @@ $ docker run --name elasticsearch \
     -d docker.elastic.co/elasticsearch/elasticsearch:5.6.9
 $ docker run --link mongo --link elasticsearch \
     -p 9000:9000 -p 12201:12201 -p 514:514 \
-    -e GRAYLOG_WEB_ENDPOINT_URI="http://127.0.0.1:9000/api" \
-    -d graylog/graylog:2.4
+    -e GRAYLOG_HTTP_EXTERNAL_URI="http://127.0.0.1:9000/" \
+    -d graylog/graylog:3.0
 ```
 
 ### Settings
@@ -43,7 +43,7 @@ Graylog comes with a default configuration that works out of the box but you hav
 ```
   -e GRAYLOG_PASSWORD_SECRET=somepasswordpepper
   -e GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
-  -e GRAYLOG_WEB_ENDPOINT_URI="http://127.0.0.1:9000/api"
+  -e GRAYLOG_HTTP_EXTERNAL_URI="http://127.0.0.1:9000/"
 ```
 In this case you can login to Graylog with the user and password `admin`.  Generate your own password with this command:
 
@@ -74,13 +74,13 @@ services:
     mem_limit: 1g
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   graylog:
-    image: graylog/graylog:2.4
+    image: graylog/graylog:3.0
     environment:
       # CHANGE ME!
       - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
       # Password: admin
       - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
-      - GRAYLOG_WEB_ENDPOINT_URI=http://127.0.0.1:9000/api
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
     links:
       - mongo
       - elasticsearch
@@ -110,8 +110,8 @@ Create the configuration directory and copy the default files:
 ```
 mkdir -p ./graylog/config
 cd ./graylog/config
-wget https://raw.githubusercontent.com/Graylog2/graylog-docker/2.4/config/graylog.conf
-wget https://raw.githubusercontent.com/Graylog2/graylog-docker/2.4/config/log4j2.xml
+wget https://raw.githubusercontent.com/Graylog2/graylog-docker/3.0/config/graylog.conf
+wget https://raw.githubusercontent.com/Graylog2/graylog-docker/3.0/config/log4j2.xml
 ```
 
 The `docker-compose.yml` file looks like this:
@@ -143,7 +143,7 @@ services:
     mem_limit: 1g
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   graylog:
-    image: graylog/graylog:2.4
+    image: graylog/graylog:3.0
     volumes:
       - graylog_journal:/usr/share/graylog/data/journal
       - ./graylog/config:/usr/share/graylog/data/config
@@ -152,7 +152,7 @@ services:
       - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
       # Password: admin
       - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
-      - GRAYLOG_WEB_ENDPOINT_URI=http://127.0.0.1:9000/api
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
     links:
       - mongo
       - elasticsearch

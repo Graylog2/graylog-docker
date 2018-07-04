@@ -21,6 +21,7 @@ if [ "$1" = 'graylog' ] && [ "$(id -u)" = '0' ]; then
     fi
   done
   # Start Graylog server
+  # shellcheck disable=SC2086
   set -- gosu graylog "$JAVA_HOME/bin/java" $GRAYLOG_SERVER_JAVA_OPTS \
       -jar \
       -Dlog4j.configurationFile=/usr/share/graylog/data/config/log4j2.xml \

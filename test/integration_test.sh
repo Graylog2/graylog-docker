@@ -15,7 +15,7 @@ fi
 
 # Check docker-compose configuration and start services
 "${DOCKER_COMPOSE[@]}" config --quiet
-"${DOCKER_COMPOSE[@]}" up --detach --quiet-pull
+"${DOCKER_COMPOSE[@]}" up -d
 
 echo 'Waiting until Graylog has been started'
 until "${CURL[@]}" -w '' --silent --head "${URL}"

@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 HADOLINT_VERSION='1.9.0'
 HADOLINT_PATH='/usr/local/bin/hadolint'
 if ! [ -x "$(command -v hadolint)" ]; then

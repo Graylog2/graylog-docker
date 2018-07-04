@@ -43,7 +43,7 @@ RUN set -ex \
   && chown -R graylog:graylog /usr/share/graylog \
   && rm -f "/tmp/graylog-${GRAYLOG_VERSION}.tgz" \
   && apt-get update && apt-get -y install libcap2-bin \
-  && setcap 'cap_net_bind_service=+ep' $JAVA_HOME/bin/java
+  && setcap 'cap_net_bind_service=+ep' "${JAVA_HOME}/bin/java"
 
 ENV GRAYLOG_SERVER_JAVA_OPTS "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
 ENV PATH /usr/share/graylog/bin:$PATH

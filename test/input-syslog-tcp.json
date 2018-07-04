@@ -1,0 +1,9 @@
+{
+   "type" : "org.graylog2.inputs.syslog.tcp.SyslogTCPInput",
+   "global" : true,
+   "configuration" : {
+      "port" : 514,
+      "bind_address" : "0.0.0.0"
+   },
+   "title" : "Syslog TCP"
+}

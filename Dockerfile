@@ -60,6 +60,7 @@ VOLUME /usr/share/graylog/data
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["graylog"]
 
+# hadolint ignore=DL3008
 RUN set -ex \
   && apt-get update && apt-get -y --no-install-recommends install libcap2-bin \
   && apt-get clean \

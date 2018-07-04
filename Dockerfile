@@ -33,6 +33,8 @@ RUN set -ex \
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/jre
 RUN set -ex \
   && apt-get update && apt-get -y install libcap2-bin \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* \
   && setcap 'cap_net_bind_service=+ep' "${JAVA_HOME}/bin/java" \
   && addgroup --gid 1100 graylog \
   && adduser --disabled-password --disabled-login --gecos '' --uid 1100 --gid 1100 graylog

@@ -10,7 +10,7 @@ fi
 rm -f /tmp/graylog.pid
 
 # Create data directories
-if [ "$1" = 'graylog' -a "$(id -u)" = '0' ]; then
+if [ "$1" = 'graylog' ] && [ "$(id -u)" = '0' ]; then
   for d in journal log plugin config contentpacks; do
     dir=/usr/share/graylog/data/$d
     if [[ ! -d "$dir" ]]; then

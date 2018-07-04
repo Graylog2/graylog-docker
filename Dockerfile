@@ -1,12 +1,12 @@
 FROM openjdk:8-jre
-MAINTAINER Graylog, Inc. <hello@graylog.com>
 
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
 ARG VCS_REF
 ARG GRAYLOG_VERSION
 
-LABEL org.label-schema.build-date=$BUILD_DATE \
+LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
+      org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="Graylog Docker Image" \
       org.label-schema.description="Official Graylog Docker image" \
       org.label-schema.url="https://www.graylog.org/" \
@@ -17,7 +17,6 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.schema-version="1.0" \
       com.microscaling.docker.dockerfile="/Dockerfile" \
       com.microscaling.license="Apache 2.0"
-
 
 ENV GOSU_VERSION 1.10
 RUN set -ex \

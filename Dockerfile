@@ -32,18 +32,20 @@ RUN set -ex \
 
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/jre
 RUN set -ex \
+  && apt-get update && apt-get -y install libcap2-bin \
+  && setcap 'cap_net_bind_service=+ep' "${JAVA_HOME}/bin/java" \
   && addgroup --gid 1100 graylog \
-  && adduser --disabled-password --disabled-login --gecos '' --uid 1100 --gid 1100 graylog \
+  && adduser --disabled-password --disabled-login --gecos '' --uid 1100 --gid 1100 graylog
+
+WORKDIR /tmp
+RUN set -ex \
   && mkdir /usr/share/graylog \
   && wget -nv -O "/tmp/graylog-${GRAYLOG_VERSION}.tgz" "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz" \
   && wget -nv -O "/tmp/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
-  && cd /tmp \
   && sha256sum -c "/tmp/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
   && tar -xzf "/tmp/graylog-${GRAYLOG_VERSION}.tgz" --strip-components=1 -C /usr/share/graylog \
   && chown -R graylog:graylog /usr/share/graylog \
-  && rm -f "/tmp/graylog-${GRAYLOG_VERSION}.tgz" \
-  && apt-get update && apt-get -y install libcap2-bin \
-  && setcap 'cap_net_bind_service=+ep' "${JAVA_HOME}/bin/java"
+  && rm -f "/tmp/graylog-${GRAYLOG_VERSION}.tgz"
 
 ENV GRAYLOG_SERVER_JAVA_OPTS "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
 ENV PATH /usr/share/graylog/bin:$PATH

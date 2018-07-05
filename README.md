@@ -189,6 +189,48 @@ docker-compose up
 
 Every configuration option can be set via environment variables, take a look [here](https://github.com/Graylog2/graylog2-server/blob/master/misc/graylog.conf) for an overview. Simply prefix the parameter name with `GRAYLOG_` and put it all in upper case. Another option would be to store the configuration file outside of the container and edit it directly.
 
+### Reading individual configuration settings from files
+
+The Graylog Docker image supports reading individual configuration settings from a file. This can be used to secure configuration settings with [Docker secrets](https://docs.docker.com/engine/swarm/secrets/) or similar mechanisms.
+
+This has the advantage, that configuration settings containing sensitive information don't have to be added to a custom configuration file or into an environment variable in plaintext.
+
+The Graylog Docker image checks for the existence of environment variables with the naming scheme `GRAYLOG_<CONFIG_NAME>__FILE` on startup and expects the environment variable to contain the absolute path to a readable file.
+
+For example, if the environment variable `GRAYLOG_ROOT_PASSWORD_SHA2__FILE` contained the value `/run/secrets/root_password_hash`, the Graylog Docker image would use the contents of `/run/secrets/root_password_hash` as value for the `root_password_sha2` configuration setting.
+
+#### Docker secrets
+
+**NOTE:** Docker secrets are only available in Docker Swarm services starting with Docker 1.13. Please refer to [Manage sensitive data with Docker secrets](https://docs.docker.com/engine/swarm/secrets/) for more details.
+
+Example for using Docker secrets in a Docker Swarm service:
+
+```text
+# Create SHA-256 hash of our password
+$ echo -n 'password' | sha256sum | awk '{ print $1 }'
+5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+
+# Create a Docker secret named "root_password_hash"
+$ printf '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8' | docker secret create root_password_hash -
+nlujwooo5uu6z0m91bmve79uo
+
+$ docker secret ls
+ID                          NAME                 DRIVER              CREATED             UPDATED
+nlujwooo5uu6z0m91bmve79uo   root_password_hash                       34 seconds ago      34 seconds ago
+
+# Create Docker Swarm service named "graylog" with access to the secret named "root_password_hash"
+$ docker service create --name graylog --secret root_password_hash -e GRAYLOG_ROOT_PASSWORD_SHA2__FILE=/run/secrets/root_password_hash -p 9000:9000 graylog/graylog:2.4
+
+mclk5gm39ingk51s869dc0htz
+overall progress: 1 out of 1 tasks
+1/1: running   [==================================================>]
+verify: Service converged
+
+$ docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+mclk5gm39ing        graylog             replicated          1/1                 graylog:latest      *:9000->9000/tcp
+```
+
 ## Documentation
 
 Documentation for Graylog is hosted [here](http://docs.graylog.org/). Please read through the docs and familiarize yourself with the functionality before opening an [issue on GitHub](https://github.com/Graylog2/graylog2-server/issues).

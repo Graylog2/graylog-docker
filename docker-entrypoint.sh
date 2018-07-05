@@ -16,7 +16,7 @@ if [ "$1" = 'graylog' ] && [ "$(id -u)" = '0' ]; then
     if [[ ! -d "$dir" ]]; then
       mkdir -p "$dir"
     fi
-    if [ "$(stat --format='%U:%G' $dir)" != 'graylog:graylog' ]; then
+    if [[ "$(stat --format='%U:%G' $dir)" != 'graylog:graylog' ]] && [[ -w "$dir" ]]; then
       chown -R graylog:graylog "$dir"
     fi
   done

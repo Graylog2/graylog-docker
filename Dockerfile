@@ -53,14 +53,7 @@ ENV GRAYLOG_SERVER_JAVA_OPTS "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMem
 ENV PATH /usr/share/graylog/bin:$PATH
 
 WORKDIR /usr/share/graylog
-RUN set -x \
-  && for path in \
-    ./data/journal \
-    ./data/log \
-    ./data/config \
-  ; do \
-    mkdir -p "$path"; \
-  done
+RUN install --directory --group=graylog --owner=graylog --mode=0750 ./data ./data/journal ./data/log
 COPY config ./data/config
 COPY docker-entrypoint.sh /
 

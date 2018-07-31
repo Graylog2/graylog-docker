@@ -27,7 +27,6 @@ RUN set -x \
   && adduser --disabled-password --disabled-login --gecos '' --uid 1100 --gid 1100 graylog \
   && chown -R graylog:graylog /usr/share/graylog
 
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/jre
 ENV GRAYLOG_SERVER_JAVA_OPTS "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
 ENV PATH /usr/share/graylog/bin:$PATH
 

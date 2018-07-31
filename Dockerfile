@@ -1,3 +1,28 @@
+# First stage: obtain Graylog, verify the download and extract it.
+# 'buildpack-deps:stretch-curl' image, because it's smaller, and a base layer
+# in the 'openjdk:8-jre-stretch' image used in the later stage.
+FROM buildpack-deps:stretch-curl as obtain-graylog-stage
+
+RUN mkdir /usr/local/share/graylog
+WORKDIR /tmp
+ARG GRAYLOG_VERSION
+RUN wget -nv -O "graylog-${GRAYLOG_VERSION}.tgz" \
+  "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz"
+# Hadolint suggests using pipefail, not available on /bin/sh.
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN wget -nv -O - \
+  "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
+    | sha256sum -c -
+RUN tar -xzf "graylog-${GRAYLOG_VERSION}.tgz" \
+  --strip-components=1 -C /usr/local/share/graylog
+# chown in this stage, because 'COPY --chown' does not work with build
+# arguments yet, and a later 'RUN chown' would result in another ~ 140MB layer.
+# See also https://github.com/moby/moby/issues/35018.
+ARG GRAYLOG_UID=1100
+ARG GRAYLOG_GID=1100
+RUN chown -R "${GRAYLOG_UID}:${GRAYLOG_GID}" /usr/local/share/graylog
+
+# Final stage
 FROM openjdk:8-jre-stretch
 
 ARG VCS_REF
@@ -22,15 +47,7 @@ ARG GRAYLOG_GID=1100
 RUN addgroup --gid "${GRAYLOG_GID}" "${GRAYLOG_GROUP}" \
   && adduser --disabled-login --gecos 'Graylog,,,' --uid "${GRAYLOG_UID}" --gid "${GRAYLOG_GID}" "${GRAYLOG_USER}"
 
-WORKDIR /tmp
-RUN set -x \
-  && mkdir /usr/share/graylog \
-  && wget -nv -O "/tmp/graylog-${GRAYLOG_VERSION}.tgz" "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz" \
-  && wget -nv -O "/tmp/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
-  && sha256sum -c "/tmp/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
-  && tar -xzf "/tmp/graylog-${GRAYLOG_VERSION}.tgz" --strip-components=1 -C /usr/share/graylog \
-  && rm -f "/tmp/graylog-${GRAYLOG_VERSION}.tgz" \
-  && chown -R "${GRAYLOG_USER}:${GRAYLOG_USER}" /usr/share/graylog
+COPY --from=obtain-graylog-stage /usr/local/share/graylog /usr/share/graylog
 
 ENV GRAYLOG_SERVER_JAVA_OPTS "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
 ENV PATH /usr/share/graylog/bin:$PATH

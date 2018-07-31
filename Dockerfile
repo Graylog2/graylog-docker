@@ -15,6 +15,13 @@ LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       com.microscaling.docker.dockerfile="/Dockerfile" \
       com.microscaling.license="Apache 2.0"
 
+ARG GRAYLOG_USER=graylog
+ARG GRAYLOG_UID=1100
+ARG GRAYLOG_GROUP=graylog
+ARG GRAYLOG_GID=1100
+RUN addgroup --gid "${GRAYLOG_GID}" "${GRAYLOG_GROUP}" \
+  && adduser --disabled-login --gecos 'Graylog,,,' --uid "${GRAYLOG_UID}" --gid "${GRAYLOG_GID}" "${GRAYLOG_USER}"
+
 WORKDIR /tmp
 RUN set -x \
   && mkdir /usr/share/graylog \
@@ -23,9 +30,7 @@ RUN set -x \
   && sha256sum -c "/tmp/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
   && tar -xzf "/tmp/graylog-${GRAYLOG_VERSION}.tgz" --strip-components=1 -C /usr/share/graylog \
   && rm -f "/tmp/graylog-${GRAYLOG_VERSION}.tgz" \
-  && addgroup --gid 1100 graylog \
-  && adduser --disabled-password --disabled-login --gecos '' --uid 1100 --gid 1100 graylog \
-  && chown -R graylog:graylog /usr/share/graylog
+  && chown -R "${GRAYLOG_USER}:${GRAYLOG_USER}" /usr/share/graylog
 
 ENV GRAYLOG_SERVER_JAVA_OPTS "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
 ENV PATH /usr/share/graylog/bin:$PATH

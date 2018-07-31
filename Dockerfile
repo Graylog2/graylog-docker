@@ -53,6 +53,5 @@ RUN set -x \
   && apt-get update && apt-get -y --no-install-recommends install \
     'gosu=1.10-*' \
     libcap2-bin \
-  && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
   && setcap 'cap_net_bind_service=+ep' "${JAVA_HOME}/bin/java"

@@ -16,7 +16,7 @@ LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       com.microscaling.license="Apache 2.0"
 
 WORKDIR /tmp
-RUN set -ex \
+RUN set -x \
   && mkdir /usr/share/graylog \
   && wget -nv -O "/tmp/graylog-${GRAYLOG_VERSION}.tgz" "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz" \
   && wget -nv -O "/tmp/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
@@ -32,7 +32,7 @@ ENV GRAYLOG_SERVER_JAVA_OPTS "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMem
 ENV PATH /usr/share/graylog/bin:$PATH
 
 WORKDIR /usr/share/graylog
-RUN set -ex \
+RUN set -x \
   && for path in \
     ./data/journal \
     ./data/log \
@@ -49,7 +49,7 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["graylog"]
 
 # hadolint ignore=DL3008
-RUN set -ex \
+RUN set -x \
   && apt-get update && apt-get -y --no-install-recommends install \
     'gosu=1.10-*' \
     libcap2-bin \

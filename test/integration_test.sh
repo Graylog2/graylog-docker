@@ -28,9 +28,9 @@ done
 "${CURL[@]}" -H 'Accept: application/json' "${URL}/api/?pretty=true"
 
 # Create Raw/Plaintext TCP input
-"${CURL[@]}" -H 'Accept: application/json' -H 'Content-Type: application/json' -d @"${TEST_DIR}/input-raw-tcp.json" "${URL}/api/system/inputs?pretty=true"
+"${CURL[@]}" -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'X-Requested-By: curl' -d @"${TEST_DIR}/input-raw-tcp.json" "${URL}/api/system/inputs?pretty=true"
 # Create Syslog TCP input
-"${CURL[@]}" -H 'Accept: application/json' -H 'Content-Type: application/json' -d @"${TEST_DIR}/input-syslog-tcp.json" "${URL}/api/system/inputs?pretty=true"
+"${CURL[@]}" -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'X-Requested-By: curl' -d @"${TEST_DIR}/input-syslog-tcp.json" "${URL}/api/system/inputs?pretty=true"
 
 sleep 2
 

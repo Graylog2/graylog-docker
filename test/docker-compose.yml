@@ -21,7 +21,7 @@ services:
     mem_limit: 1g
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   graylog:
-    image: graylog:3.0
+    image: graylog/graylog:3.0
     environment:
       # CHANGE ME!
       - GRAYLOG_PASSWORD_SECRET=somepasswordpepper

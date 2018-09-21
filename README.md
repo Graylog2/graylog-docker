@@ -10,6 +10,11 @@
 [hub]: https://hub.docker.com/r/graylog/graylog/
 [microbadger]: https://microbadger.com/images/graylog/graylog
 
+# INSTABILITY WARNING
+Please be aware that Version 3.0 of Graylog is an alpha release and is still under development. Under no circumstances should this image be used in  production. Suitable for lab use only. This is a technical preview.
+
+Please use the stable 2.4 release for your production environments. 
+
 ## What is Graylog?
 
 Graylog is a centralized logging solution that allows the user to aggregate and search through logs. It provides a powerful query language, a processing pipeline for data transformation, alerting abilities and much more. It is fully extensible through a REST API. Add-Ons can be downloaded from the [Graylog Marketplace](https://marketplace.graylog.org/).

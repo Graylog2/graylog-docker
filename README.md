@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/Graylog2/graylog-docker.svg?branch=2.4)](https://travis-ci.org/Graylog2/graylog-docker)
 [![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub]
 [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub]
-[![Image Size](https://images.microbadger.com/badges/image/graylog/graylog.svg:2.4.svg)][microbadger]
+[![Image Size](https://images.microbadger.com/badges/image/graylog/graylog:2.4.svg)][microbadger]
 [![Image Version](https://images.microbadger.com/badges/version/graylog/graylog:2.4.svg)][microbadger]
 [![Image License](https://images.microbadger.com/badges/license/graylog/graylog.svg)][microbadger]
 

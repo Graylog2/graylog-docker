@@ -4,8 +4,8 @@
 [![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub]
 [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub]
 [![Image Size](https://images.microbadger.com/badges/image/graylog/graylog.svg)][microbadger]
-[![Image Version](https://images.microbadger.com/badges/version/graylog/graylog.svg)][microbadger]
-[![Image License](https://images.microbadger.com/badges/license/graylog/graylog.svg)][microbadger]
+[![Image Version](https://images.microbadger.com/badges/version/graylog/graylog:3.0.svg)][microbadger]
+[![Image License](https://images.microbadger.com/badges/license/graylog/graylog:3.0.svg)][microbadger]
 
 [hub]: https://hub.docker.com/r/graylog/graylog/
 [microbadger]: https://microbadger.com/images/graylog/graylog
@@ -35,7 +35,7 @@ If you simply want to checkout Graylog without any further customization, you ca
 $ docker run --name mongo -d mongo:3
 $ docker run --name elasticsearch \
     -e "http.host=0.0.0.0" -e "xpack.security.enabled=false" \
-    -d docker.elastic.co/elasticsearch/elasticsearch:5.6.9
+    -d docker.elastic.co/elasticsearch/elasticsearch:5.6.12
 $ docker run --link mongo --link elasticsearch \
     -p 9000:9000 -p 12201:12201 -p 514:514 \
     -e GRAYLOG_HTTP_EXTERNAL_URI="http://127.0.0.1:9000/" \
@@ -67,7 +67,7 @@ services:
     image: mongo:3
   # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/docker.html
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.9
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.12
     environment:
       - http.host=0.0.0.0
       # Disable X-Pack security: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/security-settings.html#general-security-settings
@@ -132,7 +132,7 @@ services:
       - mongo_data:/data/db
   # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/docker.html
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.9
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.12
     volumes:
       - es_data:/usr/share/elasticsearch/data
     environment:

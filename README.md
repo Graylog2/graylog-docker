@@ -50,7 +50,11 @@ Graylog comes with a default configuration that works out of the box but you hav
 In this case you can login to Graylog with the user and password `admin`.  Generate your own password with this command:
 
 ```
-  $ echo -n yourpassword | shasum -a 256
+  # OSX
+  $ echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | shasum -a 256
+
+  # linux
+  $ echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum
 ```
 
 This all can be put in a `docker-compose` file, like:

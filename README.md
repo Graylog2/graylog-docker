@@ -51,10 +51,10 @@ In this case you can login to Graylog with the user and password `admin`.  Gener
 
 ```
   # OSX
-  $ echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | shasum -a 256
+  $ echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | shasum -a 256 | cut -d" " -f1
 
   # linux
-  $ echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum
+  $ echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum | cut -d" " -f1
 ```
 
 This all can be put in a `docker-compose` file, like:

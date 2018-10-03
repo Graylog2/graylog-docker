@@ -50,13 +50,17 @@ Graylog comes with a default configuration that works out of the box but you hav
 In this case you can login to Graylog with the user and password `admin`.  Generate your own password with this command:
 
 ```
-  $ echo -n yourpassword | shasum -a 256
+  # OSX
+  $ echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | shasum -a 256 | cut -d" " -f1
+
+  # linux
+  $ echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum | cut -d" " -f1
 ```
 
 This all can be put in a `docker-compose` file, like:
 
 ```
-version: '2'
+version: '3'
 services:
   # MongoDB: https://hub.docker.com/_/mongo/
   mongo:
@@ -69,11 +73,14 @@ services:
       # Disable X-Pack security: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/security-settings.html#general-security-settings
       - xpack.security.enabled=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    deploy:
+      resources:
+        limits:
+          memory: 1G
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   graylog:
     image: graylog/graylog:2.4

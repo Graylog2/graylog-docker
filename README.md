@@ -60,7 +60,7 @@ In this case you can login to Graylog with the user and password `admin`.  Gener
 This all can be put in a `docker-compose` file, like:
 
 ```
-version: '3'
+version: '2'
 services:
   # MongoDB: https://hub.docker.com/_/mongo/
   mongo:
@@ -73,14 +73,11 @@ services:
       # Disable X-Pack security: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/security-settings.html#general-security-settings
       - xpack.security.enabled=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    deploy:
-      resources:
-        limits:
-          memory: 1G
     ulimits:
       memlock:
         soft: -1
         hard: -1
+    mem_limit: 1g
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   graylog:
     image: graylog/graylog:2.4

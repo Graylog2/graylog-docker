@@ -1,57 +1,67 @@
-FROM openjdk:8-jre
+# First stage: obtain Graylog, verify the download and extract it.
+# 'buildpack-deps:stretch-curl' image, because it's smaller, and a base layer
+# in the 'openjdk:8-jre-stretch' image used in the later stage.
+FROM buildpack-deps:stretch-curl as obtain-graylog-stage
 
-ARG VCS_REF
+RUN mkdir /usr/local/share/graylog
+WORKDIR /tmp
 ARG GRAYLOG_VERSION
+RUN wget -nv -O "graylog-${GRAYLOG_VERSION}.tgz" \
+  "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz"
+# Hadolint suggests using pipefail, not available on /bin/sh.
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN wget -nv -O - \
+  "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
+    | sha256sum -c -
+RUN tar -xzf "graylog-${GRAYLOG_VERSION}.tgz" \
+  --strip-components=1 -C /usr/local/share/graylog
+# chown in this stage, because 'COPY --chown' does not work with build
+# arguments yet, and a later 'RUN chown' would result in another ~ 140MB layer.
+# See also https://github.com/moby/moby/issues/35018.
+ARG GRAYLOG_UID=1100
+ARG GRAYLOG_GID=1100
+RUN chown -R "${GRAYLOG_UID}:${GRAYLOG_GID}" /usr/local/share/graylog
+
+# Final stage
+FROM openjdk:8-jre-stretch
 
 LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.name="Graylog Docker Image" \
       org.label-schema.description="Official Graylog Docker image" \
       org.label-schema.url="https://www.graylog.org/" \
-      org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url="https://github.com/Graylog2/graylog-docker" \
       org.label-schema.vendor="Graylog, Inc." \
-      org.label-schema.version=$GRAYLOG_VERSION \
       org.label-schema.schema-version="1.0" \
       com.microscaling.docker.dockerfile="/Dockerfile" \
       com.microscaling.license="Apache 2.0"
 
-ENV GOSU_VERSION 1.10
-RUN set -ex \
-  && wget -nv -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
-  && wget -nv -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
-  && GNUPGHOME="$(mktemp -d)" \
-  && export GNUPGHOME \
-  && gpg --keyserver keyserver.ubuntu.com --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-  && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
-  && rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc \
-  && chmod +x /usr/local/bin/gosu \
-  && gosu nobody true
+# hadolint ignore=DL3008
+RUN set -x \
+  && apt-get update && apt-get -y --no-install-recommends install \
+    'gosu=1.10-*' \
+    libcap2-bin \
+  && rm -rf /var/lib/apt/lists/* \
+  && setcap 'cap_net_bind_service=+ep' "${JAVA_HOME}/bin/java"
 
-WORKDIR /tmp
-RUN set -ex \
-  && mkdir /usr/share/graylog \
-  && wget -nv -O "/tmp/graylog-${GRAYLOG_VERSION}.tgz" "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz" \
-  && wget -nv -O "/tmp/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
-  && sha256sum -c "/tmp/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
-  && tar -xzf "/tmp/graylog-${GRAYLOG_VERSION}.tgz" --strip-components=1 -C /usr/share/graylog \
-  && rm -f "/tmp/graylog-${GRAYLOG_VERSION}.tgz" \
-  && addgroup --gid 1100 graylog \
-  && adduser --disabled-password --disabled-login --gecos '' --uid 1100 --gid 1100 graylog \
-  && chown -R graylog:graylog /usr/share/graylog
+ARG GRAYLOG_USER=graylog
+ARG GRAYLOG_UID=1100
+ARG GRAYLOG_GROUP=graylog
+ARG GRAYLOG_GID=1100
+RUN addgroup --gid "${GRAYLOG_GID}" "${GRAYLOG_GROUP}" \
+  && adduser --disabled-login --gecos 'Graylog,,,' --uid "${GRAYLOG_UID}" --gid "${GRAYLOG_GID}" "${GRAYLOG_USER}"
 
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/jre
+COPY --from=obtain-graylog-stage /usr/local/share/graylog /usr/share/graylog
+
+ARG VCS_REF
+ARG GRAYLOG_VERSION
+LABEL org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.version=$GRAYLOG_VERSION
+
 ENV GRAYLOG_SERVER_JAVA_OPTS "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow"
 ENV PATH /usr/share/graylog/bin:$PATH
 
 WORKDIR /usr/share/graylog
-RUN set -ex \
-  && for path in \
-    ./data/journal \
-    ./data/log \
-    ./data/config \
-  ; do \
-    mkdir -p "$path"; \
-  done
+RUN install --directory --group=graylog --owner=graylog --mode=0750 ./data ./data/journal ./data/log
 COPY config ./data/config
 COPY docker-entrypoint.sh /
 
@@ -59,10 +69,3 @@ EXPOSE 9000
 VOLUME /usr/share/graylog/data
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["graylog"]
-
-# hadolint ignore=DL3008
-RUN set -ex \
-  && apt-get update && apt-get -y --no-install-recommends install libcap2-bin \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* \
-  && setcap 'cap_net_bind_service=+ep' "${JAVA_HOME}/bin/java"

@@ -4,8 +4,7 @@
 # see: https://medium.com/microscaling-systems/labelling-automated-builds-on-docker-hub-f3d073fb8e1
 
 docker build \
-  --pull \
   --build-arg VCS_REF=$GIT_SHA1 \
   --build-arg GRAYLOG_VERSION=$(cat VERSION) \
   --build-arg BUILD_DATE=$(date +%Y-%m-%d) \
-  --tag bodsch-$IMAGE_NAME .
+  --tag $IMAGE_NAME .

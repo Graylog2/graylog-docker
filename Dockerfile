@@ -116,6 +116,7 @@ RUN \
 
 
 COPY docker-entrypoint.sh /
+COPY health_check.sh /
 
 EXPOSE 9000
 VOLUME ${GRAYLOG_HOME}/data
@@ -127,7 +128,7 @@ HEALTHCHECK \
   --interval=10s \
   --timeout=2s \
   --retries=12 \
-  CMD curl --silent --fail http://localhost:9000/api/ || exit 1
+  CMD /health_check.sh
 
 # -------------------------------------------------------------------------------------------------
 

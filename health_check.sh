@@ -2,8 +2,6 @@
 
 source /etc/profile
 
-set -eo pipefail
-
 host="$(hostname -i || echo '127.0.0.1')"
 
 port=9000
@@ -15,7 +13,7 @@ rest_listen_uri=$(grep "rest_listen_uri" ${GRAYLOG_HOME}/data/config/graylog.con
 #rest_enable_tls = true
 tls=$(grep "^rest_enable_tls" ${GRAYLOG_HOME}/data/config/graylog.conf | awk -F '=' '{print $2}' | awk '{$1=$1};1')
 
-[[ ${tls} = "true" ]] && proto=https
+[[ ! -z "${tls}" ]] && [[ ${tls} = "true" ]] && proto=https
 
 if [[ ! -z "${GRAYLOG_WEB_ENDPOINT_URI}" ]]
 then

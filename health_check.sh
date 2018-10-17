@@ -15,9 +15,9 @@ tls=$(grep "^rest_enable_tls" ${GRAYLOG_HOME}/data/config/graylog.conf | awk -F 
 
 [[ ! -z "${tls}" ]] && [[ ${tls} = "true" ]] && proto=https
 
-if [[ ! -z "${GRAYLOG_WEB_ENDPOINT_URI}" ]]
+if [[ ! -z "${GRAYLOG_REST_LISTEN_URI}" ]]
 then
-  port=$(echo "${GRAYLOG_WEB_ENDPOINT_URI}" | sed -e 's,^.*:,:,g' -e 's,.*:\([0-9]*\).*,\1,g' -e 's,[^0-9],,g')
+  port=$(echo "${GRAYLOG_REST_LISTEN_URI}" | sed -e 's,^.*:,:,g' -e 's,.*:\([0-9]*\).*,\1,g' -e 's,[^0-9],,g')
 elif [[ ! -z "${rest_listen_uri}" ]]
 then
   port=$(echo -e "${rest_listen_uri}" | awk -F '=' '{print $2}' | sed -e 's,^.*:,:,g' -e 's,.*:\([0-9]*\).*,\1,g' -e 's,[^0-9],,g')

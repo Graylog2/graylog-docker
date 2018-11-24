@@ -1,10 +1,10 @@
 # Graylog Docker Image
 
-[![Build Status](https://travis-ci.org/Graylog2/graylog-docker.svg?branch=2.4)](https://travis-ci.org/Graylog2/graylog-docker)
+[![Build Status](https://travis-ci.org/Graylog2/graylog-docker.svg?branch=2.5)](https://travis-ci.org/Graylog2/graylog-docker)
 [![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub]
 [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub]
-[![Image Size](https://images.microbadger.com/badges/image/graylog/graylog:2.4.svg)][microbadger]
-[![Image Version](https://images.microbadger.com/badges/version/graylog/graylog:2.4.svg)][microbadger]
+[![Image Size](https://images.microbadger.com/badges/image/graylog/graylog:2.5.svg)][microbadger]
+[![Image Version](https://images.microbadger.com/badges/version/graylog/graylog:2.5.svg)][microbadger]
 [![Image License](https://images.microbadger.com/badges/license/graylog/graylog.svg)][microbadger]
 
 
@@ -17,11 +17,11 @@ Graylog is a centralized logging solution that allows the user to aggregate and 
 
 ## Architecture
 
-Take a look at the minimal [Graylog architecture](http://docs.graylog.org/en/latest/pages/architecture.html) to get the big picture of a Graylog setup. In essence, Graylog needs to talk to MongoDB to store configuration data as well as Elasticsearch to store the actual log data.
+Take a look at the minimal [Graylog architecture](http://docs.graylog.org/en/2.5/pages/architecture.html) to get the big picture of a Graylog setup. In essence, Graylog needs to talk to MongoDB to store configuration data as well as Elasticsearch to store the actual log data.
 
 ## How to use this image
 
-Please refer to the [Graylog Docker documentation](http://docs.graylog.org/en/2.4/pages/installation/docker.html) for a comprehensive overview and a detailed description of the Graylog Docker image.
+Please refer to the [Graylog Docker documentation](http://docs.graylog.org/en/2.5/pages/installation/docker.html) for a comprehensive overview and a detailed description of the Graylog Docker image.
 
 ### Quick start
 
@@ -31,11 +31,11 @@ If you simply want to checkout Graylog without any further customization, you ca
 $ docker run --name mongo -d mongo:3
 $ docker run --name elasticsearch \
     -e "http.host=0.0.0.0" -e "xpack.security.enabled=false" \
-    -d docker.elastic.co/elasticsearch/elasticsearch:5.6.12
+    -d docker.elastic.co/elasticsearch/elasticsearch:6.5.1
 $ docker run --link mongo --link elasticsearch \
     -p 9000:9000 -p 12201:12201 -p 514:514 \
     -e GRAYLOG_WEB_ENDPOINT_URI="http://127.0.0.1:9000/api" \
-    -d graylog/graylog:2.4
+    -d graylog/graylog:2.5
 ```
 
 ### Settings
@@ -67,7 +67,7 @@ services:
     image: mongo:3
   # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/docker.html
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.12
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.1
     environment:
       - http.host=0.0.0.0
       # Disable X-Pack security: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/security-settings.html#general-security-settings
@@ -80,7 +80,7 @@ services:
     mem_limit: 1g
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   graylog:
-    image: graylog/graylog:2.4
+    image: graylog/graylog:2.5
     environment:
       # CHANGE ME!
       - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
@@ -116,8 +116,8 @@ Create the configuration directory and copy the default files:
 ```
 mkdir -p ./graylog/config
 cd ./graylog/config
-wget https://raw.githubusercontent.com/Graylog2/graylog-docker/2.4/config/graylog.conf
-wget https://raw.githubusercontent.com/Graylog2/graylog-docker/2.4/config/log4j2.xml
+wget https://raw.githubusercontent.com/Graylog2/graylog-docker/2.5/config/graylog.conf
+wget https://raw.githubusercontent.com/Graylog2/graylog-docker/2.5/config/log4j2.xml
 ```
 
 The `docker-compose.yml` file looks like this:
@@ -132,7 +132,7 @@ services:
       - mongo_data:/data/db
   # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/docker.html
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.12
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.1
     volumes:
       - es_data:/usr/share/elasticsearch/data
     environment:
@@ -149,7 +149,7 @@ services:
     mem_limit: 1g
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   graylog:
-    image: graylog/graylog:2.4
+    image: graylog/graylog:2.5
     volumes:
       - graylog_journal:/usr/share/graylog/data/journal
       - ./graylog/config:/usr/share/graylog/data/config

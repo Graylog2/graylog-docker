@@ -35,7 +35,7 @@ $ docker run --name elasticsearch \
 $ docker run --link mongo --link elasticsearch \
     -p 9000:9000 -p 12201:12201 -p 514:514 \
     -e GRAYLOG_WEB_ENDPOINT_URI="http://127.0.0.1:9000/api" \
-    -d graylog/graylog:2.5.0-alpha.1-1
+    -d graylog/graylog:2.5.0-beta.1-1
 ```
 
 ### Settings
@@ -80,7 +80,7 @@ services:
     mem_limit: 1g
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   graylog:
-    image: graylog/graylog:2.5.0-alpha.1-1
+    image: graylog/graylog:2.5.0-beta.1-1
     environment:
       # CHANGE ME!
       - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
@@ -149,7 +149,7 @@ services:
     mem_limit: 1g
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   graylog:
-    image: graylog/graylog:2.5.0-alpha.1-1
+    image: graylog/graylog:2.5.0-beta.1-1
     volumes:
       - graylog_journal:/usr/share/graylog/data/journal
       - ./graylog/config:/usr/share/graylog/data/config

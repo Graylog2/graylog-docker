@@ -5,6 +5,7 @@ set -e
 # save the settings over the docker(-compose) environment
 __GRAYLOG_SERVER_JAVA_OPTS=${GRAYLOG_SERVER_JAVA_OPTS}
 
+# shellcheck disable=SC1091
 source /etc/profile
 
 # and add the previos saved settings to our defaults

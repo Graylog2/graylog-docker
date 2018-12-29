@@ -118,8 +118,10 @@ RUN \
 COPY docker-entrypoint.sh /
 COPY health_check.sh /
 
+USER ${GRAYLOG_USER}
 EXPOSE 9000
 VOLUME ${GRAYLOG_HOME}/data
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["graylog"]
 

@@ -19,6 +19,11 @@ if [ "${1:0:1}" = '-' ]; then
   set -- graylog "$@"
 fi
 
+# enable master flag if hostname matches
+if [ "$GRAYLOG_SERVER_MASTER_HOSTNAME" == "$HOSTNAME" ]; then
+  export GRAYLOG_IS_MASTER=true
+fi
+
 # Delete outdated PID file
 [[ -e /tmp/graylog.pid ]] && rm --force /tmp/graylog.pid
 

@@ -7,7 +7,7 @@ Latest stable version of Graylog is *2.5.1* this Version is available with the t
 In the current development branch we have builds for the upcoming versions available. Those images can be identified in the [tag overview](https://hub.docker.com/r/graylog/graylog/tags/) of Docker Hub. Currently available are:
 
 
-- `3.0.0-beta.1-1` [![Build Status](https://travis-ci.org/Graylog2/graylog-docker.svg?branch=3.0)](https://travis-ci.org/Graylog2/graylog-docker)
+- `3.0.0-beta.2-1` [![Build Status](https://travis-ci.org/Graylog2/graylog-docker.svg?branch=3.0)](https://travis-ci.org/Graylog2/graylog-docker)
 
 
 [hub]: https://hub.docker.com/r/graylog/graylog/

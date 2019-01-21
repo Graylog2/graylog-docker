@@ -2,7 +2,18 @@
 
 set -e
 
+# save the settings over the docker(-compose) environment
+__GRAYLOG_SERVER_JAVA_OPTS=${GRAYLOG_SERVER_JAVA_OPTS}
+
 source /etc/profile
+
+# and add the previos saved settings to our defaults
+if [[ ! -z ${__GRAYLOG_SERVER_JAVA_OPTS} ]]
+then
+  echo "adding environment opts"
+  GRAYLOG_SERVER_JAVA_OPTS="${GRAYLOG_SERVER_JAVA_OPTS} ${__GRAYLOG_SERVER_JAVA_OPTS}"
+  export GRAYLOG_SERVER_JAVA_OPTS
+fi
 
 if [ "${1:0:1}" = '-' ]; then
   set -- graylog "$@"

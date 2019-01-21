@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-set +x
+# set -x
 
 CREDENTIALS="admin:admin"
 URL="http://127.0.0.1:9000"
@@ -39,10 +39,10 @@ done
 sleep 2
 
 # Send message to Raw/Plaintext TCP input
-echo 'plaintext' | nc 127.0.0.1 5555
+echo 'plaintext' | nc -w 10 127.0.0.1 5555
 
 # Send message to Syslog TCP input
-echo '<0>1 2018-07-04T12:00:00.000Z test.example.com test - - - syslog' | nc 127.0.0.1 514
+echo '<0>1 2018-07-04T12:00:00.000Z test.example.com test - - - syslog' | nc -w 10 127.0.0.1 514
 
 sleep 2
 

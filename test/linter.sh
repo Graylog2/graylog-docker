@@ -7,4 +7,7 @@ if ! [ -x "$(command -v hadolint)" ]; then
 fi
 
 hadolint Dockerfile
-shellcheck docker-entrypoint.sh -x
+shellcheck \
+  docker-entrypoint.sh \
+  --external-sources \
+  --exclude=SC2086

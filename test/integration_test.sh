@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -e
-set +x
 
 CREDENTIALS="admin:admin"
 URL="http://127.0.0.1:9000"

@@ -31,7 +31,10 @@ fi
 # First stateful member is having pod name ended with -0, so 
 if [ -z "$POD_NAME" ]
 then
- echo "$POD_NAME" | grep '\-0$' > /dev/null && export GRAYLOG_IS_MASTER='true' || export GRAYLOG_IS_MASTER='false'
+ if [[ echo "$POD_NAME" | grep '\-0$' ]]
+ then export GRAYLOG_IS_MASTER='true' 
+ else export GRAYLOG_IS_MASTER='false'
+ fi
 fi
 
 

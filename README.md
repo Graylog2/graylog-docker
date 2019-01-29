@@ -14,7 +14,7 @@ In the current development branch we have builds for the upcoming versions avail
 [hub]: https://hub.docker.com/r/graylog/graylog/
 [microbadger]: https://microbadger.com/images/graylog/graylog
 
-Use the stable `2.5` release for your production environments. Please check the [latest stable documentation](http://docs.graylog.org/en/stable/pages/installation/docker.html) for complete installation and configuration instruction.
+Use the stable `2.5` release for your production environments. Please check the [latest stable documentation](http://docs.graylog.org/en/latest/pages/installation/docker.html) for complete installation and configuration instruction.
 
 
 ## What is Graylog?

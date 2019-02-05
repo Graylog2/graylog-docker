@@ -1,13 +1,13 @@
 # Graylog Docker Image
 
-Latest stable version of Graylog is *2.5.1* this Version is available with the tags `2.5` or `2.5.1-3`. 
+Latest stable version of Graylog is *2.5.1* this Version is available with the tags `2.5` or `2.5.1-4`. 
 
 [![Build Status](https://travis-ci.org/Graylog2/graylog-docker.svg?branch=2.5)](https://travis-ci.org/Graylog2/graylog-docker) [![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub] [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub] [![Image Size](https://images.microbadger.com/badges/image/graylog/graylog:2.5.svg)][microbadger] [![Image Version](https://images.microbadger.com/badges/version/graylog/graylog:2.5.svg)][microbadger] [![Image License](https://images.microbadger.com/badges/license/graylog/graylog:2.5.svg)][microbadger]
 
 In the current development branch we have builds for the upcoming versions available. Those images can be identified in the [tag overview](https://hub.docker.com/r/graylog/graylog/tags/) of Docker Hub. Currently available are:
 
 
-- `3.0.0-rc.1-1` [![Build Status](https://travis-ci.org/Graylog2/graylog-docker.svg?branch=3.0)](https://travis-ci.org/Graylog2/graylog-docker)
+- `3.0.0-rc.2-1` [![Build Status](https://travis-ci.org/Graylog2/graylog-docker.svg?branch=3.0)](https://travis-ci.org/Graylog2/graylog-docker)
 
 
 [hub]: https://hub.docker.com/r/graylog/graylog/

@@ -22,6 +22,23 @@ fi
 # Delete outdated PID file
 [[ -e /tmp/graylog.pid ]] && rm --force /tmp/graylog.pid
 
+# check if we are inside kubernetes, Graylog should be run as statefulset and $POD_NAME env var should be defined like this
+#          env:
+#          - name: POD_NAME
+#            valueFrom:
+#              fieldRef:
+#                fieldPath: metadata.name
+# First stateful member is having pod name ended with -0, so 
+if [[ ! -z "${POD_NAME}" ]]
+then
+ if echo "${POD_NAME}" | grep "\-0$" >/dev/null
+ then
+   export GRAYLOG_IS_MASTER="true"
+ else
+   export GRAYLOG_IS_MASTER="false"
+ fi
+fi
+
 setup() {
   # Create data directories
   for d in journal log plugin config contentpacks

@@ -1,4 +1,7 @@
-#!/bin/bash -ex
+#!/bin/bash
+
+set -e
+
 CREDENTIALS="admin:admin"
 URL="http://127.0.0.1:9000"
 

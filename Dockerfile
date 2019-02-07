@@ -87,7 +87,8 @@ RUN \
     curl \
     'gosu=1.10-*' \
     libcap2-bin \
-    libglib2.0-0  > /dev/null && \
+    libglib2.0-0 \
+    fontconfig > /dev/null && \
   addgroup \
     --gid "${GRAYLOG_GID}" \
     --quiet \

@@ -40,6 +40,62 @@ then
  fi
 fi
 
+# build GRAYLOG_MONGODB_URI from individual parameters
+if [[ -z ${GRAYLOG_MONGODB_URI} ]]
+then
+  echo "initializing GRAYLOG_MONGODB_URI environment variable"
+  GRAYLOG_MONGODB_URI="mongodb://"
+  if [[ ! -z ${MONGODB_USERNAME} ]]
+  then
+    echo "adding MongoDB user and password GRAYLOG_MONGODB_URI environment variable"
+    GRAYLOG_MONGODB_URI="${GRAYLOG_MONGODB_URI}${MONGODB_USERNAME}:${MONGODB_PASSWORD}@"
+  fi
+  if [[ ! -z ${MONGODB_URL} ]]
+  then
+    echo "adding MongoDB URL GRAYLOG_MONGODB_URI environment variable"
+    GRAYLOG_MONGODB_URI="${GRAYLOG_MONGODB_URI}${MONGODB_URL}"
+  fi
+  if [[ ! -z ${MONGODB_PORT} ]]
+  then
+    echo "adding MongoDB port GRAYLOG_MONGODB_URI environment variable"
+    GRAYLOG_MONGODB_URI="${GRAYLOG_MONGODB_URI}:${MONGODB_PORT}"
+  fi
+  if [[ ! -z ${MONGODB_DATABASE} ]]
+  then
+    echo "adding MongoDB database GRAYLOG_MONGODB_URI environment variable"
+    GRAYLOG_MONGODB_URI="${GRAYLOG_MONGODB_URI}/${MONGODB_DATABASE}"
+  fi
+  if [[ ! -z ${MONGODB_REPLICASET} ]]
+  then
+    echo "adding MongoDB replicaset GRAYLOG_MONGODB_URI environment variable"
+    GRAYLOG_MONGODB_URI="${GRAYLOG_MONGODB_URI}?replicaSet=${MONGODB_REPLICASET}"
+  fi
+  export GRAYLOG_MONGODB_URI
+fi
+
+# build GRAYLOG_ELASTICSEARCH_HOSTS from individual parameters
+if [[ -z ${GRAYLOG_ELASTICSEARCH_HOSTS} ]]
+then
+  echo "initializing GRAYLOG_ELASTICSEARCH_HOSTS environment variable"
+  GRAYLOG_ELASTICSEARCH_HOSTS="http://"
+  if [[ ! -z ${ELASTICSEARCH_USERNAME} ]]
+  then
+    echo "adding Elasticsearch user and password GRAYLOG_ELASTICSEARCH_HOSTS environment variable"
+    GRAYLOG_ELASTICSEARCH_HOSTS="${GRAYLOG_ELASTICSEARCH_HOSTS}${ELASTICSEARCH_USERNAME}:${ELASTICSEARCH_PASSWORD}@"
+  fi
+  if [[ ! -z ${ELASTICSEARCH_URL} ]]
+  then
+    echo "adding Elasticsearch URL GRAYLOG_ELASTICSEARCH_HOSTS environment variable"
+    GRAYLOG_ELASTICSEARCH_HOSTS="${GRAYLOG_ELASTICSEARCH_HOSTS}${ELASTICSEARCH_URL}"
+  fi
+  if [[ ! -z ${ELASTICSEARCH_PORT} ]]
+  then
+    echo "adding Elasticsearch port GRAYLOG_ELASTICSEARCH_HOSTS environment variable"
+    GRAYLOG_ELASTICSEARCH_HOSTS="${GRAYLOG_ELASTICSEARCH_HOSTS}:${ELASTICSEARCH_PORT}"
+  fi
+  export GRAYLOG_ELASTICSEARCH_HOSTS
+fi
+
 setup() {
   # Create data directories
   for d in journal log plugin config contentpacks

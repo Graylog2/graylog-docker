@@ -8,9 +8,9 @@ port=9000
 tls=false
 proto=http
 
-# rest_listen_uri = http://0.0.0.0:9000/api/
-http_bind_address=$(grep "http_bind_address" ${GRAYLOG_HOME}/data/config/graylog.conf)
-#rest_enable_tls = true
+# http_bind_address = http://0.0.0.0:9000/api/
+http_bind_address=$(grep "^http_bind_address" ${GRAYLOG_HOME}/data/config/graylog.conf)
+# http_enable_tls = true
 tls=$(grep "^http_enable_tls" ${GRAYLOG_HOME}/data/config/graylog.conf | awk -F '=' '{print $2}' | awk '{$1=$1};1')
 
 [[ ! -z "${tls}" ]] && [[ ${tls} = "true" ]] && proto=https

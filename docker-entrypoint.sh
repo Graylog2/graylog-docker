@@ -46,9 +46,11 @@ setup() {
   do
     dir=${GRAYLOG_HOME}/data/${d}
     [[ -d "${dir}" ]] || mkdir -p "${dir}"
+    
+    if [[ "$(stat --format='%U:%G' $dir)" != 'graylog:graylog' ]] && [[ -w "$dir" ]]; then
+      chown -R graylog:graylog "$dir" || echo "Warning can not change owner to graylog:graylog"
+    fi
   done
-
-  chown --recursive "${GRAYLOG_USER}":"${GRAYLOG_GROUP}" "${GRAYLOG_HOME}/data"
 }
 
 graylog() {

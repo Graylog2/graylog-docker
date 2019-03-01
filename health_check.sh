@@ -29,8 +29,8 @@ fi
 if [[ ! -z "${GRAYLOG_HTTP_PUBLISH_URI}" ]]
 then
 	# remove the protocol from the URI
-	proto="$(echo "${GRAYLOG_HTTP_PUBLISH_URI}" | grep :// | sed -e's,^\(.*://\).*,\1,g')"
-	url=$(echo "${GRAYLOG_HTTP_PUBLISH_URI}" | sed -e s,"$proto",,g)
+	proton="$(echo "${GRAYLOG_HTTP_PUBLISH_URI}" | grep :// | sed -e's,^\(.*://\).*,\1,g')"
+	url=$(echo "${GRAYLOG_HTTP_PUBLISH_URI}" | sed -e s,"$proton",,g)
 	# we want to be sure to use https if enable
 	# currently this looks like the best solution to cut
 	# the protocoll away and set it based on 
@@ -52,12 +52,12 @@ fi
 # when HTTP_PUBLISH_URI is given that is used for the healtcheck
 # otherwise HTTP_BIND_ADDRESS
 
-if [[ ! -z "${http_publish_uri}" ]]
-then
-	check_url="${proto}"://"${http_publish_uri}"
-elif [[ ! -z "${http_bind_address}" ]]
+if [[ ! -z "${http_bind_address}" ]]
 then
 	check_url="${proto}"://"${http_bind_address}"
+elif [[ ! -z "${http_publish_uri}" ]]
+then
+	check_url="${proto}"://"${http_publish_uri}"
 else
 	echo "not possible to get Graylog listen URI - abort"
 	exit 1

@@ -16,7 +16,7 @@ http_bind_address=127.0.0.1:9000
 
 # check if configuration file is given and grep for variable
 if [[ -f "${GRAYLOG_HOME}"/data/config/graylog.conf ]]
-	then
+then
 	# try to grep the variable from a mounted configuration
 	http_publish_uri=$(grep "^http_publish_uri" "${GRAYLOG_HOME}"/data/config/graylog.conf | awk -F '=' '{print $2}' | awk '{$1=$1};1')
 	http_bind_address=$(grep "^http_bind_address" "${GRAYLOG_HOME}"/data/config/graylog.conf | awk -F '=' '{print $2}' | awk '{$1=$1};1')
@@ -27,7 +27,7 @@ fi
 # they will always override all other settings
 # shellcheck disable=SC2001
 if [[ ! -z "${GRAYLOG_HTTP_PUBLISH_URI}" ]]
-	then
+then
 	# remove the protocol from the URI
 	proto="$(echo "${GRAYLOG_HTTP_PUBLISH_URI}" | grep :// | sed -e's,^\(.*://\).*,\1,g')"
 	url=$(echo "${GRAYLOG_HTTP_PUBLISH_URI}" | sed -e s,"$proto",,g)
@@ -38,11 +38,11 @@ if [[ ! -z "${GRAYLOG_HTTP_PUBLISH_URI}" ]]
 	http_publish_uri="${url}"
 fi
 if [[ ! -z "${GRAYLOG_HTTP_BIND_ADDRESS}" ]]
-	then
+then
 	http_bind_address="${GRAYLOG_HTTP_BIND_ADDRESS}"
 fi
 if [[ ! -z "${GRAYLOG_HTTP_ENABLE_TLS}" ]]
-	then
+then
 	http_enable_tls="${GRAYLOG_HTTP_ENABLE_TLS}"
 fi
 
@@ -53,10 +53,10 @@ fi
 # otherwise HTTP_BIND_ADDRESS
 
 if [[ ! -z "${http_publish_uri}" ]]
-	then
+then
 	check_url="${proto}"://"${http_publish_uri}"
 elif [[ ! -z "${http_bind_address}" ]]
-	then
+then
 	check_url="${proto}"://"${http_bind_address}"
 else
 	echo "not possible to get Graylog listen URI - abort"
@@ -65,7 +65,7 @@ fi
 
 
 if curl --silent --fail "${check_url}"/api
-	then
+then
   	exit 0
 fi
 exit 1

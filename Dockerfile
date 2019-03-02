@@ -122,7 +122,7 @@ COPY docker-entrypoint.sh /
 COPY health_check.sh /
 
 EXPOSE 9000
-USER graylog
+USER ${GRAYLOG_USER}
 VOLUME ${GRAYLOG_HOME}/data
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["graylog"]

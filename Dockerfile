@@ -85,7 +85,6 @@ RUN \
   apt-get update  > /dev/null && \
   apt-get install --no-install-recommends --assume-yes \
     curl \
-    'gosu=1.10-*' \
     libcap2-bin \
     libglib2.0-0 \
     fontconfig > /dev/null && \

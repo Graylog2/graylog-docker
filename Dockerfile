@@ -13,7 +13,7 @@ RUN \
   apt-get update  > /dev/null && \
   apt-get install --assume-yes \
     ca-certificates \
-    curl  > /dev/null
+    curl > /dev/null
 
 RUN \
   curl \
@@ -46,7 +46,8 @@ RUN \
     /opt/graylog/data/journal \
     /opt/graylog/data/log \
     /opt/graylog/data/config \
-    /opt/graylog/data/plugin
+    /opt/graylog/data/plugin \
+    /opt/graylog/data/data
 
 # -------------------------------------------------------------------------------------------------
 #
@@ -84,8 +85,9 @@ RUN \
   apt-get update  > /dev/null && \
   apt-get install --no-install-recommends --assume-yes \
     curl \
-    'gosu=1.10-*' \
-    libcap2-bin > /dev/null && \
+    libcap2-bin \
+    libglib2.0-0 \
+    fontconfig > /dev/null && \
   addgroup \
     --gid "${GRAYLOG_GID}" \
     --quiet \
@@ -118,10 +120,9 @@ RUN \
 COPY docker-entrypoint.sh /
 COPY health_check.sh /
 
-USER ${GRAYLOG_USER}
 EXPOSE 9000
+USER ${GRAYLOG_USER}
 VOLUME ${GRAYLOG_HOME}/data
-
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["graylog"]
 

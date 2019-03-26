@@ -7,6 +7,34 @@ URL="http://127.0.0.1:9000"
 
 CURL=(curl -u "${CREDENTIALS}" -w '\n')
 TEST_DIR="$(dirname "${0}")"
+
+# -------------------------------------------------------------------------------------------------
+
+finish() {
+  rv=$?
+  [ ${rv} -gt 0 ] && echo -e "\033[38;5;202m\033[1mexit with signal '${rv}'\033[0m"
+
+  "${DOCKER_COMPOSE[@]}" down
+
+  exit $rv
+}
+
+trap finish SIGINT SIGTERM INT TERM EXIT
+
+# -------------------------------------------------------------------------------------------------
+
+
+pushd ${TEST_DIR}
+
+cat << EOF > .env
+VCS_REF=$(git rev-parse --short HEAD)
+GRAYLOG_VERSION=$(cat ${PWD}/../VERSION)
+EOF
+
+docker-compose --file docker-compose.tpl config  > ./docker-compose.yml
+
+popd
+
 DOCKER_COMPOSE=(docker-compose -f "${TEST_DIR}/docker-compose.yml")
 
 JQ_VERSION='1.5'
@@ -30,34 +58,92 @@ done
 
 "${CURL[@]}" -H 'Accept: application/json' "${URL}/api/?pretty=true"
 
+echo -e "\ncreate permissions to create dashboards"
+code=$("${CURL[@]}" \
+  --silent \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json' \
+  --header 'X-Requested-By: cli' \
+  --output /tmp/result.json \
+  --write-out '%{http_code}\n' \
+  --data @"${TEST_DIR}/permissions-dashboard.json" \
+  "${URL}/api/roles")
+
+result=${?}
+
+if [ ${result} -eq 0 ] && [ ${code} = 200 ] || [ ${code} = 201 ]
+then
+  echo "successful"
+else
+  echo "code: ${code}"
+  jq --raw-output '.message' /tmp/result.json
+fi
+
+echo -e "\nimport input stream for plaintext"
 # Create Raw/Plaintext TCP input
-"${CURL[@]}" -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'X-Requested-By: curl' -d @"${TEST_DIR}/input-raw-tcp.json" "${URL}/api/system/inputs?pretty=true"
+"${CURL[@]}" \
+  --silent \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H 'X-Requested-By: curl' \
+  -d @"${TEST_DIR}/input-raw-tcp.json" \
+  "${URL}/api/system/inputs?pretty=true"
+
+echo -e "\nimport input stream for syslog"
 # Create Syslog TCP input
-"${CURL[@]}" -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'X-Requested-By: curl' -d @"${TEST_DIR}/input-syslog-tcp.json" "${URL}/api/system/inputs?pretty=true"
+"${CURL[@]}" \
+  --silent \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H 'X-Requested-By: curl' \
+  -d @"${TEST_DIR}/input-syslog-tcp.json" \
+  "${URL}/api/system/inputs?pretty=true"
+
+echo ""
 
 sleep 2
 
+echo -e "\nsend message to RAW input stream"
 # Send message to Raw/Plaintext TCP input
-echo 'plaintext' | nc 127.0.0.1 5555
+echo 'plaintext' | nc -w5 127.0.0.1 5555
 
+echo -e "\nsend message to syslog input stream"
 # Send message to Syslog TCP input
-echo '<0>1 2018-07-04T12:00:00.000Z test.example.com test - - - syslog' | nc 127.0.0.1 514
+echo '<0>1 2018-07-04T12:00:00.000Z test.example.com test - - - syslog' | nc -w5 127.0.0.1 514
+
 
 sleep 2
 
+echo -e "\ncheck received messages"
 # Check messages received by Raw/Plaintext TCP input
-TOTAL_MESSAGES=$("${CURL[@]}" --silent -H 'Accept: application/json' "${URL}/api/search/universal/relative/?pretty=true&query=plaintext&range=0" | jq .total_results)
-if [ "${TOTAL_MESSAGES}" -ne 1 ]; then
+TOTAL_MESSAGES=$("${CURL[@]}" \
+  --silent \
+  -H 'Accept: application/json' \
+  "${URL}/api/search/universal/relative/?pretty=true&query=plaintext&range=0" | jq '.total_results')
+
+echo "plaintext messages found: '${TOTAL_MESSAGES}'"
+
+if [ "${TOTAL_MESSAGES}" -ne 1 ]
+then
   echo "Expected to find 1 message from Raw/Plaintext TCP input"
   exit 1
 fi
 
 # Check messages received by Syslog TCP input
-TOTAL_MESSAGES=$("${CURL[@]}" --silent -H 'Accept: application/json' "${URL}/api/search/universal/relative/?pretty=true&query=syslog&range=0" | jq .total_results)
-if [ "${TOTAL_MESSAGES}" -ne 1 ]; then
+TOTAL_MESSAGES=$("${CURL[@]}" \
+  --silent \
+  -H 'Accept: application/json' \
+  "${URL}/api/search/universal/relative/?pretty=true&query=syslog&range=0" | jq '.total_results')
+
+echo "syslog messages found: '${TOTAL_MESSAGES}'"
+
+if [ "${TOTAL_MESSAGES}" -ne 1 ]
+then
   echo "Expected to find 1 message from Syslog TCP input"
   exit 1
 fi
 
 # Shutdown
 "${DOCKER_COMPOSE[@]}" down
+
+exit 0

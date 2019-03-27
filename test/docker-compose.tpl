@@ -1,4 +1,4 @@
-version: '2.4'
+version: '2'
 services:
   # MongoDB: https://hub.docker.com/_/mongo/
   mongo:

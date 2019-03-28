@@ -4,14 +4,12 @@ services:
   mongo:
     image: mongo:3
     mem_limit: 128m
-  # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/5.6/docker.html
+  # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/6.6/docker.html
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.12
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.6.2
     environment:
       - http.host=0.0.0.0
       - discovery.type=single-node
-      # Disable X-Pack security: https://www.elastic.co/guide/en/elasticsearch/reference/5.6/security-settings.html#general-security-settings
-      - xpack.security.enabled=false
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
@@ -19,17 +17,19 @@ services:
         soft: -1
         hard: -1
     mem_limit: 1g
-  # Graylog: https://hub.docker.com/r/graylog/graylog/
   graylog:
-    image: graylog/graylog:3.0
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      args:
+        - VCS_REF
+        - GRAYLOG_VERSION
     environment:
       # CHANGE ME!
       - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
       # Password: admin
       - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
-      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
       - GRAYLOG_MESSAGE_JOURNAL_ENABLED=false
-      - "GRAYLOG_SERVER_JAVA_OPTS=-Xmx4G"
     mem_limit: 1g
     links:
       - mongo

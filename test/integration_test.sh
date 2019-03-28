@@ -111,6 +111,40 @@ wait_for_application() {
 }
 
 
+cluster_state() {
+
+  echo -e "\nget cluster state with session"
+  code=$(curl \
+    --silent \
+    --request POST \
+    --header 'Accept: application/json' \
+    --header 'Content-Type: application/json' \
+    --header 'X-Requested-By: cli' \
+    --output session_result.json \
+    --write-out '%{http_code}\n' \
+    --data '{"username":"admin", "password":"admin", "host":""}' \
+    "${URL}/api/system/sessions")
+
+  result=${?}
+
+  if [ ${result} -eq 0 ] && [ ${code} -eq 200 ] || [ ${code} -eq 201 ]
+  then
+    session_id=$(jq --raw-output '.session_id' session_result.json)
+
+    curl \
+      --silent \
+      --user "${session_id}:session" \
+      --header 'Accept: application/json' \
+      "${URL}/api/cluster?pretty=true"
+
+  else
+    echo "code: ${code}"
+    cat session_result.json
+    jq --raw-output '.message' session_result.json 2> /dev/null
+  fi
+
+}
+
 create_roles() {
 
   echo -e "\ncreate permissions to create dashboards"
@@ -184,8 +218,6 @@ create_input_streams() {
     cat input_syslog_result.json
     jq --raw-output '.message' input_plaintext_result.json 2> /dev/null
   fi
-
-  echo ""
 
   sleep 2
 }
@@ -263,6 +295,7 @@ run() {
   wait_for_port
   wait_for_application
   inspect
+  cluster_state
   create_roles
   create_input_streams
   send_messages

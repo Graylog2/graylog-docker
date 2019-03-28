@@ -33,9 +33,9 @@ services:
       - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
       # Password: admin
       - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
-      - GRAYLOG_HTTP_EXTERNAL_URI=http://0.0.0.0:9000/
+      # - GRAYLOG_HTTP_EXTERNAL_URI=http://0.0.0.0:9000/
       - GRAYLOG_MESSAGE_JOURNAL_ENABLED=false
-      - "GRAYLOG_SERVER_JAVA_OPTS=-Xmx4G"
+      # - "GRAYLOG_SERVER_JAVA_OPTS=-Xmx4G"
     mem_limit: 1g
     links:
       - mongo

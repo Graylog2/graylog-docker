@@ -21,7 +21,7 @@ RUN \
     --location \
     --retry 3 \
     --output "/tmp/graylog-${GRAYLOG_VERSION}.tgz" \
-    "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz"
+    "https://downloads.graylog.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz"
 
 RUN \
   curl \
@@ -29,7 +29,7 @@ RUN \
     --location \
     --retry 3 \
     --output "/tmp/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
-    "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt"
+    "https://downloads.graylog.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt"
 
 RUN \
   sha256sum --check "graylog-${GRAYLOG_VERSION}.tgz.sha256.txt"
@@ -147,3 +147,4 @@ LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.build-date=${BUILD_DATE} \
       com.microscaling.docker.dockerfile="/Dockerfile" \
       com.microscaling.license="Apache 2.0"
+

@@ -119,9 +119,9 @@ RUN \
 
 COPY docker-entrypoint.sh /
 COPY health_check.sh /
+COPY graylog-start.sh /
 
 EXPOSE 9000
-USER ${GRAYLOG_USER}
 VOLUME ${GRAYLOG_HOME}/data
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["graylog"]
@@ -147,3 +147,4 @@ LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.build-date=${BUILD_DATE} \
       com.microscaling.docker.dockerfile="/Dockerfile" \
       com.microscaling.license="Apache 2.0"
+

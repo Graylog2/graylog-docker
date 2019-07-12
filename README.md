@@ -2,7 +2,7 @@
 
 Latest stable version of Graylog is *3.0.2* this Version is available with the tags `3.0` or `3.0.2-1`.
 
-[![Build Status](https://travis-ci.org/Graylog2/graylog-docker.svg?branch=3.0)](https://travis-ci.org/Graylog2/graylog-docker) [![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub] [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub] [![Image Size](https://images.microbadger.com/badges/image/graylog/graylog:3.0.svg)][microbadger] [![Image Version](https://images.microbadger.com/badges/version/graylog/graylog:3.0.svg)][microbadger] [![Image License](https://images.microbadger.com/badges/license/graylog/graylog:3.0.svg)][microbadger]
+[![Build Status](https://travis-ci.org/Graylog2/graylog-docker.svg?branch=3.1)](https://travis-ci.org/Graylog2/graylog-docker) [![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub] [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub] [![Image Size](https://images.microbadger.com/badges/image/graylog/graylog:3.1.svg)][microbadger] [![Image Version](https://images.microbadger.com/badges/version/graylog/graylog:3.1.svg)][microbadger] [![Image License](https://images.microbadger.com/badges/license/graylog/graylog:3.1.svg)][microbadger]
 
 [hub]: https://hub.docker.com/r/graylog/graylog/
 [microbadger]: https://microbadger.com/images/graylog/graylog

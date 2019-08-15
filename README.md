@@ -1,13 +1,13 @@
 # Graylog Docker Image
 
-Latest stable version of Graylog is *3.0.2* this Version is available with the tags `3.0` or `3.0.2-1`.
+Latest stable version of Graylog is *3.1.0* this Version is available with the tags `3.1` or `3.1.0-1`.
 
 [![Build Status](https://travis-ci.org/Graylog2/graylog-docker.svg?branch=3.1)](https://travis-ci.org/Graylog2/graylog-docker) [![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub] [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub] [![Image Size](https://images.microbadger.com/badges/image/graylog/graylog:3.1.svg)][microbadger] [![Image Version](https://images.microbadger.com/badges/version/graylog/graylog:3.1.svg)][microbadger] [![Image License](https://images.microbadger.com/badges/license/graylog/graylog:3.1.svg)][microbadger]
 
 [hub]: https://hub.docker.com/r/graylog/graylog/
 [microbadger]: https://microbadger.com/images/graylog/graylog
 
-Use the stable `3.0` release for your production environments. Please check the [latest stable documentation](http://docs.graylog.org/en/latest/pages/installation/docker.html) for complete installation and configuration instruction.
+Use the stable `3.1` release for your production environments. Please check the [latest stable documentation](http://docs.graylog.org/en/stable/pages/installation/docker.html) for complete installation and configuration instruction.
 
 
 ## What is Graylog?

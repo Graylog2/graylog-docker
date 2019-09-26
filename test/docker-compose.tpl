@@ -4,9 +4,9 @@ services:
   mongo:
     image: mongo:3
     mem_limit: 128m
-  # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/6.6/docker.html
+  # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/6.x/docker.html
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.6.2
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.3
     environment:
       - http.host=0.0.0.0
       - discovery.type=single-node

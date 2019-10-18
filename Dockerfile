@@ -85,6 +85,7 @@ RUN \
   apt-get update  > /dev/null && \
   apt-get install --no-install-recommends --assume-yes \
     curl \
+    tini \
     libcap2-bin \
     libglib2.0-0 \
     fontconfig > /dev/null && \
@@ -123,7 +124,7 @@ COPY health_check.sh /
 EXPOSE 9000
 USER ${GRAYLOG_USER}
 VOLUME ${GRAYLOG_HOME}/data
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
 CMD ["graylog"]
 
 # add healthcheck

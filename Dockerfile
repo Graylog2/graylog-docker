@@ -8,7 +8,7 @@ ARG GRAYLOG_VERSION
 
 WORKDIR /tmp
 
-# hadolint ignore=DL3008,DL3009,DL3014,DL3015
+# hadolint ignore=DL3008,DL3015
 RUN \
   apt-get update  > /dev/null && \
   apt-get install --assume-yes \
@@ -64,13 +64,12 @@ ARG GRAYLOG_UID=1100
 ARG GRAYLOG_GROUP=graylog
 ARG GRAYLOG_GID=1100
 
-# hadolint ignore=DL3023
 COPY --from=graylog-downloader /opt/graylog ${GRAYLOG_HOME}
 COPY config ${GRAYLOG_HOME}/data/config
 
 WORKDIR ${GRAYLOG_HOME}
 
-# hadolint ignore=DL3008,DL3014,SC2086
+# hadolint ignore=DL3027,DL3008
 RUN \
   echo "export JAVA_HOME=/usr/local/openjdk-8"     > /etc/profile.d/graylog.sh && \
   echo "export BUILD_DATE=${BUILD_DATE}"           >> /etc/profile.d/graylog.sh && \

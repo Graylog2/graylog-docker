@@ -65,8 +65,11 @@ fi
 if [[ ! -z "${http_publish_uri}" ]]
 then
 	check_url="${proto}"://"${http_publish_uri}"
-else
-	echo "not possible to get Graylog listen URI - abort"
+fi
+
+if [[ -z "${check_url}" ]]
+then
+	echo "Not possible to get Graylog listen URI - abort"
 	exit 1
 fi
 

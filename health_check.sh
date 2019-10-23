@@ -67,6 +67,12 @@ then
 	check_url="${proto}"://"${http_publish_uri}"
 fi
 
+if [[ -z "${check_url}" ]]
+then
+	echo "Not possible to get Graylog listen URI - abort"
+	exit 1
+fi
+
 
 if curl --silent --fail "${check_url}"/api
 then

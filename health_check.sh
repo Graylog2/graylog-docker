@@ -78,4 +78,15 @@ if curl --silent --fail "${check_url}"/api
 then
   	exit 0
 fi
+
+# FIX https://github.com/Graylog2/graylog-docker/issues/101
+# When the above check fails fall back to localhost 
+# This is not the most elegant solution but a working one
+if curl --silent --fail http://127.0.0.1/api
+then
+  	exit 0
+fi
+
+
+
 exit 1

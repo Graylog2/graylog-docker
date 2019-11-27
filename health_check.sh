@@ -27,6 +27,7 @@ then
 	# configuration. 
 	# not the smartest solution currently but a working
 	# TODO: find a better way or maybe write a function
+	# shellcheck disable=SC2001
 	if [[ ! -z ${http_publish_uri} ]]
 	then
 		# remove the protocol from the URI

@@ -61,6 +61,17 @@ then
  fi
 fi
 
+# check if we are inside a nomad cluster
+# First member is having alloc-index 0, so
+if [[ ! -z "${NOMAD_ALLOC_INDEX}" ]]; then
+  if [ ${NOMAD_ALLOC_INDEX} == 0 ]; then
+    export GRAYLOG_IS_MASTER="true"
+  else
+    export GRAYLOG_IS_MASTER="false"
+  fi
+fi
+
+
 setup() {
   # Create data directories
   for d in journal log plugin config contentpacks

@@ -21,6 +21,25 @@ then
 	http_publish_uri=$(grep "^http_publish_uri" "${GRAYLOG_HOME}"/data/config/graylog.conf | awk -F '=' '{print $2}' | awk '{$1=$1};1')
 	http_bind_address=$(grep "^http_bind_address" "${GRAYLOG_HOME}"/data/config/graylog.conf | awk -F '=' '{print $2}' | awk '{$1=$1};1')
 	http_enable_tls=$(grep "^http_enable_tls" "${GRAYLOG_HOME}"/data/config/graylog.conf | awk -F '=' '{print $2}' | awk '{$1=$1};1')
+
+	# FIX https://github.com/Graylog2/graylog-docker/issues/102
+	# This will remove the protocol from the URI if set via 
+	# configuration. 
+	# not the smartest solution currently but a working
+	# TODO: find a better way or maybe write a function
+	# shellcheck disable=SC2001
+	if [[ ! -z ${http_publish_uri} ]]
+	then
+		# remove the protocol from the URI
+		proton="$(echo "${http_publish_uri}" | grep :// | sed -e's,^\(.*://\).*,\1,g')"
+		url=$(echo "${http_publish_uri}" | sed -e s,"$proton",,g)
+		# we want to be sure to use https if enable
+		# currently this looks like the best solution to cut
+		# the protocoll away and set it based on 
+		# the fact if TLS is enabled or not
+		http_publish_uri="${url}"
+	fi
+
 fi
 
 # try to get the data from environment variables
@@ -78,4 +97,15 @@ if curl --silent --fail "${check_url}"/api
 then
   	exit 0
 fi
+
+# FIX https://github.com/Graylog2/graylog-docker/issues/101
+# When the above check fails fall back to localhost 
+# This is not the most elegant solution but a working one
+if curl --silent --fail http://127.0.0.1/api
+then
+  	exit 0
+fi
+
+
+
 exit 1

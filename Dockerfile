@@ -87,6 +87,8 @@ RUN \
     tini \
     libcap2-bin \
     libglib2.0-0 \
+    libx11-6 \
+    libnss3 \
     fontconfig > /dev/null && \
   addgroup \
     --gid "${GRAYLOG_GID}" \

@@ -83,12 +83,7 @@ fi
 
 if [[ ! -z "${http_publish_uri}" ]]
 then
-	if [[ "${http_publish_uri}" =~ ^[[:alnum:]]+://.+ ]]
-	then
-		check_url="${http_publish_uri}"
-	else
-		check_url="${proto}"://"${http_publish_uri}"
-	fi
+	check_url="${proto}"://"${http_publish_uri}"
 fi
 
 if [[ -z "${check_url}" ]]

@@ -33,7 +33,7 @@ then
 		# remove the protocol from the URI
 		proton="$(echo "${http_publish_uri}" | grep :// | sed -e's,^\(.*://\).*,\1,g')"
 		url=$(echo "${http_publish_uri}" | sed -e s,"$proton",,g)
-		if [[ "${http_publish_uri}" =~ ^[[:alnum:]]+://.+ ]]
+		if [[ "${http_publish_uri}" =~ ^[[:alpha:]]+://.+ ]]
 		then
 			proto=$(echo "${http_publish_uri}" | sed -e 's/:.*//')
 		fi

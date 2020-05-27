@@ -53,7 +53,7 @@ RUN \
 #
 # final layer
 # use the smallest debain with headless openjdk and copying files from download layers
-FROM openjdk:8-jre-slim
+FROM openjdk:11-jre-slim
 
 ARG VCS_REF
 ARG GRAYLOG_VERSION

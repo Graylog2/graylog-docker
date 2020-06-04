@@ -1,7 +1,7 @@
 # -------------------------------------------------------------------------------------------------
 #
 # layer for download and verifying
-FROM debian:stretch-slim as graylog-downloader
+FROM debian:buster-slim as graylog-downloader
 
 ARG VCS_REF
 ARG GRAYLOG_VERSION
@@ -53,7 +53,7 @@ RUN \
 #
 # final layer
 # use the smallest debain with headless openjdk and copying files from download layers
-FROM openjdk:8-jre-slim
+FROM openjdk:8-jre-slim-buster
 
 ARG VCS_REF
 ARG GRAYLOG_VERSION

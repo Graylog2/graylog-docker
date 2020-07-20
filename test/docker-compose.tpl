@@ -2,11 +2,11 @@ version: '2'
 services:
   # MongoDB: https://hub.docker.com/_/mongo/
   mongo:
-    image: mongo:3
+    image: mongo:4.2
     mem_limit: 128m
   # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/6.x/docker.html
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.3
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.10
     environment:
       - http.host=0.0.0.0
       - discovery.type=single-node

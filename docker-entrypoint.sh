@@ -8,7 +8,7 @@ __GRAYLOG_SERVER_JAVA_OPTS=${GRAYLOG_SERVER_JAVA_OPTS}
 # shellcheck disable=SC1091
 source /etc/profile
 
-# and add the previos saved settings to our defaults
+# and add the previous saved settings to our defaults
 if [[ ! -z ${__GRAYLOG_SERVER_JAVA_OPTS} ]]
 then
   echo "adding environment opts"
@@ -50,7 +50,7 @@ fi
 #            valueFrom:
 #              fieldRef:
 #                fieldPath: metadata.name
-# First stateful member is having pod name ended with -0, so 
+# First stateful member is having pod name ended with -0, so
 if [[ ! -z "${POD_NAME}" ]]
 then
  if echo "${POD_NAME}" | grep "\\-0$" >/dev/null
@@ -78,7 +78,7 @@ setup() {
   do
     dir=${GRAYLOG_HOME}/data/${d}
     [[ -d "${dir}" ]] || mkdir -p "${dir}"
-    
+
     if [[ "$(stat --format='%U:%G' $dir)" != 'graylog:graylog' ]] && [[ -w "$dir" ]]; then
       chown -R graylog:graylog "$dir" || echo "Warning can not change owner to graylog:graylog"
     fi

@@ -182,6 +182,4 @@ LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.vendor="Graylog, Inc." \
       org.label-schema.version=${GRAYLOG_VERSION} \
       org.label-schema.schema-version="1.0" \
-      org.label-schema.build-date=${BUILD_DATE} \
-      com.microscaling.docker.dockerfile="docker/enterprise/Dockerfile" \
-      com.microscaling.license="SSPL"
+      org.label-schema.build-date=${BUILD_DATE} 

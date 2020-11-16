@@ -124,7 +124,6 @@ RUN \
     libglib2.0-0 \
     libx11-6 \
     libnss3 \
-    fontconfig \
     fonts-dejavu \
     fontconfig > /dev/null && \
   addgroup \
@@ -176,7 +175,7 @@ HEALTHCHECK \
 
 LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.name="Graylog Docker Image" \
-      org.label-schema.description="Official Graylog Docker image" \
+      org.label-schema.description="Official Graylog Docker image - with Enterprise Plugins" \
       org.label-schema.url="https://www.graylog.org/" \
       org.label-schema.vcs-ref=${VCS_REF} \
       org.label-schema.vcs-url="https://github.com/Graylog2/graylog-docker" \
@@ -184,5 +183,5 @@ LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.version=${GRAYLOG_VERSION} \
       org.label-schema.schema-version="1.0" \
       org.label-schema.build-date=${BUILD_DATE} \
-      com.microscaling.docker.dockerfile="/Dockerfile" \
-      com.microscaling.license="Apache 2.0"
+      com.microscaling.docker.dockerfile="docker/enterprise/Dockerfile" \
+      com.microscaling.license="SSPL"

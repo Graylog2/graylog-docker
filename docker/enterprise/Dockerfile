@@ -125,8 +125,7 @@ RUN \
     libx11-6 \
     libnss3 \
     fontconfig \
-    dejavu-sans-fonts \
-    dejavu-serif-fonts \
+    fonts-dejavu \
     fontconfig > /dev/null && \
   addgroup \
     --gid "${GRAYLOG_GID}" \

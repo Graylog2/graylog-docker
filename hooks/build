@@ -5,4 +5,10 @@
 
 docker build --build-arg VCS_REF=$GIT_SHA1 \
              --build-arg GRAYLOG_VERSION=`cat VERSION` \
+             --file docker/enterprise/Dockerfile \
+             --tag $IMAGE_NAME_ENTERPRISE .
+
+docker build --build-arg VCS_REF=$GIT_SHA1 \
+             --build-arg GRAYLOG_VERSION=`cat VERSION` \
+             --file docker/oss/Dockerfile \
              --tag $IMAGE_NAME .

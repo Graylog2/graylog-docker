@@ -89,6 +89,7 @@ RUN \
     libglib2.0-0 \
     libx11-6 \
     libnss3 \
+    fonts-dejavu \
     fontconfig > /dev/null && \
   addgroup \
     --gid "${GRAYLOG_GID}" \
@@ -147,5 +148,5 @@ LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.version=${GRAYLOG_VERSION} \
       org.label-schema.schema-version="1.0" \
       org.label-schema.build-date=${BUILD_DATE} \
-      com.microscaling.docker.dockerfile="/Dockerfile" \
+      com.microscaling.docker.dockerfile="docker/oss/Dockerfile" \
       com.microscaling.license="Apache 2.0"

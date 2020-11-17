@@ -4,4 +4,4 @@ services:
 install:
   - make docker_build
 script:
-  - make test
+  - travis_wait make test

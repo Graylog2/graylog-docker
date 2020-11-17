@@ -31,7 +31,7 @@ services:
       - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
       - GRAYLOG_MESSAGE_JOURNAL_ENABLED=false
       - GRAYLOG_NODE_ID_FILE=/usr/share/graylog/data/config/node-id
-      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
+      # - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
     mem_limit: 1g
     links:
       - mongo

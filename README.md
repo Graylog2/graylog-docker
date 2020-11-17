@@ -2,7 +2,7 @@
 
 Latest stable version of Graylog is *4.0.0* this Version is available with the tags `4.0` or `4.0.0-8`.
 
-[![Build Status](https://travis-ci.org/Graylog2/graylog-docker.svg?branch=4.0)](https://travis-ci.org/Graylog2/graylog-docker) [![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub] [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub] [![Image Size](https://images.microbadger.com/badges/image/graylog/graylog:4.0.svg)][microbadger] [![Image Version](https://img.shields.io/badge/version-4.0-blue)][microbadger] [![Image License](https://images.microbadger.com/badges/license/graylog/graylog:4.0.svg)][microbadger]
+[![Image Version](https://img.shields.io/badge/version-4.0-blue)][microbadger]  [![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub] [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub] 
 
 [hub]: https://hub.docker.com/r/graylog/graylog/
 [microbadger]: https://microbadger.com/images/graylog/graylog

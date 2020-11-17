@@ -12,19 +12,16 @@
         <!-- Application Loggers -->
         <Logger name="org.graylog2" level="info"/>
         <Logger name="com.github.joschi.jadconfig" level="warn"/>
-        <!-- this emits a harmless warning for ActiveDirectory every time which we can't work around :( -->
-        <Logger name="org.apache.directory.api.ldap.model.message.BindRequestImpl" level="error"/>
         <!-- Prevent DEBUG message about Lucene Expressions not found. -->
         <Logger name="org.elasticsearch.script" level="warn"/>
         <!-- Disable messages from the version check -->
         <Logger name="org.graylog2.periodical.VersionCheckThread" level="off"/>
-        <!-- Suppress crazy byte array dump of Drools -->
-        <Logger name="org.drools.compiler.kie.builder.impl.KieRepositoryImpl" level="warn"/>
         <!-- Silence chatty natty -->
         <Logger name="com.joestelmach.natty.Parser" level="warn"/>
         <!-- Silence Kafka log chatter -->
         <Logger name="kafka.log.Log" level="warn"/>
         <Logger name="kafka.log.OffsetIndex" level="warn"/>
+        <Logger name="org.apache.kafka.clients.consumer.ConsumerConfig" level="warn"/>
         <!-- Silence useless session validation messages -->
         <Logger name="org.apache.shiro.session.mgt.AbstractValidatingSessionManager" level="warn"/>
         <Root level="warn">

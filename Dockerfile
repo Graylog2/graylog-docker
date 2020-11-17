@@ -148,4 +148,4 @@ LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.schema-version="1.0" \
       org.label-schema.build-date=${BUILD_DATE} \
       com.microscaling.docker.dockerfile="/Dockerfile" \
-      com.microscaling.license="Apache 2.0"
+      com.microscaling.license="SSPL"

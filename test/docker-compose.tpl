@@ -20,7 +20,7 @@ services:
   graylog:
     build:
       context: ..
-      dockerfile: docker/enterprise/Dockerfile
+      dockerfile: docker/oss/Dockerfile
       args:
         - VCS_REF
         - GRAYLOG_VERSION

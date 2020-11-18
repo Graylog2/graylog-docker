@@ -4,6 +4,7 @@
 FROM debian:buster-slim as graylog-downloader
 
 ARG VCS_REF
+ARG BUILD_DATE
 ARG GRAYLOG_VERSION
 
 WORKDIR /tmp

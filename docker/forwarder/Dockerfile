@@ -12,20 +12,19 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-#RUN echo $(GRAYLOG_FORWARDER_VERSION | cut -d. -f1).$(echo $GRAYLOG_FORWARDER_VERSION | cut -d. -f2) > /tmp/VERSION_SHORT
-
-#RUN curl \
-#    --silent \
-#    --location \
-#    --retry 3 \
-#    --output "/tmp/graylog-$(cat /tmp/VERSION_SHORT)-repository_latest.deb" \
-#    "https://packages.graylog2.org/repo/packages/graylog-$(cat /tmp/VERSION_SHORT)-repository_latest.deb" && \
-#    dpkg -i /tmp/graylog-$(cat /tmp/VERSION_SHORT)-repository_latest.deb && \
-#    apt-get update && \
-#    apt-get -y install graylog-forwarder && \
-#    apt-get clean && \
-#    rm -rf /var/lib/apt/lists/* && \
-#    rm /tmp/graylog-$(cat /tmp/VERSION_SHORT)-repository_latest.deb
+RUN export GRAYLOG_FORWARDER_VERSION_SHORT=$(echo $GRAYLOG_FORWARDER_VERSION | cut -d. -f1).$(echo $GRAYLOG_FORWARDER_VERSION | cut -d. -f2) && \
+    curl \
+    --silent \
+    --location \
+    --retry 3 \
+    --output "/tmp/graylog-$GRAYLOG_FORWARDER_VERSION_SHORT-repository_latest.deb" \
+    "https://packages.graylog2.org/repo/packages/graylog-$GRAYLOG_FORWARDER_VERSION_SHORT-repository_latest.deb" && \
+    dpkg -i /tmp/graylog-$GRAYLOG_FORWARDER_VERSION_SHORT-repository_latest.deb && \
+    apt-get update && \
+    apt-get -y install graylog-forwarder && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm /tmp/graylog-$GRAYLOG_FORWARDER_VERSION_SHORT-repository_latest.deb
 
 LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.name="Graylog Forwarder Docker Image" \

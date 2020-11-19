@@ -8,6 +8,6 @@ docker build --build-arg VCS_REF=$GIT_SHA1 \
              --tag $IMAGE_NAME .
 
 docker build --build-arg VCS_REF=$GIT_SHA1 \
-             --build-arg GRAYLOG_FORWARDER_VERSION=`cat FORWARDER_VERSION` \
+             --build-arg GRAYLOG_FORWARDER_VERSION=`cat VERSION_FORWARDER` \
              --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-             --tag $IMAGE_NAME_FORWARDER .
+             --tag $IMAGE_NAME_FORWARDER docker/forwarder

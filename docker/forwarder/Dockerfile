@@ -4,6 +4,7 @@ ARG VCS_REF
 ARG BUILD_DATE
 ARG GRAYLOG_FORWARDER_VERSION
 ARG DEBIAN_FRONTEND=noninteractive
+ENV FORWARDER_JVM_OPTIONS_FILE=/etc/graylog/forwarder/jvm.options
 
 RUN apt-get update && \
     apt-get -y install --no-install-recommends apt-utils && \
@@ -11,8 +12,6 @@ RUN apt-get update && \
     apt-get -y install --no-install-recommends ca-certificates curl && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-
 
 RUN export GRAYLOG_FORWARDER_VERSION_SHORT=$(echo $GRAYLOG_FORWARDER_VERSION | cut -d. -f1).$(echo $GRAYLOG_FORWARDER_VERSION | cut -d. -f2) && \
     curl \
@@ -26,6 +25,8 @@ RUN export GRAYLOG_FORWARDER_VERSION_SHORT=$(echo $GRAYLOG_FORWARDER_VERSION | c
     rm -rf /var/lib/apt/lists/* && \
     rm /tmp/graylog-forwarder_${GRAYLOG_FORWARDER_VERSION}_all.deb
 
+COPY forwarder-entrypoint.sh /
+
 LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.name="Graylog Forwarder Docker Image" \
       org.label-schema.description="Official Graylog Forwarder Docker image" \
@@ -37,3 +38,6 @@ LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.schema-version="1.0" \
       org.label-schema.build-date=${BUILD_DATE} \
       com.microscaling.docker.dockerfile="/Dockerfile"
+
+
+CMD ["/forwarder-entrypoint.sh"]

@@ -3,9 +3,9 @@
 # Custom build for Docker Hub
 # see: https://medium.com/microscaling-systems/labelling-automated-builds-on-docker-hub-f3d073fb8e1
 
-# docker build --build-arg VCS_REF=$GIT_SHA1 \
-#              --build-arg GRAYLOG_VERSION=`cat VERSION` \
-#              --tag $IMAGE_NAME .
+docker build --build-arg VCS_REF=$GIT_SHA1 \
+             --build-arg GRAYLOG_VERSION=`cat VERSION` \
+             --tag $IMAGE_NAME .
 
 docker build --build-arg VCS_REF=$GIT_SHA1 \
              --build-arg GRAYLOG_FORWARDER_VERSION=`cat VERSION_FORWARDER` \

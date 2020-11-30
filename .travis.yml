@@ -1,7 +1,0 @@
-sudo: required
-services:
-  - docker
-install:
-  - make docker_build
-script:
-  - make test

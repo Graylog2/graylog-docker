@@ -6,9 +6,9 @@ ARG GRAYLOG_FORWARDER_VERSION
 ARG DEBIAN_FRONTEND=noninteractive
 ENV FORWARDER_JVM_OPTIONS_FILE=/etc/graylog/forwarder/jvm.options
 
+# hadolint ignore=DL3008
 RUN apt-get update && \
     apt-get -y install --no-install-recommends apt-utils && \
-    apt-get -y upgrade && \
     apt-get -y install --no-install-recommends ca-certificates curl && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -37,7 +37,6 @@ LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.version=${GRAYLOG_FORWARDER_VERSION} \
       org.label-schema.schema-version="1.0" \
       org.label-schema.build-date=${BUILD_DATE} \
-      com.microscaling.docker.dockerfile="/Dockerfile"
 
 
 CMD ["/forwarder-entrypoint.sh"]

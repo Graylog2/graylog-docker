@@ -25,7 +25,7 @@ RUN export GRAYLOG_FORWARDER_VERSION_SHORT=$(echo $GRAYLOG_FORWARDER_VERSION | c
     rm -rf /var/lib/apt/lists/* && \
     rm /tmp/graylog-forwarder_${GRAYLOG_FORWARDER_VERSION}_all.deb
 
-COPY forwarder-entrypoint.sh /
+COPY docker/forwarder/forwarder-entrypoint.sh /
 
 LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.name="Graylog Forwarder Docker Image" \

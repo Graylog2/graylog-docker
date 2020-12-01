@@ -3,11 +3,24 @@
 # Custom build for Docker Hub
 # see: https://medium.com/microscaling-systems/labelling-automated-builds-on-docker-hub-f3d073fb8e1
 
+
+# Build Graylog 
 docker build --build-arg VCS_REF=$GIT_SHA1 \
              --build-arg GRAYLOG_VERSION=`cat VERSION` \
+             --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+             --file docker/oss/Dockerfile \
              --tag $IMAGE_NAME .
 
+# Build Graylog Enterprise & Integration Included
+docker build --build-arg VCS_REF=$GIT_SHA1 \
+             --build-arg GRAYLOG_VERSION=`cat VERSION` \
+             --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+             --file docker/enterprise/Dockerfile \
+             --tag $IMAGE_NAME_ENTERPRISE .
+
+# Build Graylog Forwarder
 docker build --build-arg VCS_REF=$GIT_SHA1 \
              --build-arg GRAYLOG_FORWARDER_VERSION=`cat VERSION_FORWARDER` \
              --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-             --tag $IMAGE_NAME_FORWARDER docker/forwarder
+             --file docker/forwarder/Dockerfile \
+             --tag $IMAGE_NAME_FORWARDER .

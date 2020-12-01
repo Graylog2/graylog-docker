@@ -4,6 +4,7 @@
 FROM debian:buster-slim as graylog-downloader
 
 ARG VCS_REF
+ARG BUILD_DATE
 ARG GRAYLOG_VERSION
 
 WORKDIR /tmp
@@ -31,12 +32,47 @@ RUN \
     --output "/tmp/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
     "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt"
 
+# Verify server and extract the Server
 RUN \
   sha256sum --check "graylog-${GRAYLOG_VERSION}.tgz.sha256.txt"
 
 RUN \
   mkdir /opt/graylog && \
   tar --extract --gzip --file "/tmp/graylog-${GRAYLOG_VERSION}.tgz" --strip-components=1 --directory /opt/graylog
+
+
+# Download Enterprise and Integrations Plugins and Integrations Enterprise Plugins.
+RUN \
+  curl \
+    --silent \
+    --location \
+    --retry 3 \
+    --output "/tmp/graylog-enterprise-integrations-plugins-${GRAYLOG_VERSION}.tgz" \
+    "https://downloads.graylog.org/releases/graylog-enterprise-integrations/graylog-enterprise-integrations-plugins-${GRAYLOG_VERSION}.tgz"
+
+RUN tar --extract --gzip --file "/tmp/graylog-enterprise-integrations-plugins-${GRAYLOG_VERSION}.tgz" --strip-components=1 --directory /opt/graylog
+
+RUN \
+  curl \
+    --silent \
+    --location \
+    --retry 3 \
+    --output "/tmp/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz" \
+    "https://downloads.graylog.org/releases/graylog-integrations/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz"
+
+RUN tar --extract --gzip --file "/tmp/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz" --strip-components=1 --directory /opt/graylog
+
+
+RUN \
+  curl \
+    --silent \
+    --location \
+    --retry 3 \
+    --output "/tmp/graylog-enterprise-plugins-${GRAYLOG_VERSION}.tgz" \
+    "https://downloads.graylog.org/releases/graylog-enterprise/graylog-enterprise-plugins-${GRAYLOG_VERSION}.tgz"
+
+RUN tar --extract --gzip --file "graylog-enterprise-plugins-${GRAYLOG_VERSION}.tgz" --strip-components=1 --directory /opt/graylog
+
 
 RUN \
   install \
@@ -89,6 +125,7 @@ RUN \
     libglib2.0-0 \
     libx11-6 \
     libnss3 \
+    fonts-dejavu \
     fontconfig > /dev/null && \
   addgroup \
     --gid "${GRAYLOG_GID}" \
@@ -139,13 +176,11 @@ HEALTHCHECK \
 
 LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.name="Graylog Docker Image" \
-      org.label-schema.description="Official Graylog Docker image" \
+      org.label-schema.description="Official Graylog Docker image - with Enterprise Plugins" \
       org.label-schema.url="https://www.graylog.org/" \
       org.label-schema.vcs-ref=${VCS_REF} \
       org.label-schema.vcs-url="https://github.com/Graylog2/graylog-docker" \
       org.label-schema.vendor="Graylog, Inc." \
       org.label-schema.version=${GRAYLOG_VERSION} \
       org.label-schema.schema-version="1.0" \
-      org.label-schema.build-date=${BUILD_DATE} \
-      com.microscaling.docker.dockerfile="/Dockerfile" \
-      com.microscaling.license="SSPL"
+      org.label-schema.build-date=${BUILD_DATE} 

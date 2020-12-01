@@ -13,6 +13,8 @@
 # both dockerfiles
 hadolint docker/oss/Dockerfile
 hadolint docker/enterprise/Dockerfile
+hadolint docker/forwarder/Dockerfile
+
 shellcheck \
   --external-sources \
   --exclude=SC2086,SC2236 \

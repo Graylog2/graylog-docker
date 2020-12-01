@@ -13,7 +13,9 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN export GRAYLOG_FORWARDER_VERSION_SHORT=$(echo $GRAYLOG_FORWARDER_VERSION | cut -d. -f1).$(echo $GRAYLOG_FORWARDER_VERSION | cut -d. -f2) && \
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN GRAYLOG_FORWARDER_VERSION_SHORT=$(echo $GRAYLOG_FORWARDER_VERSION | cut -d. -f1).$(echo $GRAYLOG_FORWARDER_VERSION | cut -d. -f2) && \
+    export GRAYLOG_FORWARDER_VERSION_SHORT && \
     curl \
     --silent \
     --location \
@@ -36,7 +38,7 @@ LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.vendor="Graylog, Inc." \
       org.label-schema.version=${GRAYLOG_FORWARDER_VERSION} \
       org.label-schema.schema-version="1.0" \
-      org.label-schema.build-date=${BUILD_DATE} 
+      org.label-schema.build-date=${BUILD_DATE}
 
 
 CMD ["/forwarder-entrypoint.sh"]

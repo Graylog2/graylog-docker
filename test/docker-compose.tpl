@@ -43,3 +43,7 @@ services:
       - 514:514
       # Raw/Plaintext input
       - 5555:5555
+    restart: always
+    depends_on:
+      - elasticsearch
+      - mongo

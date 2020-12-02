@@ -1,0 +1,25 @@
+version: 2
+updates:
+- package-ecosystem: docker
+  directory: "/docker/forwarder"
+  schedule:
+    interval: daily
+    time: "11:00"
+  open-pull-requests-limit: 10
+- package-ecosystem: docker
+  directory: "/docker/enterprise"
+  schedule:
+    interval: daily
+    time: "11:00"
+  open-pull-requests-limit: 10
+- package-ecosystem: docker
+  directory: "/docker/oss"
+  schedule:
+    interval: daily
+    time: "11:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: openjdk
+    versions:
+    - ">= 11.pre.jre.pre.slim.a"
+    - "< 12"

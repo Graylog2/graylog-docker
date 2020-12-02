@@ -9,7 +9,7 @@ ENV FORWARDER_JVM_OPTIONS_FILE=/etc/graylog/forwarder/jvm.options
 # hadolint ignore=DL3008
 RUN apt-get update && \
     apt-get -y install --no-install-recommends apt-utils && \
-    apt-get -y install --no-install-recommends ca-certificates curl && \
+    apt-get -y install --no-install-recommends ca-certificates curl tini && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -40,5 +40,4 @@ LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.schema-version="1.0" \
       org.label-schema.build-date=${BUILD_DATE}
 
-
-CMD ["/forwarder-entrypoint.sh"]
+ENTRYPOINT ["tini", "--", "/forwarder-entrypoint.sh"]

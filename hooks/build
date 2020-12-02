@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 # Custom build for Docker Hub
 # see: https://medium.com/microscaling-systems/labelling-automated-builds-on-docker-hub-f3d073fb8e1

@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-slim-buster
+FROM openjdk:11-jre-slim-buster
 
 ARG VCS_REF
 ARG BUILD_DATE

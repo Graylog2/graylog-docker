@@ -8,12 +8,7 @@ ENV FORWARDER_JVM_OPTIONS_FILE=/etc/graylog/forwarder/jvm.options
 
 RUN apt-get update && \
     apt-get -y install --no-install-recommends apt-utils && \
-<<<<<<< HEAD
-    apt-get -y upgrade && \
-    apt-get -y install --no-install-recommends ca-certificates curl && \
-=======
     apt-get -y install --no-install-recommends ca-certificates curl tini && \
->>>>>>> 311b80a... Fixes #138. (#143)
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 

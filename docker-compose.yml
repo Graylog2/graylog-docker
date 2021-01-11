@@ -1,0 +1,70 @@
+version: "3.8"
+services:
+  graylog:
+    depends_on:
+      - "mongodb"
+      - "elasticsearch"
+
+    environment:
+      # Defaults:
+      GRAYLOG_MONGODB_URI: "mongodb://mongodb/graylog"
+      GRAYLOG_ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+      GRAYLOG_HTTP_BIND_ADDRESS: "0.0.0.0:9000"
+      GRAYLOG_HTTP_PUBLISH_URI: "http://localhost:${GRAYLOG_API_HTTP_PORT:-9000}/"
+      GRAYLOG_HTTP_EXTERNAL_URI: "http://localhost:${GRAYLOG_API_HTTP_PORT:-9000}/"
+      GRAYLOG_HTTP_ENABLE_CORS: "true"
+      # To make reporting (headless_shell) work inside a Docker container
+      GRAYLOG_REPORT_DISABLE_SANDBOX: "true"
+
+    #image: "${GRAYLOG_IMAGE_NAME:-graylog/graylog}:${GRAYLOG_VERSION:-4.0.1}"
+    image: graylog:latest
+    entrypoint: /usr/bin/tini -- /wait-for-it.sh elasticsearch:9200 --  /docker-entrypoint.sh
+    init: true # To make sure we reap child processs (e.g. headless_shell)
+
+    ports:
+      - "${GRAYLOG_API_HTTP_PORT:-9000}:9000"
+      - "127.0.0.1:2055:2055/udp"   # NetFlow
+      - "127.0.0.1:5044:4739/udp"   # IPFIX
+      - "127.0.0.1:5044:5044/tcp"   # Beats
+      - "127.0.0.1:5140:5140/udp"   # Syslog UDP
+      - "127.0.0.1:5140:5140/tcp"   # Syslog TCP
+      - "127.0.0.1:5555:5555/udp"   # Raw UDP
+      - "127.0.0.1:5555:5555/tcp"   # Raw TCP
+      - "127.0.0.1:12201:12201/udp" # GELF UDP
+      - "127.0.0.1:12201:12201/tcp" # GELF TCP
+      - "127.0.0.1:13001:13001/udp" # Custom 1 UDP
+      - "127.0.0.1:13002:13002/udp" # Custom 2 UDP
+      - "127.0.0.1:13003:13003/udp" # Custom 3 UDP
+      - "127.0.0.1:13004:13004/udp" # Custom 4 UDP
+      - "127.0.0.1:13001:13001/tcp" # Custom 1 TCP
+      - "127.0.0.1:13002:13002/tcp" # Custom 2 TCP
+      - "127.0.0.1:13003:13003/tcp" # Custom 3 TCP
+      - "127.0.0.1:13004:13004/tcp" # Custom 4 TCP
+      - "127.0.0.1:13301:13301/tcp" # Cloud Forwarder messages
+      - "127.0.0.1:13302:13302/tcp" # Cloud Forwarder configuration
+
+  elasticsearch:
+    command:
+      - "elasticsearch"
+      - "-E"
+      - "discovery.type=single-node"
+      - "-E"
+      - "logger.deprecation.level=warn"
+      - "-E"
+      - "action.auto_create_index=false"
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    image: "${ELASTICSEARCH_IMAGE_NAME:-docker.elastic.co/elasticsearch/elasticsearch-oss}:${ELASTICSEARCH_VERSION:-7.9.3}"
+    ports:
+      - "127.0.0.1:${ELASTICSEARCH_PORT:-9200}:9200"
+    healthcheck:
+        test: ["CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1"]
+        start_period: 5s
+        interval: 30s
+        timeout: 30s
+        retries: 3
+
+  mongodb:
+    image: "mongo:${MONGODB_VERSION:-4.2}"
+    ports:
+      - "127.0.0.1:${MONGODB_PORT:-27017}:27017"

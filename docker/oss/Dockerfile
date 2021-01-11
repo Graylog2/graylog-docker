@@ -52,7 +52,7 @@ RUN \
 # -------------------------------------------------------------------------------------------------
 #
 # final layer
-# use the smallest debain with headless openjdk and copying files from download layers
+# use the smallest debian with headless openjdk and copying files from download layers
 FROM openjdk:8-jre-slim-buster
 
 ARG VCS_REF
@@ -64,8 +64,10 @@ ARG GRAYLOG_UID=1100
 ARG GRAYLOG_GROUP=graylog
 ARG GRAYLOG_GID=1100
 
+COPY wait-for-it.sh /wait-for-it.sh
 COPY --from=graylog-downloader /opt/graylog ${GRAYLOG_HOME}
 COPY config ${GRAYLOG_HOME}/data/config
+
 
 WORKDIR ${GRAYLOG_HOME}
 
@@ -147,4 +149,4 @@ LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.vendor="Graylog, Inc." \
       org.label-schema.version=${GRAYLOG_VERSION} \
       org.label-schema.schema-version="1.0" \
-      org.label-schema.build-date=${BUILD_DATE} 
+      org.label-schema.build-date=${BUILD_DATE}

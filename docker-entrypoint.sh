@@ -71,6 +71,12 @@ if [[ ! -z "${NOMAD_ALLOC_INDEX}" ]]; then
   fi
 fi
 
+# Merge plugin dirs to allow mounting of /plugin as a volume
+export GRAYLOG_PLUGIN_DIR=/usr/share/graylog/plugins-merged
+rm -f /usr/share/graylog/plugins-merged/*
+cp /usr/share/graylog/plugins-default/* /usr/share/graylog/plugins-merged/
+cp /usr/share/graylog/plugin/* /usr/share/graylog/plugins-merged/
+
 
 setup() {
   # Create data directories

@@ -16,8 +16,8 @@ services:
       # To make reporting (headless_shell) work inside a Docker container
       GRAYLOG_REPORT_DISABLE_SANDBOX: "true"
 
-    #image: "${GRAYLOG_IMAGE_NAME:-graylog/graylog}:${GRAYLOG_VERSION:-4.0.1}"
-    image: graylog:latest
+    image: "${GRAYLOG_IMAGE_NAME:-graylog/graylog}:${GRAYLOG_VERSION:-4.0.1}"
+    #image: graylog:latest
     entrypoint: /usr/bin/tini -- /wait-for-it.sh elasticsearch:9200 --  /docker-entrypoint.sh
     init: true # To make sure we reap child processs (e.g. headless_shell)
 

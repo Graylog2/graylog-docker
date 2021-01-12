@@ -122,8 +122,8 @@ RUN \
     /usr/share/doc/* 2> /dev/null
 
 RUN mv ${GRAYLOG_HOME}/plugin ${GRAYLOG_HOME}/plugins-default
-RUN install -d -o "${GRAYLOG_USER}" -g "${GRAYLOG_GROUP}" -m 0750 ${GRAYLOG_HOME}/plugins-merged
-RUN install -d -o "${GRAYLOG_USER}" -g "${GRAYLOG_GROUP}" -m 0750 ${GRAYLOG_HOME}/plugin
+RUN install -d -o "${GRAYLOG_USER}" -g "${GRAYLOG_GROUP}" -m 0755 ${GRAYLOG_HOME}/plugins-merged
+RUN install -d -o "${GRAYLOG_USER}" -g "${GRAYLOG_GROUP}" -m 0755 ${GRAYLOG_HOME}/plugin
 
 COPY docker-entrypoint.sh /
 COPY health_check.sh /

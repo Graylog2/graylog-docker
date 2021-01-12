@@ -74,8 +74,8 @@ fi
 # Merge plugin dirs to allow mounting of /plugin as a volume
 export GRAYLOG_PLUGIN_DIR=/usr/share/graylog/plugins-merged
 rm -f /usr/share/graylog/plugins-merged/*
-cp /usr/share/graylog/plugins-default/* /usr/share/graylog/plugins-merged/
-cp /usr/share/graylog/plugin/* /usr/share/graylog/plugins-merged/
+find /usr/share/graylog/plugins-default/ -type f -exec cp {} /usr/share/graylog/plugins-merged/ \;
+find /usr/share/graylog/plugin/ -type f -exec cp {} /usr/share/graylog/plugins-merged/ \;
 
 
 setup() {

@@ -88,7 +88,7 @@ RUN \
 # -------------------------------------------------------------------------------------------------
 #
 # final layer
-# use the smallest debain with headless openjdk and copying files from download layers
+# use the smallest debian with headless openjdk and copying files from download layers
 FROM openjdk:8-jre-slim-buster
 
 ARG VCS_REF
@@ -125,6 +125,7 @@ RUN \
     libglib2.0-0 \
     libx11-6 \
     libnss3 \
+    wait-for-it \
     fonts-dejavu \
     fontconfig > /dev/null && \
   addgroup \
@@ -155,6 +156,9 @@ RUN \
     /usr/share/X11 \
     /usr/share/doc/* 2> /dev/null
 
+RUN mv ${GRAYLOG_HOME}/plugin ${GRAYLOG_HOME}/plugins-default
+RUN install -d -o "${GRAYLOG_USER}" -g "${GRAYLOG_GROUP}" -m 0755 ${GRAYLOG_HOME}/plugins-merged
+RUN install -d -o "${GRAYLOG_USER}" -g "${GRAYLOG_GROUP}" -m 0755 ${GRAYLOG_HOME}/plugin
 
 COPY docker-entrypoint.sh /
 COPY health_check.sh /
@@ -183,4 +187,4 @@ LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.vendor="Graylog, Inc." \
       org.label-schema.version=${GRAYLOG_VERSION} \
       org.label-schema.schema-version="1.0" \
-      org.label-schema.build-date=${BUILD_DATE} 
+      org.label-schema.build-date=${BUILD_DATE}

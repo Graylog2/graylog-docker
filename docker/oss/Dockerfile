@@ -64,7 +64,6 @@ ARG GRAYLOG_UID=1100
 ARG GRAYLOG_GROUP=graylog
 ARG GRAYLOG_GID=1100
 
-COPY wait-for-it.sh /wait-for-it.sh
 COPY --from=graylog-downloader /opt/graylog ${GRAYLOG_HOME}
 COPY config ${GRAYLOG_HOME}/data/config
 
@@ -91,6 +90,7 @@ RUN \
     libglib2.0-0 \
     libx11-6 \
     libnss3 \
+    wait-for-it \
     fonts-dejavu \
     fontconfig > /dev/null && \
   addgroup \

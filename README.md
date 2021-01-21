@@ -2,7 +2,7 @@
 
 Latest stable version of Graylog is *4.0.1* this Version is available with the tags `4.0` or `4.0.1-1`.
 
-[![Image Version](https://img.shields.io/badge/version-4.0-blue)][microbadger]  [![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub] [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub] 
+[![Image Version](https://img.shields.io/badge/version-4.0-blue)][microbadger]  [![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub] [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub]
 
 [hub]: https://hub.docker.com/r/graylog/graylog/
 [microbadger]: https://microbadger.com/images/graylog/graylog
@@ -25,6 +25,11 @@ Please refer to the [Graylog Docker documentation](http://docs.graylog.org/en/4.
 ## Configuration
 
 Every configuration option can be set via environment variables, take a look [here](http://docs.graylog.org/en/4.0/pages/configuration/server.conf.html) for an overview. Simply prefix the parameter name with `GRAYLOG_` and put it all in upper case. Another option would be to store the configuration file outside of the container and edit it directly.
+
+We've also added the [wait-for-it](https://github.com/vishnubob/wait-for-it) script to the graylog image. This allows you to have Docker wait for Elasticsearch to start up before starting Graylog. For example, if you are using Docker Compose, you could do:
+
+`entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 --  /docker-entrypoint.sh`
+
 
 ## Documentation
 

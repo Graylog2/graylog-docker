@@ -26,7 +26,7 @@ Please refer to the [Graylog Docker documentation](http://docs.graylog.org/en/4.
 
 Every configuration option can be set via environment variables, take a look [here](http://docs.graylog.org/en/4.0/pages/configuration/server.conf.html) for an overview. Simply prefix the parameter name with `GRAYLOG_` and put it all in upper case. Another option would be to store the configuration file outside of the container and edit it directly.
 
-We've also added the [wait-for-it](https://github.com/vishnubob/wait-for-it) script to the graylog image. This allows you to have Docker wait for Elasticsearch to start up before starting Graylog. For example, if you are using Docker Compose, you could do:
+We've also added the [wait-for-it](https://github.com/vishnubob/wait-for-it) script to the graylog image. This allows you to have Docker wait for Elasticsearch to start up before starting Graylog. For example, if you are using Docker Compose, you could override the entrypoint for Graylog like this:
 
 `entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 --  /docker-entrypoint.sh`
 

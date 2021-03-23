@@ -5,6 +5,7 @@ ARG BUILD_DATE
 ARG GRAYLOG_FORWARDER_VERSION
 ARG DEBIAN_FRONTEND=noninteractive
 ENV FORWARDER_JVM_OPTIONS_FILE=/etc/graylog/forwarder/jvm.options
+ENV GRAYLOG_FORWARDER_GRPC_TLS_TRUST_CHAIN_CERT_FILE=/etc/graylog/forwarder/fullchain.pem
 
 # hadolint ignore=DL3008
 RUN apt-get update && \
@@ -28,6 +29,7 @@ RUN GRAYLOG_FORWARDER_VERSION_SHORT=$(echo $GRAYLOG_FORWARDER_VERSION | cut -d. 
     rm /tmp/graylog-forwarder_${GRAYLOG_FORWARDER_VERSION}_all.deb
 
 COPY docker/forwarder/forwarder-entrypoint.sh /
+COPY docker/forwarder/fullchain.pem $GRAYLOG_FORWARDER_GRPC_TLS_TRUST_CHAIN_CERT_FILE
 
 LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.name="Graylog Forwarder Docker Image" \

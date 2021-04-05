@@ -5,6 +5,8 @@
 
 cd ../..
 
+patch config/graylog.conf patches/graylog-server.conf.patch
+
 # Build Graylog Enterprise & Integration Included
 docker build --build-arg VCS_REF=$GIT_SHA1 \
              --build-arg GRAYLOG_VERSION=`cat VERSION` \

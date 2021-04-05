@@ -83,7 +83,8 @@ RUN \
     /opt/graylog/data/log \
     /opt/graylog/data/config \
     /opt/graylog/data/plugin \
-    /opt/graylog/data/data
+    /opt/graylog/data/data \
+    /opt/graylog/data/scripts
 
 # -------------------------------------------------------------------------------------------------
 #

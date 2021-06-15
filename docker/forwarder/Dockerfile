@@ -21,7 +21,7 @@ RUN GRAYLOG_FORWARDER_VERSION_SHORT=$(echo $GRAYLOG_FORWARDER_VERSION | cut -d. 
     --location \
     --retry 3 \
     --output "/tmp/graylog-forwarder_${GRAYLOG_FORWARDER_VERSION}_all.deb" \
-    "https://packages.graylog2.org/repo/debian/pool/stable/$GRAYLOG_FORWARDER_VERSION_SHORT/g/graylog-forwarder/graylog-forwarder_${GRAYLOG_FORWARDER_VERSION}_all.deb" && \
+    "https://downloads.graylog.org/releases/cloud/forwarder/$GRAYLOG_FORWARDER_VERSION_SHORT/graylog-forwarder_${GRAYLOG_FORWARDER_VERSION}_all.deb" && \
     dpkg -i /tmp/graylog-forwarder_${GRAYLOG_FORWARDER_VERSION}_all.deb && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \

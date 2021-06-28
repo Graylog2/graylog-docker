@@ -39,6 +39,16 @@ RUN \
   tar --extract --gzip --file "/tmp/graylog-${GRAYLOG_VERSION}.tgz" --strip-components=1 --directory /opt/graylog
 
 RUN \
+  curl \
+    --silent \
+    --location \
+    --retry 3 \
+    --output "/tmp/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz" \
+    "https://downloads.graylog.org/releases/graylog-integrations/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz"
+
+RUN tar --extract --gzip --file "/tmp/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz" --strip-components=1 --directory /opt/graylog
+  
+RUN \
   install \
     --directory \
     --mode=0750 \

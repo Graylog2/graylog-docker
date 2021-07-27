@@ -22,7 +22,7 @@ pipeline
       {
         when
         {
-          tag pattern: "/^(?:[4-9]|\d{2,}).[0-9]+.[0-9]+-(?:[0-9]+|alpha|beta|rc).*/", comparator: "REGEXP"
+          tag pattern: "/^(?:[4-9]|\\d{2,}).[0-9]+.[0-9]+-(?:[0-9]+|alpha|beta|rc).*/", comparator: "REGEXP"
         }
 
         sh 'docker run --rm --privileged multiarch/qemu-user-static --reset -p yes'

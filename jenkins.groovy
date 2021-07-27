@@ -11,8 +11,29 @@ pipeline
 
    stages
    {
+      stage('Build Docker Image')
+      {
+         when
+         {
+           not
+           {
+            buildingTag()
+           }
+         }
+         steps
+         {
+            sh 'make docker_build'
+         }
+      }
       stage('Linter and Integration Test')
       {
+         when
+         {
+           not
+           {
+            buildingTag()
+           }
+         }
          steps
          {
             sh 'make test'
@@ -22,7 +43,7 @@ pipeline
       {
         when
         {
-          tag pattern: "/^(?:[4-9]|\\d{2,}).[0-9]+.[0-9]+-(?:[0-9]+|alpha|beta|rc).*/", comparator: "REGEXP"
+          tag pattern: '/^(?:[4-9]|\\d{2,}).[0-9]+.[0-9]+-(?:[0-9]+|alpha|beta|rc).*/', comparator: "REGEXP"
         }
 
         steps

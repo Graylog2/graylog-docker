@@ -75,6 +75,7 @@ pipeline
                     --tag graylog:${MAJOR}.${MINOR}.${PATCH}-arm64 \
                     --tag graylog:${MAJOR}.${MINOR}-arm64 \
                     --file docker/oss/Dockerfile \
+                    --push \
                     .
               """
 
@@ -88,6 +89,7 @@ pipeline
                 --tag graylog-enterprise:${MAJOR}.${MINOR}.${PATCH}-arm64 \
                 --tag graylog-enterprise:${MAJOR}.${MINOR}-arm64 \
                 --file docker/enterprise/Dockerfile \
+                --push \
                 .
               """
             }
@@ -112,6 +114,7 @@ pipeline
                   --tag graylog-forwarder:${MAJOR}.${MINOR}.${PATCH}-arm64 \
                   --tag graylog-forwarder:${MAJOR}.${MINOR}-arm64 \
                   --file docker/forwarder/Dockerfile
+                  --push \
                   .
               """
             }

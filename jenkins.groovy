@@ -116,9 +116,8 @@ pipeline
                     --build-arg GRAYLOG_FORWARDER_PACKAGE_VERSION=\$(cat VERSION_FORWARDER_PACKAGE) \
                     --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                     --tag graylog/graylog-forwarder:${env.TAG_NAME}-arm64 \
-                    --tag graylog/graylog-forwarder:${MAJOR}.${MINOR}.${PATCH}-arm64 \
                     --tag graylog/graylog-forwarder:${MAJOR}.${MINOR}-arm64 \
-                    --file docker/forwarder/Dockerfile
+                    --file docker/forwarder/Dockerfile \
                     --push \
                     .
                 """

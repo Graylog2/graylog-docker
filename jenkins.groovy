@@ -62,36 +62,39 @@ pipeline
               echo "MINOR: ${MINOR}"
               echo "PATCH: ${PATCH}"
 
-              sh 'docker run --rm --privileged multiarch/qemu-user-static --reset -p yes'
-              sh 'docker buildx create --name multiarch --driver docker-container --use | true'
-              sh 'docker buildx inspect --bootstrap'
-              sh """
-                  docker buildx build \
-                    --platform linux/arm64/v8 \
-                    --no-cache \
-                    --build-arg GRAYLOG_VERSION=\$(cat VERSION) \
-                    --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
-                    --tag graylog:${env.TAG_NAME}-arm64 \
-                    --tag graylog:${MAJOR}.${MINOR}.${PATCH}-arm64 \
-                    --tag graylog:${MAJOR}.${MINOR}-arm64 \
-                    --file docker/oss/Dockerfile \
-                    --push \
-                    .
-              """
+              docker.withRegistry('', 'docker-hub')
+              {
+                sh 'docker run --rm --privileged multiarch/qemu-user-static --reset -p yes'
+                sh 'docker buildx create --name multiarch --driver docker-container --use | true'
+                sh 'docker buildx inspect --bootstrap'
+                sh """
+                    docker buildx build \
+                      --platform linux/arm64/v8 \
+                      --no-cache \
+                      --build-arg GRAYLOG_VERSION=\$(cat VERSION) \
+                      --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
+                      --tag graylog/graylog:${env.TAG_NAME}-arm64 \
+                      --tag graylog/graylog:${MAJOR}.${MINOR}.${PATCH}-arm64 \
+                      --tag graylog/graylog:${MAJOR}.${MINOR}-arm64 \
+                      --file docker/oss/Dockerfile \
+                      --push \
+                      .
+                """
 
-              sh """
-                docker buildx build \
-                --platform linux/arm64/v8 \
-                --no-cache \
-                --build-arg GRAYLOG_VERSION=\$(cat VERSION) \
-                --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
-                --tag graylog-enterprise:${env.TAG_NAME}-arm64 \
-                --tag graylog-enterprise:${MAJOR}.${MINOR}.${PATCH}-arm64 \
-                --tag graylog-enterprise:${MAJOR}.${MINOR}-arm64 \
-                --file docker/enterprise/Dockerfile \
-                --push \
-                .
-              """
+                sh """
+                  docker buildx build \
+                  --platform linux/arm64/v8 \
+                  --no-cache \
+                  --build-arg GRAYLOG_VERSION=\$(cat VERSION) \
+                  --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
+                  --tag graylog/graylog-enterprise:${env.TAG_NAME}-arm64 \
+                  --tag graylog/graylog-enterprise:${MAJOR}.${MINOR}.${PATCH}-arm64 \
+                  --tag graylog/graylog-enterprise:${MAJOR}.${MINOR}-arm64 \
+                  --file docker/enterprise/Dockerfile \
+                  --push \
+                  .
+                """
+              }
             }
 
             if (TAG_NAME =~ /forwarder-.*/)
@@ -104,19 +107,23 @@ pipeline
               echo "MINOR: ${MINOR}"
               echo "PATCH: ${PATCH}"
 
-              sh """
-                docker buildx build \
-                  --platform linux/arm64/v8 \
-                  --no-cache \
-                  --build-arg GRAYLOG_FORWARDER_PACKAGE_VERSION=\$(cat VERSION_FORWARDER_PACKAGE) \
-                  --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
-                  --tag graylog-forwarder:${env.TAG_NAME}-arm64 \
-                  --tag graylog-forwarder:${MAJOR}.${MINOR}.${PATCH}-arm64 \
-                  --tag graylog-forwarder:${MAJOR}.${MINOR}-arm64 \
-                  --file docker/forwarder/Dockerfile
-                  --push \
-                  .
-              """
+              docker.withRegistry('', 'docker-hub')
+              {
+                sh """
+                  docker buildx build \
+                    --platform linux/arm64/v8 \
+                    --no-cache \
+                    --build-arg GRAYLOG_FORWARDER_PACKAGE_VERSION=\$(cat VERSION_FORWARDER_PACKAGE) \
+                    --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
+                    --tag graylog/graylog-forwarder:${env.TAG_NAME}-arm64 \
+                    --tag graylog/graylog-forwarder:${MAJOR}.${MINOR}.${PATCH}-arm64 \
+                    --tag graylog/graylog-forwarder:${MAJOR}.${MINOR}-arm64 \
+                    --file docker/forwarder/Dockerfile
+                    --push \
+                    .
+                """
+              }
+
             }
           }
         }

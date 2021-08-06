@@ -110,6 +110,9 @@ pipeline
               docker.withRegistry('', 'docker-hub')
               {
                 sh """
+                  docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+                  docker buildx create --name multiarch --driver docker-container --use | true
+                  docker buildx inspect --bootstrap
                   docker buildx build \
                     --platform linux/arm64/v8 \
                     --no-cache \

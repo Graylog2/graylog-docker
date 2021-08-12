@@ -1,5 +1,5 @@
-# -------------------------------------------------------------------------------------------------
-#
+ARG JAVA_VERSION_MAJOR=8
+
 # layer for download and verifying
 FROM debian:buster-slim as graylog-downloader
 
@@ -90,7 +90,7 @@ RUN \
 #
 # final layer
 # use the smallest debian with headless openjdk and copying files from download layers
-FROM openjdk:8-jre-slim-buster
+FROM openjdk:${JAVA_VERSION_MAJOR}-jre-slim-buster
 
 ARG VCS_REF
 ARG GRAYLOG_VERSION
@@ -100,6 +100,7 @@ ARG GRAYLOG_USER=graylog
 ARG GRAYLOG_UID=1100
 ARG GRAYLOG_GROUP=graylog
 ARG GRAYLOG_GID=1100
+ARG JAVA_VERSION_MAJOR=${JAVA_VERSION_MAJOR}
 
 COPY --from=graylog-downloader /opt/graylog ${GRAYLOG_HOME}
 COPY config ${GRAYLOG_HOME}/data/config
@@ -108,10 +109,10 @@ WORKDIR ${GRAYLOG_HOME}
 
 # hadolint ignore=DL3027,DL3008
 RUN \
-  echo "export JAVA_HOME=/usr/local/openjdk-8"     > /etc/profile.d/graylog.sh && \
+  echo "export JAVA_HOME=/usr/local/openjdk-${JAVA_VERSION_MAJOR}"     > /etc/profile.d/graylog.sh && \
   echo "export BUILD_DATE=${BUILD_DATE}"           >> /etc/profile.d/graylog.sh && \
   echo "export GRAYLOG_VERSION=${GRAYLOG_VERSION}" >> /etc/profile.d/graylog.sh && \
-  echo "export GRAYLOG_SERVER_JAVA_OPTS='-Djdk.tls.acknowledgeCloseNotify=true -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled -XX:+UseParNewGC -XX:-OmitStackTraceInFastThrow'" >> /etc/profile.d/graylog.sh && \
+  echo "export GRAYLOG_SERVER_JAVA_OPTS='-Djdk.tls.acknowledgeCloseNotify=true -XX:+UnlockExperimentalVMOptions -XX:NewRatio=1 -XX:MaxMetaspaceSize=256m -server -XX:+ResizeTLAB -XX:-OmitStackTraceInFastThrow'" >> /etc/profile.d/graylog.sh && \
   echo "export GRAYLOG_HOME=${GRAYLOG_HOME}"       >> /etc/profile.d/graylog.sh && \
   echo "export GRAYLOG_USER=${GRAYLOG_USER}"       >> /etc/profile.d/graylog.sh && \
   echo "export GRAYLOG_GROUP=${GRAYLOG_GROUP}"     >> /etc/profile.d/graylog.sh && \

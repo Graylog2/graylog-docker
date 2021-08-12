@@ -100,11 +100,12 @@ pipeline
                       --platform linux/amd64,linux/arm64/v8 \
                       --no-cache \
                       --build-arg GRAYLOG_VERSION=\$(cat VERSION) \
+                      --build-arg JAVA_VERSION_MAJOR=11 \
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                       --tag graylog/graylog:${env.TAG_NAME}-jre11 \
                       --tag graylog/graylog:${MAJOR}.${MINOR}.${PATCH}-jre11 \
                       --tag graylog/graylog:${MAJOR}.${MINOR}-jre11 \
-                      --file docker/oss/Dockerfile-jre11 \
+                      --file docker/oss/Dockerfile \
                       --push \
                       .
                 """
@@ -114,11 +115,12 @@ pipeline
                   --platform linux/amd64,linux/arm64/v8 \
                   --no-cache \
                   --build-arg GRAYLOG_VERSION=\$(cat VERSION) \
+                  --build-arg JAVA_VERSION_MAJOR=11 \
                   --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                   --tag graylog/graylog-enterprise:${env.TAG_NAME}-jre11 \
                   --tag graylog/graylog-enterprise:${MAJOR}.${MINOR}.${PATCH}-jre11 \
                   --tag graylog/graylog-enterprise:${MAJOR}.${MINOR}-jre11 \
-                  --file docker/enterprise/Dockerfile-jre11 \
+                  --file docker/enterprise/Dockerfile \
                   --push \
                   .
                 """

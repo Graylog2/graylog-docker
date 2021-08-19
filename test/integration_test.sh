@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -u
+set -ux
 
 GRAYLOG_PORT=9000
 

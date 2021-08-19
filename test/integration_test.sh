@@ -233,7 +233,7 @@ send_messages() {
   # Send message to Syslog TCP input
   echo '<0>1 2018-07-04T12:00:00.000Z test.example.com test - - - syslog' | nc -w5 127.0.0.1 514
 
-  sleep 2s
+  sleep 5s
 }
 
 validate_messages() {

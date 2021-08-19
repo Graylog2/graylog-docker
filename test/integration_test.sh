@@ -219,7 +219,7 @@ create_input_streams() {
     jq --raw-output '.message' input_plaintext_result.json 2> /dev/null
   fi
 
-  sleep 2
+  sleep 5
 }
 
 send_messages() {

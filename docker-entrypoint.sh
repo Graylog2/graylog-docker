@@ -106,7 +106,7 @@ setup() {
 
 graylog() {
 
-  "${JAVA_HOME}/bin/java" \
+  exec "${JAVA_HOME}/bin/java" \
     ${GRAYLOG_SERVER_JAVA_OPTS} \
     -jar \
     -Dlog4j.configurationFile="${GRAYLOG_HOME}/data/config/log4j2.xml" \

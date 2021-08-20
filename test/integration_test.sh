@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -u
+set -ux
 
 GRAYLOG_PORT=9000
 
@@ -219,7 +219,7 @@ create_input_streams() {
     jq --raw-output '.message' input_plaintext_result.json 2> /dev/null
   fi
 
-  sleep 2
+  sleep 5
 }
 
 send_messages() {
@@ -233,7 +233,7 @@ send_messages() {
   # Send message to Syslog TCP input
   echo '<0>1 2018-07-04T12:00:00.000Z test.example.com test - - - syslog' | nc -w5 127.0.0.1 514
 
-  sleep 2s
+  sleep 5s
 }
 
 validate_messages() {

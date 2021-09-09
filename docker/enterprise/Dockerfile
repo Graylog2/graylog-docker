@@ -1,7 +1,7 @@
 ARG JAVA_VERSION_MAJOR=8
 
 # layer for download and verifying
-FROM debian:buster-slim as graylog-downloader
+FROM debian:bullseye-slim as graylog-downloader
 
 ARG VCS_REF
 ARG BUILD_DATE
@@ -90,7 +90,7 @@ RUN \
 #
 # final layer
 # use the smallest debian with headless openjdk and copying files from download layers
-FROM openjdk:${JAVA_VERSION_MAJOR}-jre-slim-buster
+FROM openjdk:${JAVA_VERSION_MAJOR}-jre-slim-bullseye
 
 ARG VCS_REF
 ARG GRAYLOG_VERSION

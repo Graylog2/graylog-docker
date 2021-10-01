@@ -83,12 +83,11 @@ pipeline
               else
               {
                 //This is an alpha/beta/rc release, so don't update the version tags
-                TAG_ARGS_ARM              = "--tag graylog/graylog:${env.TAG_NAME}-arm64 \\"
-                TAG_ARGS_ARM_ENTERPRISE   = "--tag graylog/graylog-enterprise:${env.TAG_NAME}-arm64 \\"
-                TAG_ARGS_JRE11            = "--tag graylog/graylog:${env.TAG_NAME}-jre11 \\"
+                TAG_ARGS_ARM              = "--tag graylog/graylog:${env.TAG_NAME}-arm64"
+                TAG_ARGS_ARM_ENTERPRISE   = "--tag graylog/graylog-enterprise:${env.TAG_NAME}-arm64"
+                TAG_ARGS_JRE11            = "--tag graylog/graylog:${env.TAG_NAME}-jre11"
                 TAG_ARGS_JRE11_ENTERPRISE = "--tag graylog/graylog-enterprise:${env.TAG_NAME}-jre11"
               }
-
 
               docker.withRegistry('', 'docker-hub')
               {
@@ -102,8 +101,6 @@ pipeline
                       --build-arg GRAYLOG_VERSION=\$(cat VERSION) \
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                       ${TAG_ARGS_ARM} \
-                      --tag graylog/graylog:${MAJOR}.${MINOR}.${PATCH}-arm64 \
-                      --tag graylog/graylog:${MAJOR}.${MINOR}-arm64 \
                       --file docker/oss/Dockerfile \
                       --push \
                       .

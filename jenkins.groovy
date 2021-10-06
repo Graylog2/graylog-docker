@@ -63,7 +63,7 @@ pipeline
               echo "PATCH: ${PATCH}"
 
               //Is the revision suffix just a number?
-              if (TAG_NAME =~ /^([4-9]|\d\{2,\}+).([0-9]+).([0-9]+)-([0-9]+)$/)
+              if (TAG_NAME =~ /^([4-9]|\d{2,}).([0-9]+).([0-9]+)-([0-9]+)$/)
               {
                 TAG_ARGS_ARM              = """--tag graylog/graylog:${env.TAG_NAME}-arm64 \
                                             --tag graylog/graylog:${MAJOR}.${MINOR}.${PATCH}-arm64 \

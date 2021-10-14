@@ -6,7 +6,7 @@ The latest stable version of Graylog is `4.2.0`, which is available via tags `4.
 
 [hub]: https://hub.docker.com/r/graylog/graylog/
 
-Consider using the stable `4.1` release for your production environments. Please check the [Graylog Docker documentation](https://docs.graylog.org/docs/docker) for complete installation and configuration instructions.
+Consider using the stable `4.2` release for your production environments. Please check the [Graylog Docker documentation](https://docs.graylog.org/docs/docker) for complete installation and configuration instructions.
 
 
 ## What is Graylog?

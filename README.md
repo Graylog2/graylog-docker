@@ -21,6 +21,19 @@ Take a look at the minimal [Graylog architecture](https://docs.graylog.org/docs/
 
 Please refer to the [Graylog Docker documentation](https://docs.graylog.org/docs/docker) for a comprehensive overview and detailed description of the Graylog Docker image.
 
+Notably, this image **requires** that two important configuration options be set (although in practice you will likely need to set more):
+1. `password_secret` (environment variable `GRAYLOG_PASSWORD_SECRET`)
+    * A secret that is used for password encryption and salting.
+    * Must be at least 16 characters, however using at least 64 characters is strongly recommended.
+    * Must be the same on all Graylog nodes in the cluster.
+    * May be generated with something like: `pwgen -N 1 -s 96`
+2. `root_password_sha2` (environment variable `GRAYLOG_ROOT_PASSWORD_SHA2`)
+    * A SHA2 hash of a password you will use for your initial login as Graylog's root user.
+      * The default username is `admin`.  This value is customizable via configuration option `root_username` (environment variable `GRAYLOG_ROOT_USERNAME`).
+    * In general, these credentials will only be needed to initially set up the system or reconfigure the system in the event of an authentication backend failure.
+    * This password cannot be changed using the API or via the Web interface.
+    * May be generated with something like: `echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum | cut -d" " -f1`
+
 ## Configuration
 
 Every [Graylog configuration option](https://docs.graylog.org/docs/server-conf) can be set via environment variable. To get the environment variable name for a given configuration option, simply prefix the option name with `GRAYLOG_` and put it all in upper case. Another option is to store the configuration file outside of the container and edit it directly.

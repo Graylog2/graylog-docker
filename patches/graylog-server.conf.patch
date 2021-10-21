@@ -1,9 +1,13 @@
---- graylog.conf.example        2021-03-31 10:00:49.785429250 -0500
-+++ graylog.conf        2021-03-31 10:00:40.693473340 -0500
-@@ -686,3 +686,6 @@
- # Setting this to an empty value, leaves it up to system libraries and the used JDK to chose a default.
- # Default: TLSv1.2,TLSv1.3  (might be automatically adjusted to protocols supported by the JDK)
- #enabled_tls_protocols= TLSv1.2,TLSv1.3
+--- graylog.conf.example	2021-10-13 21:29:38.262398379 -0500
++++ graylog.conf	2021-10-13 21:29:51.850156678 -0500
+@@ -733,4 +733,7 @@
+ # if the data file(s) are located in the specified paths (for example, with the CSV File lookup adapter).
+ # All subdirectories of indicated paths are allowed by default. This Provides an additional layer of security,
+ # and allows administrators to control where in the file system Graylog users can select files from.
+-#allowed_auxiliary_paths = /etc/graylog/data-files,/etc/custom-allowed-path
+\ No newline at end of file
++#allowed_auxiliary_paths = /etc/graylog/data-files,/etc/custom-allowed-path
 +
 +# An absolute path where scripts are permitted to be executed from.
 +integrations_scripts_dir = /usr/share/graylog/data/scripts
+\ No newline at end of file

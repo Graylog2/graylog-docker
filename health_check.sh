@@ -3,7 +3,7 @@
 source /etc/profile
 
 
-# http://docs.graylog.org/en/3.0/pages/configuration/server.conf.html#web-rest-api
+# See "Web & Rest API" @ https://docs.graylog.org/docs/server-conf
 #
 # if `http_publish_uri` is given, use that for healthcheck,
 # if not take `http_bind_address` what defaults to 127.0.0.1

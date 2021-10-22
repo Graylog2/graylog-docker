@@ -47,25 +47,21 @@ This image includes the [wait-for-it](https://github.com/vishnubob/wait-for-it) 
 
 ## Image Details
 
-There are several different image variants available.
+There are several different image variants available. These images run on Debian and Java 8. For the `graylog` and `graylog-enterprise` images, there are also ARM64 and Java 11 variants.
 
 #### `graylog:<version>`
 
-This is the open source Graylog image. You can check the Docker Hub page for [a list of all available versions](https://hub.docker.com/r/graylog/graylog/tags)
-
-The standard image runs on Debian and Java 8. There are also ARM64 and Java 11 variants.
+This is the open source Graylog image. Check the [Docker Hub](https://hub.docker.com/r/graylog/graylog/tags) page for a list of all available versions.
 
 
 #### `graylog-enterprise:<version>`
 
-This is the [Graylog Enterprise](https://docs.graylog.org/docs/intro) image. The versions available can be found on [Docker Hub](https://hub.docker.com/r/graylog/graylog-enterprise/tags).
-
-It's using Debian and Java 8. There are ARM64 and Java 11 variants as well.
+This is the [Graylog Enterprise](https://docs.graylog.org/docs/intro) image. Check the [Docker Hub](https://hub.docker.com/r/graylog/graylog-enterprise/tags) page for a list of all available versions.
 
 
 #### `graylog-forwarder:<version>`
 
-This image runs the [Graylog Forwarder](https://docs.graylog.org/docs/forwarder). You can check the Docker Hub page for [a list of all available versions](https://hub.docker.com/repository/docker/graylog/graylog-forwarder/tags)
+This image runs the [Graylog Forwarder](https://docs.graylog.org/docs/forwarder). Check the [Docker Hub](https://hub.docker.com/repository/docker/graylog/graylog-forwarder/tags) page for a list of all available versions.
 
 
 

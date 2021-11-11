@@ -15,38 +15,15 @@ RUN \
     ca-certificates \
     curl > /dev/null
 
-RUN \
-  curl \
-    --silent \
-    --location \
-    --retry 3 \
-    --output "/tmp/graylog-${GRAYLOG_VERSION}.tgz" \
-    "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz"
+COPY build/fetch-and-extract.sh /bin/fetch-and-extract
+RUN chmod +x /bin/fetch-and-extract
 
-RUN \
-  curl \
-    --silent \
-    --location \
-    --retry 3 \
-    --output "/tmp/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
-    "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt"
-
-RUN \
-  sha256sum --check "graylog-${GRAYLOG_VERSION}.tgz.sha256.txt"
-
-RUN \
-  mkdir /opt/graylog && \
-  tar --extract --gzip --file "/tmp/graylog-${GRAYLOG_VERSION}.tgz" --strip-components=1 --directory /opt/graylog
-
-RUN \
-  curl \
-    --silent \
-    --location \
-    --retry 3 \
-    --output "/tmp/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz" \
+RUN fetch-and-extract \
+    "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz" \
+    "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
+    "https://packages.graylog2.org/releases/graylog/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz" \
     "https://downloads.graylog.org/releases/graylog-integrations/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz"
 
-RUN tar --extract --gzip --file "/tmp/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz" --strip-components=1 --directory /opt/graylog
 
 RUN \
   install \

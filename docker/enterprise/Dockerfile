@@ -6,6 +6,7 @@ FROM debian:bullseye-slim as graylog-downloader
 ARG VCS_REF
 ARG BUILD_DATE
 ARG GRAYLOG_VERSION
+ARG LOCAL_BUILD_TGZ
 
 WORKDIR /tmp
 
@@ -16,62 +17,27 @@ RUN \
     ca-certificates \
     curl > /dev/null
 
-RUN \
-  curl \
-    --silent \
-    --location \
-    --retry 3 \
-    --output "/tmp/graylog-${GRAYLOG_VERSION}.tgz" \
-    "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz"
+COPY build/fetch-and-extract.sh /bin/fetch-and-extract
+RUN chmod +x /bin/fetch-and-extract
 
-RUN \
-  curl \
-    --silent \
-    --location \
-    --retry 3 \
-    --output "/tmp/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
-    "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt"
-
-# Verify server and extract the Server
-RUN \
-  sha256sum --check "graylog-${GRAYLOG_VERSION}.tgz.sha256.txt"
-
-RUN \
-  mkdir /opt/graylog && \
-  tar --extract --gzip --file "/tmp/graylog-${GRAYLOG_VERSION}.tgz" --strip-components=1 --directory /opt/graylog
+RUN if [ -z "${LOCAL_BUILD_TGZ}" ]; then \
+    fetch-and-extract \
+    "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz" \
+    "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
+    "https://packages.graylog2.org/releases/graylog/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz" \
+    "https://downloads.graylog.org/releases/graylog-integrations/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz" \
+    "https://downloads.graylog.org/releases/graylog-enterprise-integrations/graylog-enterprise-integrations-plugins-${GRAYLOG_VERSION}.tgz" \
+    "https://downloads.graylog.org/releases/graylog-enterprise/graylog-enterprise-plugins-${GRAYLOG_VERSION}.tgz" \
+     ; fi
 
 
-# Download Enterprise and Integrations Plugins and Integrations Enterprise Plugins.
-RUN \
-  curl \
-    --silent \
-    --location \
-    --retry 3 \
-    --output "/tmp/graylog-enterprise-integrations-plugins-${GRAYLOG_VERSION}.tgz" \
-    "https://downloads.graylog.org/releases/graylog-enterprise-integrations/graylog-enterprise-integrations-plugins-${GRAYLOG_VERSION}.tgz"
+# Does nothing if empty
+COPY "${LOCAL_BUILD_TGZ}" "/tmp/graylog.tgz"
 
-RUN tar --extract --gzip --file "/tmp/graylog-enterprise-integrations-plugins-${GRAYLOG_VERSION}.tgz" --strip-components=1 --directory /opt/graylog
-
-RUN \
-  curl \
-    --silent \
-    --location \
-    --retry 3 \
-    --output "/tmp/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz" \
-    "https://downloads.graylog.org/releases/graylog-integrations/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz"
-
-RUN tar --extract --gzip --file "/tmp/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz" --strip-components=1 --directory /opt/graylog
-
-
-RUN \
-  curl \
-    --silent \
-    --location \
-    --retry 3 \
-    --output "/tmp/graylog-enterprise-plugins-${GRAYLOG_VERSION}.tgz" \
-    "https://downloads.graylog.org/releases/graylog-enterprise/graylog-enterprise-plugins-${GRAYLOG_VERSION}.tgz"
-
-RUN tar --extract --gzip --file "graylog-enterprise-plugins-${GRAYLOG_VERSION}.tgz" --strip-components=1 --directory /opt/graylog
+RUN if [ "${LOCAL_BUILD_TGZ}" ]; then \
+        mkdir /opt/graylog && \
+        tar --extract --gzip --file "/tmp/graylog.tgz" --strip-components=1 --directory /opt/graylog; \
+    fi
 
 
 RUN \

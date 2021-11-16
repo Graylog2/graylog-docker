@@ -135,7 +135,7 @@ EXPOSE 9000
 USER ${GRAYLOG_USER}
 VOLUME ${GRAYLOG_HOME}/data
 ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
-CMD ["graylog"]
+CMD ["server"]
 
 # add healthcheck
 HEALTHCHECK \

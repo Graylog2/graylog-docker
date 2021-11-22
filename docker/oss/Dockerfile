@@ -5,6 +5,9 @@ FROM debian:bullseye-slim as graylog-downloader
 
 ARG VCS_REF
 ARG GRAYLOG_VERSION
+ARG GRAYLOG_HOME=/usr/share/graylog
+ARG GRAYLOG_UID=1100
+ARG GRAYLOG_GID=1100
 
 WORKDIR /tmp
 
@@ -36,6 +39,13 @@ RUN \
     /opt/graylog/data/plugin \
     /opt/graylog/data/data
 
+RUN mv /opt/graylog ${GRAYLOG_HOME} && chown -R ${GRAYLOG_UID}:${GRAYLOG_GID} ${GRAYLOG_HOME}
+RUN mv ${GRAYLOG_HOME}/plugin ${GRAYLOG_HOME}/plugins-default
+RUN install -d -o "${GRAYLOG_UID}" -g "${GRAYLOG_GID}" -m 0755 ${GRAYLOG_HOME}/plugins-merged
+RUN install -d -o "${GRAYLOG_UID}" -g "${GRAYLOG_GID}" -m 0755 ${GRAYLOG_HOME}/plugin
+
+COPY config ${GRAYLOG_HOME}/data/config
+
 # -------------------------------------------------------------------------------------------------
 #
 # final layer
@@ -52,9 +62,7 @@ ARG GRAYLOG_GROUP=graylog
 ARG GRAYLOG_GID=1100
 ARG JAVA_VERSION_MAJOR
 
-COPY --from=graylog-downloader /opt/graylog ${GRAYLOG_HOME}
-COPY config ${GRAYLOG_HOME}/data/config
-
+COPY --chown=${GRAYLOG_UID}:${GRAYLOG_GID} --from=graylog-downloader ${GRAYLOG_HOME} ${GRAYLOG_HOME}
 
 WORKDIR ${GRAYLOG_HOME}
 
@@ -94,7 +102,6 @@ RUN \
     --gid "${GRAYLOG_GID}" \
     --quiet \
     "${GRAYLOG_USER}" && \
-  chown --recursive "${GRAYLOG_USER}":"${GRAYLOG_GROUP}" ${GRAYLOG_HOME} && \
   setcap 'cap_net_bind_service=+ep' "${JAVA_HOME}/bin/java" && \
   apt-get remove --assume-yes --purge \
     apt-utils > /dev/null && \
@@ -108,10 +115,6 @@ RUN \
     /var/log/* \
     /usr/share/X11 \
     /usr/share/doc/* 2> /dev/null
-
-RUN mv ${GRAYLOG_HOME}/plugin ${GRAYLOG_HOME}/plugins-default
-RUN install -d -o "${GRAYLOG_USER}" -g "${GRAYLOG_GROUP}" -m 0755 ${GRAYLOG_HOME}/plugins-merged
-RUN install -d -o "${GRAYLOG_USER}" -g "${GRAYLOG_GROUP}" -m 0755 ${GRAYLOG_HOME}/plugin
 
 COPY docker-entrypoint.sh /
 COPY health_check.sh /

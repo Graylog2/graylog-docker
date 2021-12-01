@@ -7,10 +7,10 @@ The latest stable version of Graylog is **`4.2.2`**, with image variants for Jav
 * Java 8 (`linux/amd64`): `4.2`, `4.2.2`, `4.2.2-1`
 * Java 8 (`linux/arm64`): `4.2-arm64`, `4.2.2-arm64`, `4.2.2-1-arm64`
 
-The latest stable version of Graylog Forwarder is **`4.1`**, with support for Java 8 on platform `linux/amd64`.
+The latest stable version of Graylog Forwarder is **`4.4`**, with support for Java 8 on platform `linux/amd64`.
 
 [graylog/graylog-forwarder](https://hub.docker.com/r/graylog/graylog-forwarder/):
-* Java 8 (`linux/amd64`): `4.1`, `forwarder-4.1-2`
+* Java 8 (`linux/amd64`): `4.4`, `forwarder-4.4-2`
 
 [![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub] [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub]
 

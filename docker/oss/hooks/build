@@ -8,10 +8,6 @@ cd ../..
 apt-get install -y python3-pip
 pip3 install pyyaml
 
-echo "-----"
-./release.py --get-graylog-version
-echo "-----"
-
 # Build Graylog
 docker build --build-arg VCS_REF=$GIT_SHA1 \
              --build-arg GRAYLOG_VERSION=`./release.py --get-graylog-version` \

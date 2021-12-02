@@ -5,10 +5,7 @@
 
 cd ../..
 
-python3 --version
-whoami
-cat /etc/os-release
-apt-get install python3-pip
+apt-get install -y python3-pip
 pip3 install pyyaml
 cat version.yml | python3 -c 'import json, sys, yaml ; y=yaml.safe_load(sys.stdin.read()) ; print(json.dumps(y))'
 

@@ -3,6 +3,7 @@
 import yaml
 import argparse
 import sys
+from jinja2 import Template
 
 parser = argparse.ArgumentParser(description='Release utility for the Graylog Docker image.')
 parser.add_argument('--get-graylog-version', help="Get Graylog image version.", action='store_true')

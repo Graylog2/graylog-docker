@@ -5,6 +5,8 @@
 
 cd ../..
 
+python --version
+
 # Build Graylog
 docker build --build-arg VCS_REF=$GIT_SHA1 \
              --build-arg GRAYLOG_VERSION=`cat VERSION` \

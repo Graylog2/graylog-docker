@@ -27,5 +27,5 @@ with open('version.yml', 'r') as version_file:
   if args.generate_readme:
     from jinja2 import Template
     with open('README.j2', 'r') as template_file:
-      j2_template = Template(template_file)
+      j2_template = Template(template_file.read())
       print(j2_template.render(version_parsed))

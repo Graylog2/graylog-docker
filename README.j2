@@ -1,16 +1,16 @@
 # Graylog Docker Image
-test: {{ graylog.major_version }}
-The latest stable version of Graylog is **`4.2.2`**, with image variants for Java 8 and 11 on platforms `linux/amd64` and `linux/arm64`.
+
+The latest stable version of Graylog is **`{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`**, with image variants for Java 8 and 11 on platforms `linux/amd64` and `linux/arm64`.
 
 [graylog/graylog](https://hub.docker.com/r/graylog/graylog/) and [graylog/graylog-enterprise](https://hub.docker.com/r/graylog/graylog-enterprise/):
-* Java 11 (`linux/amd64`, `linux/arm64`): `4.2-jre11`, `4.2.2-jre11`, `4.2.2-1-jre11`
-* Java 8 (`linux/amd64`): `4.2`, `4.2.2`, `4.2.2-1`
-* Java 8 (`linux/arm64`): `4.2-arm64`, `4.2.2-arm64`, `4.2.2-1-arm64`
+* Java 11 (`linux/amd64`, `linux/arm64`): `{{ graylog.major_version }}.{{ graylog.minor_version }}-jre11`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-jre11`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}-jre11`
+* Java 8 (`linux/amd64`): `{{ graylog.major_version }}.{{ graylog.minor_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}`
+* Java 8 (`linux/arm64`): `{{ graylog.major_version }}.{{ graylog.minor_version }}-arm64`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-arm64`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}-arm64`
 
-The latest stable version of Graylog Forwarder is **`4.4`**, with support for Java 8 on platform `linux/amd64`.
+The latest stable version of Graylog Forwarder is **`{{ forwarder.version }}`**, with support for Java 8 on platform `linux/amd64`.
 
 [graylog/graylog-forwarder](https://hub.docker.com/r/graylog/graylog-forwarder/):
-* Java 8 (`linux/amd64`): `4.4`, `forwarder-4.4-2`
+* Java 8 (`linux/amd64`): `{{ forwarder.version }}`, `forwarder-{{ forwarder.version }}-{{ forwarder.release }}`
 
 [![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub] [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub]
 

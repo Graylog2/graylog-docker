@@ -7,11 +7,14 @@ cd ../..
 
 apt-get install -y python3-pip
 pip3 install pyyaml
-cat version.yml | python3 -c 'import json, sys, yaml ; y=yaml.safe_load(sys.stdin.read()) ; print(json.dumps(y))'
+
+echo "-----"
+./release.py --get-graylog-version
+echo "-----"
 
 # Build Graylog
 docker build --build-arg VCS_REF=$GIT_SHA1 \
-             --build-arg GRAYLOG_VERSION=`cat VERSION` \
+             --build-arg GRAYLOG_VERSION=`./release.py --get-graylog-version` \
              --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
              --file docker/oss/Dockerfile \
              --tag $IMAGE_NAME .

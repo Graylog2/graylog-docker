@@ -1,10 +1,10 @@
 # Graylog Docker Image
 
-The latest stable version of Graylog is **`4.2.2`**.
-
 [![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub] [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub]
 
 [hub]: https://hub.docker.com/r/graylog/graylog/
+
+The latest stable version of Graylog is **`4.2.2`**.
 
 ## What is Graylog?
 

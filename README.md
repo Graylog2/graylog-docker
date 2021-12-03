@@ -1,5 +1,7 @@
 # Graylog Docker Image
 
+The latest stable version of Graylog is **`4.2.2`**.
+
 [![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub] [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub]
 
 [hub]: https://hub.docker.com/r/graylog/graylog/
@@ -10,8 +12,6 @@ Graylog is a centralized logging solution that enables aggregating and searching
 
 
 ## Image Details
-
-The latest stable version of Graylog is **`4.2.2`**.
 
 There are several different image variants available, with variants for Java 8 and 11 on platforms `linux/amd64` and `linux/arm64`. All images run on Debian 11.
 

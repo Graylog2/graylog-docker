@@ -1,27 +1,55 @@
 # Graylog Docker Image
 
-The latest stable version of Graylog is **`{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`**, with image variants for Java 8 and 11 on platforms `linux/amd64` and `linux/arm64`.
-
-[graylog/graylog](https://hub.docker.com/r/graylog/graylog/) and [graylog/graylog-enterprise](https://hub.docker.com/r/graylog/graylog-enterprise/):
-* Java 11 (`linux/amd64`, `linux/arm64`): `{{ graylog.major_version }}.{{ graylog.minor_version }}-jre11`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-jre11`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}-jre11`
-* Java 8 (`linux/amd64`): `{{ graylog.major_version }}.{{ graylog.minor_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}`
-* Java 8 (`linux/arm64`): `{{ graylog.major_version }}.{{ graylog.minor_version }}-arm64`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-arm64`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}-arm64`
-
-The latest stable version of Graylog Forwarder is **`{{ forwarder.version }}`**, with support for Java 8 on platform `linux/amd64`.
-
-[graylog/graylog-forwarder](https://hub.docker.com/r/graylog/graylog-forwarder/):
-* Java 8 (`linux/amd64`): `{{ forwarder.version }}`, `forwarder-{{ forwarder.version }}-{{ forwarder.release }}`
-
 [![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub] [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub]
 
 [hub]: https://hub.docker.com/r/graylog/graylog/
 
-Consider using the stable `4.2` release for your production environments. Please check the [Graylog Docker documentation](https://docs.graylog.org/docs/docker) for complete installation and configuration instructions.
-
-
 ## What is Graylog?
 
 Graylog is a centralized logging solution that enables aggregating and searching through logs. It provides a powerful query language, a processing pipeline for data transformation, alerting abilities, and much more. It is fully extensible through a REST API. Add-ons can be downloaded from the [Graylog Marketplace](https://marketplace.graylog.org/).
+
+
+## Image Details
+
+The latest stable version of Graylog is **`{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`**, with image variants for Java 8 and 11 on platforms `linux/amd64` and `linux/arm64`. These images run on Debian 11.
+
+
+
+
+#### `graylog/graylog`
+
+This is the open source [Graylog ](https://hub.docker.com/r/graylog/graylog/) image. It contains [Graylog](https://github.com/Graylog2/graylog2-server) as well as the [Integrations](https://docs.graylog.org/docs/integrations) plugin.
+
+Available tags:
+
+* Java 11 (`linux/amd64`, `linux/arm64`): `{{ graylog.major_version }}.{{ graylog.minor_version }}-jre11`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-jre11`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}-jre11`
+* Java 8 (`linux/amd64`): `{{ graylog.major_version }}.{{ graylog.minor_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}`
+* Java 8 (`linux/arm64`): `{{ graylog.major_version }}.{{ graylog.minor_version }}-arm64`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-arm64`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}-arm64`
+
+> Note: There is no 'latest' tag. you'll need to specify which version you want.
+
+#### `graylog/graylog-enterprise`
+
+This is the [Graylog Enterprise](https://hub.docker.com/r/graylog/graylog-enterprise/) image. It contains [Graylog](https://github.com/Graylog2/graylog2-server), the [Graylog Enterprise](https://docs.graylog.org/docs/intro) plugin, the [Integrations](https://docs.graylog.org/docs/integrations) plugin, and the Enterprise Integrations plugin.
+
+Available tags:
+
+* Java 11 (`linux/amd64`, `linux/arm64`): `{{ graylog.major_version }}.{{ graylog.minor_version }}-jre11`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-jre11`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}-jre11`
+* Java 8 (`linux/amd64`): `{{ graylog.major_version }}.{{ graylog.minor_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}`
+* Java 8 (`linux/arm64`): `{{ graylog.major_version }}.{{ graylog.minor_version }}-arm64`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-arm64`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}-arm64`
+
+
+#### `graylog/graylog-forwarder`
+
+This image runs the [Graylog Forwarder](https://hub.docker.com/r/graylog/graylog-forwarder/). Documentation on the Forwarder can be found [here](https://docs.graylog.org/docs/forwarder).
+
+The latest stable version is **`{{ forwarder.version }}`**, with support for Java 8 on platform `linux/amd64`.
+
+Available tags:
+
+* Java 8 (`linux/amd64`): `{{ forwarder.version }}`, `forwarder-{{ forwarder.version }}-{{ forwarder.release }}`
+
+
 
 ## Architecture
 
@@ -55,23 +83,6 @@ This image includes the [wait-for-it](https://github.com/vishnubob/wait-for-it) 
 `entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 --  /docker-entrypoint.sh`
 
 
-## Image Details
-
-There are several different image variants available. These images run on Debian and Java 8. For the `graylog` and `graylog-enterprise` images, there are also ARM64 and Java 11 variants.
-
-#### `graylog:<version>`
-
-This is the open source Graylog image. Check the [Docker Hub](https://hub.docker.com/r/graylog/graylog/tags) page for a list of all available versions.
-
-
-#### `graylog-enterprise:<version>`
-
-This is the [Graylog Enterprise](https://docs.graylog.org/docs/intro) image. Check the [Docker Hub](https://hub.docker.com/r/graylog/graylog-enterprise/tags) page for a list of all available versions.
-
-
-#### `graylog-forwarder:<version>`
-
-This image runs the [Graylog Forwarder](https://docs.graylog.org/docs/forwarder). Check the [Docker Hub](https://hub.docker.com/repository/docker/graylog/graylog-forwarder/tags) page for a list of all available versions.
 
 
 

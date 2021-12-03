@@ -28,4 +28,6 @@ with open('version.yml', 'r') as version_file:
     from jinja2 import Template
     with open('README.j2', 'r') as template_file:
       j2_template = Template(template_file.read())
-      print(j2_template.render(version_parsed))
+
+    with open("README.md", "w") as readme_file:
+      readme_file.write(j2_template.render(version_parsed))

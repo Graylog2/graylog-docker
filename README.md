@@ -11,32 +11,32 @@ Graylog is a centralized logging solution that enables aggregating and searching
 
 ## Image Details
 
-The latest stable version of Graylog is **`4.2.2`**, with image variants for Java 8 and 11 on platforms `linux/amd64` and `linux/arm64`. These images run on Debian 11.
+The latest stable version of Graylog is **`4.2.2`**.
 
-
-
+There are several different image variants available, with variants for Java 8 and 11 on platforms `linux/amd64` and `linux/arm64`. All images run on Debian 11.
 
 #### `graylog/graylog`
 
 This is the open source [Graylog ](https://hub.docker.com/r/graylog/graylog/) image. It contains [Graylog](https://github.com/Graylog2/graylog2-server) as well as the [Integrations](https://docs.graylog.org/docs/integrations) plugin.
 
-Available tags:
+| Java Version  | Platform  | Tags  |
+|---|---|---|
+| OpenJDK 11  | `linux/amd64`, `linux/arm64`  | `4.2-jre11`, `4.2.2-jre11`, `4.2.2-1-jre11`  |
+| OpenJDK 8  | `linux/amd64` | `4.2`, `4.2.2`, `4.2.2-1` |
+| OpenJDK 8  | `linux/arm64` | `4.2-arm64`, `4.2.2-arm64`, `4.2.2-1-arm64` |
 
-* Java 11 (`linux/amd64`, `linux/arm64`): `4.2-jre11`, `4.2.2-jre11`, `4.2.2-1-jre11`
-* Java 8 (`linux/amd64`): `4.2`, `4.2.2`, `4.2.2-1`
-* Java 8 (`linux/arm64`): `4.2-arm64`, `4.2.2-arm64`, `4.2.2-1-arm64`
 
-> Note: There is no 'latest' tag. you'll need to specify which version you want.
+> Note: There is no 'latest' tag. You'll need to specify which version you want.
 
 #### `graylog/graylog-enterprise`
 
 This is the [Graylog Enterprise](https://hub.docker.com/r/graylog/graylog-enterprise/) image. It contains [Graylog](https://github.com/Graylog2/graylog2-server), the [Graylog Enterprise](https://docs.graylog.org/docs/intro) plugin, the [Integrations](https://docs.graylog.org/docs/integrations) plugin, and the Enterprise Integrations plugin.
 
-Available tags:
-
-* Java 11 (`linux/amd64`, `linux/arm64`): `4.2-jre11`, `4.2.2-jre11`, `4.2.2-1-jre11`
-* Java 8 (`linux/amd64`): `4.2`, `4.2.2`, `4.2.2-1`
-* Java 8 (`linux/arm64`): `4.2-arm64`, `4.2.2-arm64`, `4.2.2-1-arm64`
+| Java Version  | Platform  | Tags  |
+|---|---|---|
+| OpenJDK 11  | `linux/amd64`, `linux/arm64`  | `4.2-jre11`, `4.2.2-jre11`, `4.2.2-1-jre11`  |
+| OpenJDK 8  | `linux/amd64` | `4.2`, `4.2.2`, `4.2.2-1` |
+| OpenJDK 8  | `linux/arm64` | `4.2-arm64`, `4.2.2-arm64`, `4.2.2-1-arm64` |
 
 
 #### `graylog/graylog-forwarder`
@@ -45,10 +45,9 @@ This image runs the [Graylog Forwarder](https://hub.docker.com/r/graylog/graylog
 
 The latest stable version is **`4.4`**, with support for Java 8 on platform `linux/amd64`.
 
-Available tags:
-
-* Java 8 (`linux/amd64`): `4.4`, `forwarder-4.4-1`
-
+| Java Version  | Platform  | Tags  |
+|---|---|---|
+| OpenJDK 8 | `linux/amd64` | `4.4`, `forwarder-4.4-1` |
 
 
 ## Architecture

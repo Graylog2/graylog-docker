@@ -22,7 +22,7 @@ with open('version.yml', 'r') as version_file:
     print(str(version_parsed['graylog']['major_version']) + '.' + str(version_parsed['graylog']['minor_version']) + '.' + str(version_parsed['graylog']['patch_version']), end='')
 
   if args.get_forwarder_version:
-    print(str(version_parsed['forwarder']['version']) + '-' + str(version_parsed['graylog']['release']), end='')
+    print(str(version_parsed['forwarder']['version']) + '-' + str(version_parsed['forwarder']['release']), end='')
 
   if args.generate_readme:
     from jinja2 import Template

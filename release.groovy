@@ -11,7 +11,7 @@ pipeline
 
    parameters
    {
-     string(name: 'NEW_VERSION', description: 'Version of Graylog to build (4.2.2, 4.3.0, etc).')
+     string(name: 'TAG_NAME', description: 'The git tag to add to the graylog-docker repo (4.2.2-1, 4.3.0-1, etc).')
      gitParameter branchFilter: 'origin/(.*)', defaultValue: '4.2', selectedValue: 'DEFAULT', name: 'BRANCH', type: 'PT_BRANCH', sortMode: 'DESCENDING_SMART', description: 'The branch of graylog-docker that should be checked out (4.1, 4.2, master, etc).'
    }
 
@@ -24,6 +24,8 @@ pipeline
             sh 'echo test'
 
             //update version.yml
+
+            env.GRAYLOG_VERSION = sh returnStdout: true, script: './release.py --get-graylog-version'
 
             //generate README.md
             sh './release.py --generate-readme'
@@ -47,9 +49,9 @@ pipeline
 
           script
           {
-            if (TAG_NAME =~ /^(?:[4-9]|\\d{2,}).[0-9]+.[0-9]+-(?:[0-9]+|alpha|beta|rc).*/)
+            if (${params.TAG_NAME} =~ /^(?:[4-9]|\\d{2,}).[0-9]+.[0-9]+-(?:[0-9]+|alpha|beta|rc).*/)
             {
-              PARSED_VERSION = parse_version(TAG_NAME)
+              PARSED_VERSION = parse_version(${params.TAG_NAME})
               MAJOR = PARSED_VERSION[0]
               MINOR = PARSED_VERSION[1]
               PATCH = PARSED_VERSION[2]
@@ -58,19 +60,19 @@ pipeline
               echo "PATCH: ${PATCH}"
 
               //Is the revision suffix just a number?
-              if (TAG_NAME =~ /^([4-9]|\d{2,}).([0-9]+).([0-9]+)-([0-9]+)$/)
+              if (${params.TAG_NAME} =~ /^([4-9]|\d{2,}).([0-9]+).([0-9]+)-([0-9]+)$/)
               {
-                TAG_ARGS_ARM              = """--tag graylog/graylog:${env.TAG_NAME}-arm64 \
+                TAG_ARGS_ARM              = """--tag graylog/graylog:${params.TAG_NAME}-arm64 \
                                             --tag graylog/graylog:${MAJOR}.${MINOR}.${PATCH}-arm64 \
                                             --tag graylog/graylog:${MAJOR}.${MINOR}-arm64"""
 
-                TAG_ARGS_ARM_ENTERPRISE   = """--tag graylog/graylog-enterprise:${env.TAG_NAME}-arm64 \
+                TAG_ARGS_ARM_ENTERPRISE   = """--tag graylog/graylog-enterprise:${params.TAG_NAME}-arm64 \
                                              --tag graylog/graylog-enterprise:${MAJOR}.${MINOR}.${PATCH}-arm64 \
                                              --tag graylog/graylog-enterprise:${MAJOR}.${MINOR}-arm64"""
-                TAG_ARGS_JRE11            = """--tag graylog/graylog:${env.TAG_NAME}-jre11 \
+                TAG_ARGS_JRE11            = """--tag graylog/graylog:${params.TAG_NAME}-jre11 \
                                              --tag graylog/graylog:${MAJOR}.${MINOR}.${PATCH}-jre11 \
                                              --tag graylog/graylog:${MAJOR}.${MINOR}-jre11"""
-                TAG_ARGS_JRE11_ENTERPRISE = """--tag graylog/graylog-enterprise:${env.TAG_NAME}-jre11 \
+                TAG_ARGS_JRE11_ENTERPRISE = """--tag graylog/graylog-enterprise:${params.TAG_NAME}-jre11 \
                                                --tag graylog/graylog-enterprise:${MAJOR}.${MINOR}.${PATCH}-jre11 \
                                                --tag graylog/graylog-enterprise:${MAJOR}.${MINOR}-jre11"""
 
@@ -78,9 +80,9 @@ pipeline
               else
               {
                 //This is an alpha/beta/rc release, so don't update the version tags
-                TAG_ARGS_ARM              = "--tag graylog/graylog:${env.TAG_NAME}-arm64"
+                TAG_ARGS_ARM              = "--tag graylog/graylog:${params.TAG_NAME}-arm64"
                 TAG_ARGS_ARM_ENTERPRISE   = "--tag graylog/graylog-enterprise:${env.TAG_NAME}-arm64"
-                TAG_ARGS_JRE11            = "--tag graylog/graylog:${env.TAG_NAME}-jre11"
+                TAG_ARGS_JRE11            = "--tag graylog/graylog:${params.TAG_NAME}-jre11"
                 TAG_ARGS_JRE11_ENTERPRISE = "--tag graylog/graylog-enterprise:${env.TAG_NAME}-jre11"
               }
 
@@ -141,9 +143,9 @@ pipeline
               }
             }
 
-            if (TAG_NAME =~ /forwarder-.*/)
+            if (${params.TAG_NAME} =~ /forwarder-.*/)
             {
-              PARSED_VERSION = parse_forwarder_version(TAG_NAME)
+              PARSED_VERSION = parse_forwarder_version(${params.TAG_NAME})
               MAJOR = PARSED_VERSION[0]
               MINOR = PARSED_VERSION[1]
               PATCH = PARSED_VERSION[2]
@@ -162,7 +164,7 @@ pipeline
                     --no-cache \
                     --build-arg GRAYLOG_FORWARDER_PACKAGE_VERSION=\$(cat VERSION_FORWARDER_PACKAGE) \
                     --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
-                    --tag graylog/graylog-forwarder:${env.TAG_NAME}-arm64 \
+                    --tag graylog/graylog-forwarder:${params.TAG_NAME}-arm64 \
                     --tag graylog/graylog-forwarder:${MAJOR}.${MINOR}-arm64 \
                     --file docker/forwarder/Dockerfile \
                     --push \

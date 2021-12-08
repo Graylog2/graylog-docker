@@ -21,11 +21,10 @@ pipeline
       {
          steps
          {
-            sh 'echo test'
-
             //update version.yml
 
             env.GRAYLOG_VERSION = sh returnStdout: true, script: './release.py --get-graylog-version'
+            env.FORWARDER_VERSION = sh returnStdout: true, script: './release.py --get-forwarder-version'
 
             //generate README.md
             sh './release.py --generate-readme'
@@ -95,7 +94,7 @@ pipeline
                     docker buildx build \
                       --platform linux/arm64/v8 \
                       --no-cache \
-                      --build-arg GRAYLOG_VERSION=\$(cat VERSION) \
+                      --build-arg GRAYLOG_VERSION=${env.GRAYLOG_VERSION} \
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                       ${TAG_ARGS_ARM} \
                       --file docker/oss/Dockerfile \
@@ -107,7 +106,7 @@ pipeline
                     docker buildx build \
                       --platform linux/arm64/v8 \
                       --no-cache \
-                      --build-arg GRAYLOG_VERSION=\$(cat VERSION) \
+                      --build-arg GRAYLOG_VERSION=${env.GRAYLOG_VERSION} \
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                       ${TAG_ARGS_ARM_ENTERPRISE} \
                       --file docker/enterprise/Dockerfile \
@@ -119,7 +118,7 @@ pipeline
                     docker buildx build \
                       --platform linux/amd64,linux/arm64/v8 \
                       --no-cache \
-                      --build-arg GRAYLOG_VERSION=\$(cat VERSION) \
+                      --build-arg GRAYLOG_VERSION=${env.GRAYLOG_VERSION} \
                       --build-arg JAVA_VERSION_MAJOR=11 \
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                       ${TAG_ARGS_JRE11} \
@@ -132,7 +131,7 @@ pipeline
                   docker buildx build \
                     --platform linux/amd64,linux/arm64/v8 \
                     --no-cache \
-                    --build-arg GRAYLOG_VERSION=\$(cat VERSION) \
+                    --build-arg GRAYLOG_VERSION=${env.GRAYLOG_VERSION} \
                     --build-arg JAVA_VERSION_MAJOR=11 \
                     --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                     ${TAG_ARGS_JRE11_ENTERPRISE} \
@@ -162,7 +161,7 @@ pipeline
                   docker buildx build \
                     --platform linux/arm64/v8 \
                     --no-cache \
-                    --build-arg GRAYLOG_FORWARDER_PACKAGE_VERSION=\$(cat VERSION_FORWARDER_PACKAGE) \
+                    --build-arg GRAYLOG_FORWARDER_PACKAGE_VERSION=${env.FORWARDER_VERSION} \
                     --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                     --tag graylog/graylog-forwarder:${params.TAG_NAME}-arm64 \
                     --tag graylog/graylog-forwarder:${MAJOR}.${MINOR}-arm64 \

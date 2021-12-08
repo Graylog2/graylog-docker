@@ -5,7 +5,14 @@ pipeline
    options
    {
       buildDiscarder logRotator(artifactDaysToKeepStr: '90', artifactNumToKeepStr: '100', daysToKeepStr: '90', numToKeepStr: '100')
+      skipDefaultCheckout(true)
       timestamps()
+   }
+
+   parameters
+   {
+     string(name: 'NEW_VERSION', description: 'Version of Graylog to build (4.2.2, 4.3.0, etc).')
+     gitParameter branchFilter: 'origin/(.*)', defaultValue: '4.2', selectedValue: 'DEFAULT', name: 'BRANCH', type: 'PT_BRANCH', sortMode: 'DESCENDING_SMART', description: 'The branch of graylog-docker that should be checked out (4.1, 4.2, master, etc).'
    }
 
    stages
@@ -15,19 +22,28 @@ pipeline
          steps
          {
             sh 'echo test'
+
+            //update version.yml
+
+            //generate README.md
+            sh './release.py --generate-readme'
+
+            //commit changes
+
+            //add new git tag
+
+            //push git changes
+
          }
       }
 
       stage('Deploy Image')
       {
-        when
-        {
-          buildingTag()
-        }
-
         steps
         {
-          echo "TAG_NAME: ${TAG_NAME}"
+          //checkout git tag
+
+
 
           script
           {

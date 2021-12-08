@@ -13,6 +13,7 @@ pipeline
    {
       stage('Build Docker Image')
       {
+         steps
          {
             sh 'make docker_build'
          }

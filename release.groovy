@@ -21,12 +21,17 @@ pipeline
       {
          steps
          {
+           script
+           {
+             checkout([$class: 'GitSCM', branches: [[name: "refs/heads/${params.BRANCH}"]], extensions: [[$class: 'WipeWorkspace']], userRemoteConfigs: [[url: 'https://github.com/Graylog2/graylog-docker.git']]])
+           }
+
             //update version.yml
+            //sh './release.py --update-major-version 4 --update-minor-version 2 --update-patch-version 2'
 
             env.GRAYLOG_VERSION = sh returnStdout: true, script: './release.py --get-graylog-version'
             env.FORWARDER_VERSION = sh returnStdout: true, script: './release.py --get-forwarder-version'
 
-            //generate README.md
             sh './release.py --generate-readme'
 
             //commit changes
@@ -42,9 +47,10 @@ pipeline
       {
         steps
         {
-          //checkout git tag
-
-
+          script
+          {
+            checkout([$class: 'GitSCM', branches: [[name: "refs/heads/${params.TAG_NAME}"]], extensions: [[$class: 'WipeWorkspace']], userRemoteConfigs: [[url: 'https://github.com/Graylog2/graylog-docker.git']]])
+          }
 
           script
           {

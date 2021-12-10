@@ -11,7 +11,7 @@ pipeline
 
    parameters
    {
-     string(name: 'TAG_NAME', description: 'The git tag to add to the graylog-docker repo (4.2.2-1, 4.3.0-1, etc).')
+     string(name: 'TAG_NAME', description: 'The git tag to add to the graylog-docker repo (4.2.2-1, 4.3.0-1, forwarder-4.4-2, etc).')
      gitParameter branchFilter: 'origin/(.*)', defaultValue: '4.2', selectedValue: 'DEFAULT', name: 'BRANCH', type: 'PT_BRANCH', sortMode: 'DESCENDING_SMART', description: 'The branch of graylog-docker that should be checked out (4.1, 4.2, master, etc).'
    }
 
@@ -86,9 +86,9 @@ pipeline
               {
                 //This is an alpha/beta/rc release, so don't update the version tags
                 TAG_ARGS_ARM              = "--tag graylog/graylog:${params.TAG_NAME}-arm64"
-                TAG_ARGS_ARM_ENTERPRISE   = "--tag graylog/graylog-enterprise:${env.TAG_NAME}-arm64"
+                TAG_ARGS_ARM_ENTERPRISE   = "--tag graylog/graylog-enterprise:${params.TAG_NAME}-arm64"
                 TAG_ARGS_JRE11            = "--tag graylog/graylog:${params.TAG_NAME}-jre11"
-                TAG_ARGS_JRE11_ENTERPRISE = "--tag graylog/graylog-enterprise:${env.TAG_NAME}-jre11"
+                TAG_ARGS_JRE11_ENTERPRISE = "--tag graylog/graylog-enterprise:${params.TAG_NAME}-jre11"
               }
 
               docker.withRegistry('', 'docker-hub')

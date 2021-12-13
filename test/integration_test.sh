@@ -51,7 +51,7 @@ compose_up() {
 
   cat << EOF > .env
 VCS_REF=$(git rev-parse --short HEAD)
-GRAYLOG_VERSION=$(cat ${PWD}/../VERSION)
+GRAYLOG_VERSION=$(cd .. && ./release.py --get-graylog-version)
 EOF
 
   docker-compose --file docker-compose.tpl config  > ./docker-compose.yml

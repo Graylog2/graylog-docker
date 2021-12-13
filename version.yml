@@ -4,5 +4,5 @@ graylog:
   patch_version: 3
   release: 1
 forwarder:
-  version: 4.4
+  version: 4.5
   release: 1

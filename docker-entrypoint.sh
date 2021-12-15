@@ -49,11 +49,6 @@ for VAR_NAME in $(env | grep '^GRAYLOG_[^=]\+__FILE=.\+' | sed -r 's/^(GRAYLOG_[
 done
 
 
-
-if [ "${1:0:1}" = '-' ]; then
-  set -- graylog "$@"
-fi
-
 # Delete outdated PID file
 [[ -e /tmp/graylog.pid ]] && rm --force /tmp/graylog.pid
 
@@ -113,13 +108,19 @@ graylog() {
     -Djava.library.path="${GRAYLOG_HOME}/lib/sigar/" \
     -Dgraylog2.installation_source=docker \
     "${GRAYLOG_HOME}/graylog.jar" \
-    server \
+    "$@" \
     -f "${GRAYLOG_HOME}/data/config/graylog.conf"
 }
 
 run() {
   setup
-  graylog
+
+  # if being called without an argument assume "server" for backwards compatibility
+  if [ $# = 0 ]; then
+    graylog server "$@"
+  fi
+
+  graylog "$@"
 }
 
-run
+run "$@"

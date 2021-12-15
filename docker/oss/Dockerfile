@@ -5,6 +5,9 @@ FROM debian:bullseye-slim as graylog-downloader
 
 ARG VCS_REF
 ARG GRAYLOG_VERSION
+ARG GRAYLOG_HOME=/usr/share/graylog
+ARG GRAYLOG_UID=1100
+ARG GRAYLOG_GID=1100
 
 WORKDIR /tmp
 
@@ -15,38 +18,15 @@ RUN \
     ca-certificates \
     curl > /dev/null
 
-RUN \
-  curl \
-    --silent \
-    --location \
-    --retry 3 \
-    --output "/tmp/graylog-${GRAYLOG_VERSION}.tgz" \
-    "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz"
+COPY build/fetch-and-extract.sh /bin/fetch-and-extract
+RUN chmod +x /bin/fetch-and-extract
 
-RUN \
-  curl \
-    --silent \
-    --location \
-    --retry 3 \
-    --output "/tmp/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
-    "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt"
-
-RUN \
-  sha256sum --check "graylog-${GRAYLOG_VERSION}.tgz.sha256.txt"
-
-RUN \
-  mkdir /opt/graylog && \
-  tar --extract --gzip --file "/tmp/graylog-${GRAYLOG_VERSION}.tgz" --strip-components=1 --directory /opt/graylog
-
-RUN \
-  curl \
-    --silent \
-    --location \
-    --retry 3 \
-    --output "/tmp/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz" \
+RUN fetch-and-extract \
+    "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz" \
+    "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt" \
+    "https://packages.graylog2.org/releases/graylog/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz" \
     "https://downloads.graylog.org/releases/graylog-integrations/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz"
 
-RUN tar --extract --gzip --file "/tmp/graylog-integrations-plugins-${GRAYLOG_VERSION}.tgz" --strip-components=1 --directory /opt/graylog
 
 RUN \
   install \
@@ -58,6 +38,13 @@ RUN \
     /opt/graylog/data/config \
     /opt/graylog/data/plugin \
     /opt/graylog/data/data
+
+RUN mv /opt/graylog ${GRAYLOG_HOME} && chown -R ${GRAYLOG_UID}:${GRAYLOG_GID} ${GRAYLOG_HOME}
+RUN mv ${GRAYLOG_HOME}/plugin ${GRAYLOG_HOME}/plugins-default
+RUN install -d -o "${GRAYLOG_UID}" -g "${GRAYLOG_GID}" -m 0755 ${GRAYLOG_HOME}/plugins-merged
+RUN install -d -o "${GRAYLOG_UID}" -g "${GRAYLOG_GID}" -m 0755 ${GRAYLOG_HOME}/plugin
+
+COPY config ${GRAYLOG_HOME}/data/config
 
 # -------------------------------------------------------------------------------------------------
 #
@@ -75,9 +62,7 @@ ARG GRAYLOG_GROUP=graylog
 ARG GRAYLOG_GID=1100
 ARG JAVA_VERSION_MAJOR
 
-COPY --from=graylog-downloader /opt/graylog ${GRAYLOG_HOME}
-COPY config ${GRAYLOG_HOME}/data/config
-
+COPY --chown=${GRAYLOG_UID}:${GRAYLOG_GID} --from=graylog-downloader ${GRAYLOG_HOME} ${GRAYLOG_HOME}
 
 WORKDIR ${GRAYLOG_HOME}
 
@@ -117,7 +102,6 @@ RUN \
     --gid "${GRAYLOG_GID}" \
     --quiet \
     "${GRAYLOG_USER}" && \
-  chown --recursive "${GRAYLOG_USER}":"${GRAYLOG_GROUP}" ${GRAYLOG_HOME} && \
   setcap 'cap_net_bind_service=+ep' "${JAVA_HOME}/bin/java" && \
   apt-get remove --assume-yes --purge \
     apt-utils > /dev/null && \
@@ -132,10 +116,6 @@ RUN \
     /usr/share/X11 \
     /usr/share/doc/* 2> /dev/null
 
-RUN mv ${GRAYLOG_HOME}/plugin ${GRAYLOG_HOME}/plugins-default
-RUN install -d -o "${GRAYLOG_USER}" -g "${GRAYLOG_GROUP}" -m 0755 ${GRAYLOG_HOME}/plugins-merged
-RUN install -d -o "${GRAYLOG_USER}" -g "${GRAYLOG_GROUP}" -m 0755 ${GRAYLOG_HOME}/plugin
-
 COPY docker-entrypoint.sh /
 COPY health_check.sh /
 
@@ -143,7 +123,7 @@ EXPOSE 9000
 USER ${GRAYLOG_USER}
 VOLUME ${GRAYLOG_HOME}/data
 ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
-CMD ["graylog"]
+CMD ["server"]
 
 # add healthcheck
 HEALTHCHECK \

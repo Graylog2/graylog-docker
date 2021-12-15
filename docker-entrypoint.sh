@@ -115,6 +115,11 @@ graylog() {
 run() {
   setup
 
+  # if being called without an argument assume "server" for backwards compatibility
+  if [ $# = 0 ]; then
+    graylog server "$@"
+  fi
+
   graylog "$@"
 }
 

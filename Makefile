@@ -5,8 +5,8 @@ default: docker_build
 
 docker_build:
 	cd docker/oss; hooks/build
-	IMAGE_NAME=graylog-enterprise; cd docker/enterprise; hooks/build
-	IMAGE_NAME=graylog-forwarder; cd docker/forwarder; hooks/build
+	cd docker/enterprise && IMAGE_NAME=graylog-enterprise hooks/build
+	cd docker/forwarder && IMAGE_NAME=graylog-forwarder hooks/build
 
 linter:
 	@test/linter.sh

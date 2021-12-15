@@ -28,9 +28,13 @@ pipeline
 
             //update version.yml
 
-            parsed_versions = readYaml file: "version.yml"
-            parsed_versions.graylog.patch_version = "4"
-            writeYaml file: 'version-test.yml', data: mydata
+            script
+            {
+              parsed_versions = readYaml file: "version.yml"
+              parsed_versions.graylog.patch_version = "4"
+              writeYaml file: 'version-test.yml', data: mydata
+            }
+
             sh 'cat version-test.yml'
 
             //sh './release.py --update-major-version 4 --update-minor-version 2 --update-patch-version 2'

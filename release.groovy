@@ -33,15 +33,15 @@ pipeline
               parsed_versions = readYaml file: "version.yml"
               parsed_versions.graylog.patch_version = "4"
               writeYaml file: 'version-test.yml', data: mydata
+
+              //sh './release.py --update-major-version 4 --update-minor-version 2 --update-patch-version 2'
+
+              env.GRAYLOG_VERSION = sh returnStdout: true, script: './release.py --get-graylog-version'
+              env.FORWARDER_VERSION = sh returnStdout: true, script: './release.py --get-forwarder-version'
             }
 
             sh 'cat version-test.yml'
-
-            //sh './release.py --update-major-version 4 --update-minor-version 2 --update-patch-version 2'
-
-            env.GRAYLOG_VERSION = sh returnStdout: true, script: './release.py --get-graylog-version'
-            env.FORWARDER_VERSION = sh returnStdout: true, script: './release.py --get-forwarder-version'
-
+            sh '---'
             sh "echo ${GRAYLOG_VERSION}"
             sh "echo ${FORWARDER_VERSION}"
 

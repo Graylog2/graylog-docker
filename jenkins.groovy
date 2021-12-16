@@ -98,7 +98,7 @@ pipeline
                     docker buildx build \
                       --platform linux/arm64/v8 \
                       --no-cache \
-                      --build-arg GRAYLOG_VERSION=\$(cat VERSION) \
+                      --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                       ${TAG_ARGS_ARM} \
                       --file docker/oss/Dockerfile \
@@ -110,7 +110,7 @@ pipeline
                     docker buildx build \
                       --platform linux/arm64/v8 \
                       --no-cache \
-                      --build-arg GRAYLOG_VERSION=\$(cat VERSION) \
+                      --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                       ${TAG_ARGS_ARM_ENTERPRISE} \
                       --file docker/enterprise/Dockerfile \
@@ -122,7 +122,7 @@ pipeline
                     docker buildx build \
                       --platform linux/amd64,linux/arm64/v8 \
                       --no-cache \
-                      --build-arg GRAYLOG_VERSION=\$(cat VERSION) \
+                      --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
                       --build-arg JAVA_VERSION_MAJOR=11 \
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                       ${TAG_ARGS_JRE11} \
@@ -135,7 +135,7 @@ pipeline
                   docker buildx build \
                     --platform linux/amd64,linux/arm64/v8 \
                     --no-cache \
-                    --build-arg GRAYLOG_VERSION=\$(cat VERSION) \
+                    --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
                     --build-arg JAVA_VERSION_MAJOR=11 \
                     --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                     ${TAG_ARGS_JRE11_ENTERPRISE} \
@@ -165,7 +165,7 @@ pipeline
                   docker buildx build \
                     --platform linux/arm64/v8 \
                     --no-cache \
-                    --build-arg GRAYLOG_FORWARDER_PACKAGE_VERSION=\$(cat VERSION_FORWARDER_PACKAGE) \
+                    --build-arg GRAYLOG_FORWARDER_PACKAGE_VERSION=\$(./release.py --get-forwarder-version) \
                     --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                     --tag graylog/graylog-forwarder:${env.TAG_NAME}-arm64 \
                     --tag graylog/graylog-forwarder:${MAJOR}.${MINOR}-arm64 \

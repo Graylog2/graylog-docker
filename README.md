@@ -21,7 +21,7 @@ This is the open source [Graylog ](https://hub.docker.com/r/graylog/graylog/) im
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 8  | `linux/amd64` | `4.2`, `4.2.4`, `4.2.4-1` |
+| OpenJDK 8  | `linux/amd64`, `linux/arm64` | `4.2`, `4.2.4`, `4.2.4-1` |
 | OpenJDK 11  | `linux/amd64`, `linux/arm64`  | `4.2-jre11`, `4.2.4-jre11`, `4.2.4-1-jre11`  |
 
 > Note: There is no 'latest' tag. You'll need to specify which version you want.
@@ -32,7 +32,7 @@ This is the [Graylog Enterprise](https://hub.docker.com/r/graylog/graylog-enterp
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 8  | `linux/amd64` | `4.2`, `4.2.4`, `4.2.4-1` |
+| OpenJDK 8  | `linux/amd64`, `linux/arm64` | `4.2`, `4.2.4`, `4.2.4-1` |
 | OpenJDK 11  | `linux/amd64`, `linux/arm64`  | `4.2-jre11`, `4.2.4-jre11`, `4.2.4-1-jre11`  |
 
 

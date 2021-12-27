@@ -4,5 +4,5 @@ graylog:
   patch_version: 15
   release: 1
 forwarder:
-  version: 4.0.7
-  release: 20210414144810
+  version: 4.0.6
+  release: 20210326184330

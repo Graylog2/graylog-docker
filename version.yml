@@ -5,4 +5,4 @@ graylog:
   release: 1
 forwarder:
   version: 4.1
-  release: 2
+  release: 5

@@ -108,7 +108,7 @@ pipeline
 
                 sh """
                     docker buildx build \
-                      --platform linux/amd64,linux/arm64/v8 \
+                      --platform linux/amd64 \
                       --no-cache \
                       --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
@@ -133,7 +133,7 @@ pipeline
 
                 sh """
                   docker buildx build \
-                    --platform linux/amd64,linux/arm64/v8 \
+                    --platform linux/amd64 \
                     --no-cache \
                     --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
                     --build-arg JAVA_VERSION_MAJOR=11 \

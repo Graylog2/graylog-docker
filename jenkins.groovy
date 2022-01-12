@@ -65,13 +65,13 @@ pipeline
               //Is the revision suffix just a number?
               if (TAG_NAME =~ /^([4-9]|\d{2,}).([0-9]+).([0-9]+)-([0-9]+)$/)
               {
-                TAG_ARGS_ARM              = """--tag graylog/graylog:${env.TAG_NAME}-arm64 \
-                                            --tag graylog/graylog:${MAJOR}.${MINOR}.${PATCH}-arm64 \
-                                            --tag graylog/graylog:${MAJOR}.${MINOR}-arm64"""
+                TAG_ARGS                  = """--tag graylog/graylog:${env.TAG_NAME} \
+                                            --tag graylog/graylog:${MAJOR}.${MINOR}.${PATCH} \
+                                            --tag graylog/graylog:${MAJOR}.${MINOR}"""
 
-                TAG_ARGS_ARM_ENTERPRISE   = """--tag graylog/graylog-enterprise:${env.TAG_NAME}-arm64 \
-                                             --tag graylog/graylog-enterprise:${MAJOR}.${MINOR}.${PATCH}-arm64 \
-                                             --tag graylog/graylog-enterprise:${MAJOR}.${MINOR}-arm64"""
+                TAG_ARGS_ENTERPRISE       = """--tag graylog/graylog-enterprise:${env.TAG_NAME} \
+                                             --tag graylog/graylog-enterprise:${MAJOR}.${MINOR}.${PATCH} \
+                                             --tag graylog/graylog-enterprise:${MAJOR}.${MINOR}"""
                 TAG_ARGS_JRE11            = """--tag graylog/graylog:${env.TAG_NAME}-jre11 \
                                              --tag graylog/graylog:${MAJOR}.${MINOR}.${PATCH}-jre11 \
                                              --tag graylog/graylog:${MAJOR}.${MINOR}-jre11"""
@@ -83,8 +83,8 @@ pipeline
               else
               {
                 //This is an alpha/beta/rc release, so don't update the version tags
-                TAG_ARGS_ARM              = "--tag graylog/graylog:${env.TAG_NAME}-arm64"
-                TAG_ARGS_ARM_ENTERPRISE   = "--tag graylog/graylog-enterprise:${env.TAG_NAME}-arm64"
+                TAG_ARGS                  = "--tag graylog/graylog:${env.TAG_NAME}"
+                TAG_ARGS_ENTERPRISE       = "--tag graylog/graylog-enterprise:${env.TAG_NAME}"
                 TAG_ARGS_JRE11            = "--tag graylog/graylog:${env.TAG_NAME}-jre11"
                 TAG_ARGS_JRE11_ENTERPRISE = "--tag graylog/graylog-enterprise:${env.TAG_NAME}-jre11"
               }
@@ -96,11 +96,11 @@ pipeline
                 sh 'docker buildx inspect --bootstrap'
                 sh """
                     docker buildx build \
-                      --platform linux/arm64/v8 \
+                      --platform linux/amd64,linux/arm64/v8 \
                       --no-cache \
                       --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
-                      ${TAG_ARGS_ARM} \
+                      ${TAG_ARGS} \
                       --file docker/oss/Dockerfile \
                       --push \
                       .
@@ -108,11 +108,11 @@ pipeline
 
                 sh """
                     docker buildx build \
-                      --platform linux/arm64/v8 \
+                      --platform linux/amd64 \
                       --no-cache \
                       --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
-                      ${TAG_ARGS_ARM_ENTERPRISE} \
+                      ${TAG_ARGS_ENTERPRISE} \
                       --file docker/enterprise/Dockerfile \
                       --push \
                       .
@@ -133,7 +133,7 @@ pipeline
 
                 sh """
                   docker buildx build \
-                    --platform linux/amd64,linux/arm64/v8 \
+                    --platform linux/amd64 \
                     --no-cache \
                     --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
                     --build-arg JAVA_VERSION_MAJOR=11 \
@@ -163,7 +163,7 @@ pipeline
                   docker buildx create --name multiarch --driver docker-container --use | true
                   docker buildx inspect --bootstrap
                   docker buildx build \
-                    --platform linux/arm64/v8 \
+                    --platform linux/amd64,linux/arm64/v8 \
                     --no-cache \
                     --build-arg GRAYLOG_FORWARDER_PACKAGE_VERSION=\$(./release.py --get-forwarder-version) \
                     --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \

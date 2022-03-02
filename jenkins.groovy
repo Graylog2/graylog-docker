@@ -107,15 +107,17 @@ pipeline
                 """
 
                 sh """
-                    docker buildx build \
+                    docker build \
                       --platform linux/amd64 \
                       --no-cache \
                       --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                       ${TAG_ARGS_ENTERPRISE} \
                       --file docker/enterprise/Dockerfile \
-                      --push \
                       .
+                      docker push graylog/graylog-enterprise:${env.TAG_NAME}
+                      docker push graylog/graylog-enterprise:${MAJOR}.${MINOR}.${PATCH}
+                      docker push graylog/graylog-enterprise:${MAJOR}.${MINOR}
                 """
 
                 sh """
@@ -132,7 +134,7 @@ pipeline
                 """
 
                 sh """
-                  docker buildx build \
+                  docker build \
                     --platform linux/amd64 \
                     --no-cache \
                     --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
@@ -140,8 +142,10 @@ pipeline
                     --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                     ${TAG_ARGS_JRE11_ENTERPRISE} \
                     --file docker/enterprise/Dockerfile \
-                    --push \
                     .
+                    docker push graylog/graylog-enterprise:${env.TAG_NAME}-jre11
+                    docker push graylog/graylog-enterprise:${MAJOR}.${MINOR}.${PATCH}-jre11
+                    docker push graylog/graylog-enterprise:${MAJOR}.${MINOR}-jre11
                 """
               }
             }

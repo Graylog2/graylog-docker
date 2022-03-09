@@ -113,7 +113,7 @@ pipeline
                 {
                   // Since 4.3 we build multi-platform images for Enterprise
                   sh """
-                      docker buildx \
+                      docker buildx build \
                         --platform linux/amd64,linux/arm64/v8 \
                         --no-cache \
                         --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
@@ -160,7 +160,7 @@ pipeline
                 {
                   // Since 4.3 we build multi-platform images for Enterprise
                   sh """
-                    docker buildx \
+                    docker buildx build \
                       --platform linux/amd64,linux/arm64/v8 \
                       --no-cache \
                       --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \

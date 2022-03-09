@@ -3,3 +3,4 @@ test/.env
 
 test/docker-compose.yml
 cert.pem
+/venv/

@@ -62,6 +62,9 @@ pipeline
               echo "MINOR: ${MINOR}"
               echo "PATCH: ${PATCH}"
 
+              MAJOR_INT = MAJOR as Integer
+              MINOR_INT = MINOR as Integer
+
               //Is the revision suffix just a number?
               if (TAG_NAME =~ /^([4-9]|\d{2,}).([0-9]+).([0-9]+)-([0-9]+)$/)
               {
@@ -106,19 +109,39 @@ pipeline
                       .
                 """
 
-                sh """
-                    docker build \
-                      --platform linux/amd64 \
-                      --no-cache \
-                      --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
-                      --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
-                      ${TAG_ARGS_ENTERPRISE} \
-                      --file docker/enterprise/Dockerfile \
-                      .
-                      docker push graylog/graylog-enterprise:${env.TAG_NAME}
-                      docker push graylog/graylog-enterprise:${MAJOR}.${MINOR}.${PATCH}
-                      docker push graylog/graylog-enterprise:${MAJOR}.${MINOR}
-                """
+                if (MAJOR_INT >= 4 && MINOR_INT >= 3)
+                {
+                  // Since 4.3 we build multi-platform images for Enterprise
+                  sh """
+                      docker buildx \
+                        --platform linux/amd64,linux/arm64/v8 \
+                        --no-cache \
+                        --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
+                        --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
+                        ${TAG_ARGS_ENTERPRISE} \
+                        --file docker/enterprise/Dockerfile \
+                        --push \
+                        .
+                  """
+                }
+                else
+                {
+                  // Using buildx for a single platform always threw a
+                  // HTTP 401 error during upload so we use build instead.
+                  sh """
+                      docker build \
+                        --platform linux/amd64 \
+                        --no-cache \
+                        --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
+                        --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
+                        ${TAG_ARGS_ENTERPRISE} \
+                        --file docker/enterprise/Dockerfile \
+                        .
+                        docker push graylog/graylog-enterprise:${env.TAG_NAME}
+                        docker push graylog/graylog-enterprise:${MAJOR}.${MINOR}.${PATCH}
+                        docker push graylog/graylog-enterprise:${MAJOR}.${MINOR}
+                  """
+                }
 
                 sh """
                     docker buildx build \
@@ -133,20 +156,41 @@ pipeline
                       .
                 """
 
-                sh """
-                  docker build \
-                    --platform linux/amd64 \
-                    --no-cache \
-                    --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
-                    --build-arg JAVA_VERSION_MAJOR=11 \
-                    --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
-                    ${TAG_ARGS_JRE11_ENTERPRISE} \
-                    --file docker/enterprise/Dockerfile \
-                    .
-                    docker push graylog/graylog-enterprise:${env.TAG_NAME}-jre11
-                    docker push graylog/graylog-enterprise:${MAJOR}.${MINOR}.${PATCH}-jre11
-                    docker push graylog/graylog-enterprise:${MAJOR}.${MINOR}-jre11
-                """
+                if (MAJOR_INT >= 4 && MINOR_INT >= 3)
+                {
+                  // Since 4.3 we build multi-platform images for Enterprise
+                  sh """
+                    docker buildx \
+                      --platform linux/amd64,linux/arm64/v8 \
+                      --no-cache \
+                      --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
+                      --build-arg JAVA_VERSION_MAJOR=11 \
+                      --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
+                      ${TAG_ARGS_JRE11_ENTERPRISE} \
+                      --file docker/enterprise/Dockerfile \
+                      --push \
+                      .
+                  """
+                }
+                else
+                {
+                  // Using buildx for a single platform always threw a
+                  // HTTP 401 error during upload so we use build instead.
+                  sh """
+                    docker build \
+                      --platform linux/amd64 \
+                      --no-cache \
+                      --build-arg GRAYLOG_VERSION=\$(./release.py --get-graylog-version) \
+                      --build-arg JAVA_VERSION_MAJOR=11 \
+                      --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
+                      ${TAG_ARGS_JRE11_ENTERPRISE} \
+                      --file docker/enterprise/Dockerfile \
+                      .
+                      docker push graylog/graylog-enterprise:${env.TAG_NAME}-jre11
+                      docker push graylog/graylog-enterprise:${MAJOR}.${MINOR}.${PATCH}-jre11
+                      docker push graylog/graylog-enterprise:${MAJOR}.${MINOR}-jre11
+                  """
+                }
               }
             }
 

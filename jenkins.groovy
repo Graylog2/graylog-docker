@@ -225,7 +225,8 @@ pipeline
                   docker buildx build \
                     --platform linux/amd64,linux/arm64/v8 \
                     --no-cache \
-                    --build-arg GRAYLOG_FORWARDER_PACKAGE_VERSION=\$(./release.py --get-forwarder-version) \
+                    --build-arg GRAYLOG_FORWARDER_VERSION=\$(./release.py --get-forwarder-version) \
+                    --build-arg GRAYLOG_FORWARDER_IMAGE_VERSION=\$(./release.py --get-forwarder-image-version) \
                     --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                     ${TAG_ARGS} \
                     --file docker/forwarder/Dockerfile \

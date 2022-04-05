@@ -21,5 +21,9 @@ for VAR_NAME in $(env | grep '^GRAYLOG_[^=]\+__FILE=.\+' | sed -r 's/^(GRAYLOG_[
   unset "${VAR_NAME_FILE}"
 done
 
+# Create data and journal dir explicitly because FORWARDER_DATA_DIR could
+# be mounted to an empty volume.
+/usr/bin/install -d -o root -g root -m 0755 "$GRAYLOG_DATA_DIR"
+/usr/bin/install -d -o root -g root -m 0755 "$GRAYLOG_MESSAGE_JOURNAL_DIR"
 
-exec /usr/share/graylog-forwarder/bin/graylog-forwarder run -f /etc/graylog/forwarder/forwarder.conf
+exec "${GRAYLOG_BIN_DIR}/graylog-forwarder" run -f "$FORWARDER_CONFIG_FILE"

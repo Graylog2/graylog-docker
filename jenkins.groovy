@@ -52,6 +52,7 @@ pipeline
 
           script
           {
+            // Building Graylog (no tag suffix)
             if (TAG_NAME =~ /^(?:[4-9]|\\d{2,}).[0-9]+.[0-9]+-(?:[0-9]+|alpha|beta|rc).*/)
             {
               PARSED_VERSION = parse_version(TAG_NAME)
@@ -194,35 +195,44 @@ pipeline
               }
             }
 
+            // Building the Forwarder (always a "forwarder-" tag suffix)
             if (TAG_NAME =~ /forwarder-.*/)
             {
               PARSED_VERSION = parse_forwarder_version(TAG_NAME)
               MAJOR = PARSED_VERSION[0]
               MINOR = PARSED_VERSION[1]
-              PATCH = PARSED_VERSION[2]
+              CLEAN_TAG = TAG_NAME.replaceFirst("^forwarder-", "")
               echo "MAJOR: ${MAJOR}"
               echo "MINOR: ${MINOR}"
-              echo "PATCH: ${PATCH}"
+
+              IMAGE_NAME = "graylog/graylog-forwarder"
+
+              TAG_ARGS = "--tag ${IMAGE_NAME}:${CLEAN_TAG}"
+
+              if (TAG_NAME =~ /^forwarder-\d+.\d+-\d+$/)
+              {
+                // If we build a GA release (no alpha/beta/rc), we also add
+                // the simple version tag.
+                TAG_ARGS += " --tag ${IMAGE_NAME}:${MAJOR}.${MINOR}"
+              }
 
               docker.withRegistry('', 'docker-hub')
               {
+                sh 'docker run --rm --privileged multiarch/qemu-user-static --reset -p yes'
+                sh 'docker buildx create --name multiarch --driver docker-container --use | true'
+                sh 'docker buildx inspect --bootstrap'
                 sh """
-                  docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-                  docker buildx create --name multiarch --driver docker-container --use | true
-                  docker buildx inspect --bootstrap
                   docker buildx build \
                     --platform linux/amd64,linux/arm64/v8 \
                     --no-cache \
                     --build-arg GRAYLOG_FORWARDER_PACKAGE_VERSION=\$(./release.py --get-forwarder-version) \
                     --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
-                    --tag graylog/graylog-forwarder:${env.TAG_NAME}-arm64 \
-                    --tag graylog/graylog-forwarder:${MAJOR}.${MINOR}-arm64 \
+                    ${TAG_ARGS} \
                     --file docker/forwarder/Dockerfile \
                     --push \
                     .
                 """
               }
-
             }
           }
         }
@@ -255,7 +265,11 @@ def parse_forwarder_version(version)
 {
   if (version)
   {
-    def pattern = /^forwarder-([0-9]+).([0-9]+)-([0-9]+)$/
+    // Matches the following version patterns:
+    //
+    //   forwarder-4.8-1
+    //   forwarder-4.8-rc.1-1
+    def pattern = /^forwarder-([0-9]+).([0-9]+)-?(?:[^-]+)?-([0-9]+)$/
     def matcher = java.util.regex.Pattern.compile(pattern).matcher(version)
 
     if (matcher.find()) {

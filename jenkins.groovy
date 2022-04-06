@@ -106,6 +106,7 @@ pipeline
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                       ${TAG_ARGS} \
                       --file docker/oss/Dockerfile \
+                      --pull \
                       --push \
                       .
                 """
@@ -121,6 +122,7 @@ pipeline
                         --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                         ${TAG_ARGS_ENTERPRISE} \
                         --file docker/enterprise/Dockerfile \
+                        --pull \
                         --push \
                         .
                   """
@@ -153,6 +155,7 @@ pipeline
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                       ${TAG_ARGS_JRE11} \
                       --file docker/oss/Dockerfile \
+                      --pull \
                       --push \
                       .
                 """
@@ -169,6 +172,7 @@ pipeline
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                       ${TAG_ARGS_JRE11_ENTERPRISE} \
                       --file docker/enterprise/Dockerfile \
+                      --pull \
                       --push \
                       .
                   """
@@ -230,6 +234,7 @@ pipeline
                     --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                     ${TAG_ARGS} \
                     --file docker/forwarder/Dockerfile \
+                    --pull \
                     --push \
                     .
                 """

@@ -106,6 +106,7 @@ pipeline
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                       ${TAG_ARGS} \
                       --file docker/oss/Dockerfile \
+                      --pull \
                       --push \
                       .
                 """
@@ -121,6 +122,7 @@ pipeline
                         --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                         ${TAG_ARGS_ENTERPRISE} \
                         --file docker/enterprise/Dockerfile \
+                        --pull \
                         --push \
                         .
                   """
@@ -137,6 +139,7 @@ pipeline
                         --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                         ${TAG_ARGS_ENTERPRISE} \
                         --file docker/enterprise/Dockerfile \
+                        --pull \
                         .
                         docker push graylog/graylog-enterprise:${env.TAG_NAME}
                         docker push graylog/graylog-enterprise:${MAJOR}.${MINOR}.${PATCH}
@@ -153,6 +156,7 @@ pipeline
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                       ${TAG_ARGS_JRE11} \
                       --file docker/oss/Dockerfile \
+                      --pull \
                       --push \
                       .
                 """
@@ -169,6 +173,7 @@ pipeline
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                       ${TAG_ARGS_JRE11_ENTERPRISE} \
                       --file docker/enterprise/Dockerfile \
+                      --pull \
                       --push \
                       .
                   """
@@ -186,6 +191,7 @@ pipeline
                       --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                       ${TAG_ARGS_JRE11_ENTERPRISE} \
                       --file docker/enterprise/Dockerfile \
+                      --pull \
                       .
                       docker push graylog/graylog-enterprise:${env.TAG_NAME}-jre11
                       docker push graylog/graylog-enterprise:${MAJOR}.${MINOR}.${PATCH}-jre11
@@ -230,6 +236,7 @@ pipeline
                     --build-arg BUILD_DATE=\$(date -u +\"%Y-%m-%dT%H:%M:%SZ\") \
                     ${TAG_ARGS} \
                     --file docker/forwarder/Dockerfile \
+                    --pull \
                     --push \
                     .
                 """

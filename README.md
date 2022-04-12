@@ -1,6 +1,6 @@
 # Graylog Docker Image
 
-Latest stable version of Graylog is *3.3.16* this Version is available with the tags `3.3` or `3.3.16-1`.
+Latest stable version of Graylog is *3.3.17* this Version is available with the tags `3.3` or `3.3.17-1`.
 
 [![Build Status](https://travis-ci.org/Graylog2/graylog-docker.svg?branch=3.3)](https://travis-ci.org/Graylog2/graylog-docker) [![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub] [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub]
 

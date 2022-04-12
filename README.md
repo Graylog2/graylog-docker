@@ -4,7 +4,7 @@
 
 [hub]: https://hub.docker.com/r/graylog/graylog/
 
-The latest stable version of Graylog is **`4.0.15`**.
+The latest stable version of Graylog is **`4.0.16`**.
 
 ## What is Graylog?
 
@@ -21,10 +21,8 @@ This is the open source [Graylog ](https://hub.docker.com/r/graylog/graylog/) im
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 11  | `linux/amd64`, `linux/arm64`  | `4.0-jre11`, `4.0.15-jre11`, `4.0.15-1-jre11`  |
-| OpenJDK 8  | `linux/amd64` | `4.0`, `4.0.15`, `4.0.15-1` |
-| OpenJDK 8  | `linux/arm64` | `4.0-arm64`, `4.0.15-arm64`, `4.0.15-1-arm64` |
-
+| OpenJDK 8  | `linux/amd64`, `linux/arm64` | `4.0`, `4.0.16`, `4.0.16-1` |
+| OpenJDK 11  | `linux/amd64`, `linux/arm64`  | `4.0-jre11`, `4.0.16-jre11`, `4.0.16-1-jre11`  |
 
 > Note: There is no 'latest' tag. You'll need to specify which version you want.
 
@@ -34,9 +32,8 @@ This is the [Graylog Enterprise](https://hub.docker.com/r/graylog/graylog-enterp
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 11  | `linux/amd64`, `linux/arm64`  | `4.0-jre11`, `4.0.15-jre11`, `4.0.15-1-jre11`  |
-| OpenJDK 8  | `linux/amd64` | `4.0`, `4.0.15`, `4.0.15-1` |
-| OpenJDK 8  | `linux/arm64` | `4.0-arm64`, `4.0.15-arm64`, `4.0.15-1-arm64` |
+| OpenJDK 8  | `linux/amd64` | `4.0`, `4.0.16`, `4.0.16-1` |
+| OpenJDK 11  | `linux/amd64` | `4.0-jre11`, `4.0.16-jre11`, `4.0.16-1-jre11`  |
 
 
 #### `graylog/graylog-forwarder`
@@ -47,7 +44,7 @@ The latest stable version is **`4.0.6`**, with support for Java 8 on platform `l
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 8 | `linux/amd64` | `4.0.6`, `forwarder-4.0.6-20210326184330` |
+| OpenJDK 8 | `linux/amd64`, `linux/arm64` | `4.0.6`, `forwarder-4.0.6-20210326184330` |
 
 
 ## Architecture

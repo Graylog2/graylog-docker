@@ -4,7 +4,7 @@
 
 [hub]: https://hub.docker.com/r/graylog/graylog/
 
-The latest stable version of Graylog is **`4.3.0-rc.2`**.
+The latest stable version of Graylog is **`4.3.0-rc.3`**.
 
 ## What is Graylog?
 
@@ -21,8 +21,8 @@ This is the open source [Graylog ](https://hub.docker.com/r/graylog/graylog/) im
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 8  | `linux/amd64`, `linux/arm64` | `4.3`, `4.3.0-rc.2`, `4.3.0-rc.2-2` |
-| OpenJDK 11  | `linux/amd64`, `linux/arm64`  | `4.3-jre11`, `4.3.0-rc.2-jre11`, `4.3.0-rc.2-2-jre11`  |
+| OpenJDK 8  | `linux/amd64`, `linux/arm64` | `4.3`, `4.3.0-rc.3`, `4.3.0-rc.3-1` |
+| OpenJDK 11  | `linux/amd64`, `linux/arm64`  | `4.3-jre11`, `4.3.0-rc.3-jre11`, `4.3.0-rc.3-1-jre11`  |
 
 > Note: There is no 'latest' tag. You'll need to specify which version you want.
 
@@ -32,8 +32,8 @@ This is the [Graylog Enterprise](https://hub.docker.com/r/graylog/graylog-enterp
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 8  | `linux/amd64` | `4.3`, `4.3.0-rc.2`, `4.3.0-rc.2-2` |
-| OpenJDK 11  | `linux/amd64` | `4.3-jre11`, `4.3.0-rc.2-jre11`, `4.3.0-rc.2-2-jre11`  |
+| OpenJDK 8  | `linux/amd64` | `4.3`, `4.3.0-rc.3`, `4.3.0-rc.3-1` |
+| OpenJDK 11  | `linux/amd64` | `4.3-jre11`, `4.3.0-rc.3-jre11`, `4.3.0-rc.3-1-jre11`  |
 
 
 #### `graylog/graylog-forwarder`

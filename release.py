@@ -14,6 +14,7 @@ parser.add_argument('--get-forwarder-image-version',
                     help="Get Forwarder image version.", action='store_true')
 parser.add_argument('--generate-readme',
                     help="Generate a new README.md with the latest tags", action='store_true')
+parser.add_argument('--template', type=str)
 
 if len(sys.argv) == 1:
     parser.print_help(sys.stderr)
@@ -36,9 +37,15 @@ with open('version.yml', 'r') as version_file:
               str(version_parsed['forwarder']['release']), end='')
 
     if args.generate_readme:
-        from jinja2 import Template
-        with open('README.j2', 'r') as template_file:
-            j2_template = Template(template_file.read())
+        template_file = args.template
+
+        if not template_file:
+            print('ERROR: Missing --template option')
+            sys.exit(1)
+
+        from jinja2 import Environment, FileSystemLoader
+        env = Environment(loader=FileSystemLoader('.'))
+        j2_template = env.get_template(template_file)
 
         with open("README.md", "w") as readme_file:
             readme_file.write(j2_template.render(version_parsed))

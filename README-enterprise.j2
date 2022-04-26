@@ -1,0 +1,18 @@
+{% extends "README-base.j2" %}
+
+{% block title %}Graylog Enterprise{% endblock %}
+{% block image_name %}graylog-enterprise{% endblock %}
+
+{% block content %}
+This is the [Graylog Enterprise](https://hub.docker.com/r/graylog/graylog-enterprise/) image. It contains the commercial [Graylog Enterprise](https://www.graylog.org/products/enterprise) product.
+
+| Java Version  | Platform  | Tags  |
+|---|---|---|
+| OpenJDK 8  | `linux/amd64` | `{{ graylog.major_version }}.{{ graylog.minor_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}` |
+| OpenJDK 11  | `linux/amd64` | `{{ graylog.major_version }}.{{ graylog.minor_version }}-jre11`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-jre11`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}-jre11`  |
+{% endblock %}
+
+{% block license %}
+See the Graylog Enterprise [License and Support Agreement](https://www.graylog.org/enterprise-license).
+{% endblock %}
+

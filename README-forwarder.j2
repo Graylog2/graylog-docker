@@ -1,0 +1,36 @@
+# Graylog Forwarder Docker Image
+
+[![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog-forwarder.svg)][hub] [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog-forwarder.svg)][hub]
+
+[hub]: https://hub.docker.com/r/graylog/graylog-forwarder/
+
+The latest stable version of Graylog Forwarder is **`{{ forwarder.version }}`**.
+
+## What is Graylog Forwarder?
+
+The Graylog Forwarder is a standalone agent for sending send log data to Graylog Cloud or an on-premise Graylog Server cluster. The Forwarder is typically run as a service to continuously stream data to the destination Graylog cluster.
+
+## Image Details
+
+There are platform images available for `linux/amd64` and `linux/arm64`. All images run on Debian 11.
+
+#### `graylog/graylog-forwarder`
+
+This image runs the [Graylog Forwarder](https://hub.docker.com/r/graylog/graylog-forwarder/). Documentation on the Forwarder can be found [here](https://docs.graylog.org/docs/forwarder).
+
+The latest stable version is **`{{ forwarder.version }}`**, with support for Java 8 on platform `linux/amd64` and `linux/arm64`.
+
+| Java Version  | Platform  | Tags  |
+|---|---|---|
+| OpenJDK 8 | `linux/amd64`, `linux/arm64` | `{{ forwarder.version }}`, `forwarder-{{ forwarder.version }}-{{ forwarder.release }}` |
+
+
+## Configuration
+
+Please refer to the [Graylog Forwarder documentation](https://hub.docker.com/r/graylog/graylog-forwarder/) for a configuration overview.
+
+## License
+
+See the Graylog Enterprise Forwarder [License and Support Agreement](https://www.graylog.org/enterprise-license).
+
+This Docker image is licensed under the Apache 2.0 license, see [LICENSE](LICENSE).

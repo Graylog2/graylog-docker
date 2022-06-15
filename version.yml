@@ -1,7 +1,7 @@
 graylog:
   major_version: 4
   minor_version: 2
-  patch_version: 9
+  patch_version: 10
   release: 1
 forwarder:
   version: 4.7

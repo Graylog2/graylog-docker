@@ -15,6 +15,8 @@ Graylog is a centralized logging solution that enables aggregating and searching
 
 There are several different image variants available, with variants for Java 8 and 11 on platforms `linux/amd64` and `linux/arm64`. All images are based on the latest [Eclipse Temurin image](https://hub.docker.com/_/eclipse-temurin) (JRE + Ubuntu LTS variant) available at build time.
 
+> Note: Images released prior to July 2022 were based on variants of the now-deprecated [`openjdk` image](https://hub.docker.com/_/openjdk).
+
 #### `graylog/graylog`
 
 This is the open source [Graylog ](https://hub.docker.com/r/graylog/graylog/) image. It contains [Graylog](https://github.com/Graylog2/graylog2-server) as well as the [Integrations](https://docs.graylog.org/docs/integrations) plugin.

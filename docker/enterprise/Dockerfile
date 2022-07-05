@@ -126,6 +126,10 @@ RUN \
     --quiet \
     "${GRAYLOG_USER}" && \
   setcap 'cap_net_bind_service=+ep' "${JAVA_HOME}/bin/java" && \
+  # https://github.com/docker-library/openjdk/blob/da594d91b0364d5f1a32e0ce6b4d3fd8a9116844/8/jdk/slim-bullseye/Dockerfile#L105
+  # https://github.com/docker-library/openjdk/issues/331#issuecomment-498834472
+  find "$JAVA_HOME/lib" -name '*.so' -exec dirname '{}' ';' | sort -u > /etc/ld.so.conf.d/docker-openjdk.conf && \
+  ldconfig && \
   apt-get remove --assume-yes --purge \
     apt-utils > /dev/null && \
   rm -f /etc/apt/sources.list.d/* && \

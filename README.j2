@@ -13,7 +13,7 @@ Graylog is a centralized logging solution that enables aggregating and searching
 
 ## Image Details
 
-There are several different image variants available, with variants for Java 8 and 11 on platforms `linux/amd64` and `linux/arm64`. All images run on Debian 11.
+There are several different image variants available, with variants for Java 8 and 11 on platforms `linux/amd64` and `linux/arm64`. All images are based on the latest [Eclipse Temurin image](https://hub.docker.com/_/eclipse-temurin) (JRE + Ubuntu LTS variant) available at build time.
 
 #### `graylog/graylog`
 

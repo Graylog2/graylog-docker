@@ -30,6 +30,13 @@ trap finish SIGINT SIGTERM INT TERM EXIT
 # -------------------------------------------------------------------------------------------------
 
 
+
+if ! [ -x "$(command -v docker-compose)" ]; then
+  docker-compose() {
+    docker compose "$@"
+  }
+fi
+
 JQ_VERSION='1.6'
 JQ_PATH='/usr/local/bin/jq'
 if ! [ -x "$(command -v jq)" ]; then

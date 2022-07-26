@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-slim-bullseye
+FROM eclipse-temurin:8-jre-jammy
 
 ARG VCS_REF
 ARG BUILD_DATE

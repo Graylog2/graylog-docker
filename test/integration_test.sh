@@ -31,7 +31,7 @@ trap finish SIGINT SIGTERM INT TERM EXIT
 
 
 
-if ! [ -x "$(command -v docker-compose)" ]; then
+if ! command -v docker-compose; then
   docker-compose() {
     docker compose "$@"
   }

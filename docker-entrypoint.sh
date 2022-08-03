@@ -81,14 +81,9 @@ fi
 
 # Merge plugin dirs to allow mounting of /plugin as a volume
 export GRAYLOG_PLUGIN_DIR=${GRAYLOG_HOME}/plugins-merged
-rm -f ${GRAYLOG_HOME}/plugins-merged/*
+rm -f ${GRAYLOG_PLUGIN_DIR}/*
 find ${GRAYLOG_HOME}/plugins-default/ -type f -exec cp {} ${GRAYLOG_HOME}/plugins-merged/ \;
-for f in ${GRAYLOG_HOME}/plugin/*
-do
-  if [[ -f $f ]]; then
-    cp -t ${GRAYLOG_HOME}/plugins-merged/ ${f}
-  fi
-done
+find ${GRAYLOG_HOME}/plugin ! -readable -prune -o -type f -a -readable -exec cp {} ${GRAYLOG_HOME}/plugins-merged/ \;
 
 
 setup() {

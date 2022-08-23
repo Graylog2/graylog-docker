@@ -80,10 +80,10 @@ if [[ ! -z "${NOMAD_ALLOC_INDEX}" ]]; then
 fi
 
 # Merge plugin dirs to allow mounting of /plugin as a volume
-export GRAYLOG_PLUGIN_DIR=/usr/share/graylog/plugins-merged
-rm -f /usr/share/graylog/plugins-merged/*
-find /usr/share/graylog/plugins-default/ -type f -exec cp {} /usr/share/graylog/plugins-merged/ \;
-find /usr/share/graylog/plugin/ -type f -exec cp {} /usr/share/graylog/plugins-merged/ \;
+export GRAYLOG_PLUGIN_DIR=${GRAYLOG_HOME}/plugins-merged
+rm -f ${GRAYLOG_PLUGIN_DIR}/*
+find ${GRAYLOG_HOME}/plugins-default/ -type f -exec cp {} ${GRAYLOG_PLUGIN_DIR}/ \;
+find ${GRAYLOG_HOME}/plugin ! -readable -prune -o -type f -a -readable -exec cp {} ${GRAYLOG_PLUGIN_DIR}/ \;
 
 
 setup() {

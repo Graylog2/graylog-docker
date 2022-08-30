@@ -1,4 +1,4 @@
-ARG JAVA_VERSION_MAJOR=8
+ARG JAVA_VERSION_MAJOR=17
 
 # layer for download and verifying
 FROM ubuntu:jammy as graylog-downloader

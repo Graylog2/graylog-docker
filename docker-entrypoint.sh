@@ -8,19 +8,6 @@ __GRAYLOG_SERVER_JAVA_OPTS=${GRAYLOG_SERVER_JAVA_OPTS}
 # shellcheck disable=SC1091
 source /etc/profile
 
-#Set default GC
-if [[ -z ${GRAYLOG_DOCKER_DISABLE_CMS_GC} ]]
-then
-  if "${JAVA_HOME}/bin/java" -XX:+PrintFlagsFinal 2>&1 |grep -q UseParNewGC; then
-    GRAYLOG_SERVER_JAVA_OPTS="${GRAYLOG_SERVER_JAVA_OPTS} -XX:+UseParNewGC"
-    export GRAYLOG_SERVER_JAVA_OPTS
-  fi
-  if "${JAVA_HOME}/bin/java" -XX:+PrintFlagsFinal 2>&1 |grep -q UseConcMarkSweepGC; then
-    GRAYLOG_SERVER_JAVA_OPTS="${GRAYLOG_SERVER_JAVA_OPTS} -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:+CMSClassUnloadingEnabled"
-    export GRAYLOG_SERVER_JAVA_OPTS
-  fi
-fi
-
 # and add the previous saved settings to our defaults
 if [[ ! -z ${__GRAYLOG_SERVER_JAVA_OPTS} ]]
 then

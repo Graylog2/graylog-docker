@@ -4,7 +4,7 @@
 
 [hub]: https://hub.docker.com/r/graylog/graylog/
 
-The latest stable version of Graylog is **`4.3.5`**.
+The latest stable version of Graylog is **`4.3.6`**.
 
 ## What is Graylog?
 
@@ -23,8 +23,8 @@ This is the open source [Graylog ](https://hub.docker.com/r/graylog/graylog/) im
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 8  | `linux/amd64`, `linux/arm64` | `4.3`, `4.3.5`, `4.3.5-2` |
-| OpenJDK 11  | `linux/amd64`, `linux/arm64`  | `4.3-jre11`, `4.3.5-jre11`, `4.3.5-2-jre11`  |
+| OpenJDK 8  | `linux/amd64`, `linux/arm64` | `4.3`, `4.3.6`, `4.3.6-1` |
+| OpenJDK 11  | `linux/amd64`, `linux/arm64`  | `4.3-jre11`, `4.3.6-jre11`, `4.3.6-1-jre11`  |
 
 > Note: There is no 'latest' tag. You'll need to specify which version you want.
 
@@ -34,19 +34,19 @@ This is the [Graylog Enterprise](https://hub.docker.com/r/graylog/graylog-enterp
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 8  | `linux/amd64` | `4.3`, `4.3.5`, `4.3.5-2` |
-| OpenJDK 11  | `linux/amd64` | `4.3-jre11`, `4.3.5-jre11`, `4.3.5-2-jre11`  |
+| OpenJDK 8  | `linux/amd64` | `4.3`, `4.3.6`, `4.3.6-1` |
+| OpenJDK 11  | `linux/amd64` | `4.3-jre11`, `4.3.6-jre11`, `4.3.6-1-jre11`  |
 
 
 #### `graylog/graylog-forwarder`
 
 This image runs the [Graylog Forwarder](https://hub.docker.com/r/graylog/graylog-forwarder/). Documentation on the Forwarder can be found [here](https://docs.graylog.org/docs/forwarder).
 
-The latest stable version is **`4.8`**, with support for Java 8 on platform `linux/amd64` and `linux/arm64`.
+The latest stable version is **`4.9`**, with support for Java 8 on platform `linux/amd64` and `linux/arm64`.
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 8 | `linux/amd64`, `linux/arm64` | `4.8`, `forwarder-4.8-2` |
+| OpenJDK 8 | `linux/amd64`, `linux/arm64` | `4.9`, `forwarder-4.9-1` |
 
 
 ## Architecture
@@ -71,7 +71,7 @@ Notably, this image **requires** that two important configuration options be set
       * The default username is `admin`.  This value is customizable via configuration option `root_username` (environment variable `GRAYLOG_ROOT_USERNAME`).
     * In general, these credentials will only be needed to initially set up the system or reconfigure the system in the event of an authentication backend failure.
     * This password cannot be changed using the API or via the Web interface.
-    * May be generated with something like: `echo -n "Enter Password: " && head -2 </dev/stdin | tr -d '\n' | sha256sum | cut -d" " -f1`
+    * May be generated with something like: `echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum | cut -d" " -f1`
 
 
 Every [Graylog configuration option](https://docs.graylog.org/docs/server-conf) can be set via environment variable. To get the environment variable name for a given configuration option, simply prefix the option name with `GRAYLOG_` and put it all in upper case. Another option is to store the configuration file outside of the container and edit it directly.

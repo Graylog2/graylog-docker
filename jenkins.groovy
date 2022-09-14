@@ -246,6 +246,14 @@ pipeline
         }
       }
    }
+
+   post
+   {
+       always
+       {
+           cleanWs()
+       }
+   }
 }
 
 // Parse a string containing a semantic version

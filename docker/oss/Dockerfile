@@ -1,5 +1,3 @@
-ARG JAVA_VERSION_MAJOR=8
-
 # layer for download and verifying
 FROM ubuntu:jammy as graylog-downloader
 
@@ -49,7 +47,7 @@ COPY config ${GRAYLOG_HOME}/data/config
 # -------------------------------------------------------------------------------------------------
 #
 # final layer
-FROM eclipse-temurin:${JAVA_VERSION_MAJOR}-jre-jammy
+FROM eclipse-temurin:17-jre-jammy
 
 ARG VCS_REF
 ARG GRAYLOG_VERSION
@@ -59,7 +57,6 @@ ARG GRAYLOG_USER=graylog
 ARG GRAYLOG_UID=1100
 ARG GRAYLOG_GROUP=graylog
 ARG GRAYLOG_GID=1100
-ARG JAVA_VERSION_MAJOR
 
 COPY --chown=${GRAYLOG_UID}:${GRAYLOG_GID} --from=graylog-downloader ${GRAYLOG_HOME} ${GRAYLOG_HOME}
 

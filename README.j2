@@ -21,9 +21,9 @@ This is the open source [Graylog ](https://hub.docker.com/r/graylog/graylog/) im
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-{% if 'alpha' in graylog.patch_version or 'beta' in graylog.patch_version or 'rc' in graylog.patch_version%}
+{% if 'alpha' in graylog.patch_version or 'beta' in graylog.patch_version or 'rc' in graylog.patch_version -%}
 | OpenJDK 17 | `linux/amd64`, `linux/arm64` | `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}` |
-{% else %}
+{% else -%}
 | OpenJDK 17 | `linux/amd64`, `linux/arm64` | `{{ graylog.major_version }}.{{ graylog.minor_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}` |
 {% endif %}
 

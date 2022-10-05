@@ -35,7 +35,11 @@ This is the [Graylog Enterprise](https://hub.docker.com/r/graylog/graylog-enterp
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 17  | `linux/amd64` | `{{ graylog.major_version }}.{{ graylog.minor_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}` |
+{% if 'alpha' in graylog.patch_version or 'beta' in graylog.patch_version or 'rc' in graylog.patch_version -%}
+| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}` |
+{% else -%}
+| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `{{ graylog.major_version }}.{{ graylog.minor_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}` |
+{% endif %}
 
 
 #### `graylog/graylog-forwarder`

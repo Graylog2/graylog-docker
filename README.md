@@ -13,7 +13,7 @@ Graylog is a centralized logging solution that enables aggregating and searching
 
 ## Image Details
 
-There images for the `linux/amd64` and `linux/arm64` platforms available. All images are based on the latest [Eclipse Temurin image](https://hub.docker.com/_/eclipse-temurin) (JRE + Ubuntu LTS variant) available at build time.
+There are images for the `linux/amd64` and `linux/arm64` platforms available. All images are based on the latest [Eclipse Temurin image](https://hub.docker.com/_/eclipse-temurin) (JRE + Ubuntu LTS variant) available at build time.
 
 #### `graylog/graylog`
 
@@ -21,7 +21,7 @@ This is the open source [Graylog ](https://hub.docker.com/r/graylog/graylog/) im
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.0.0-alpha.1`, `5.0.0-alpha.1-1` |
+| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.0.0-alpha.1-2` |
 
 
 > Note: There is no 'latest' tag. You'll need to specify which version you want.
@@ -32,7 +32,7 @@ This is the [Graylog Enterprise](https://hub.docker.com/r/graylog/graylog-enterp
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.0.0-alpha.1`, `5.0.0-alpha.1-1` |
+| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.0.0-alpha.1-2` |
 
 
 

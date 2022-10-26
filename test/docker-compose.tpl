@@ -1,7 +1,7 @@
 version: '2'
 services:
   # MongoDB: https://hub.docker.com/_/mongo/
-  mongo:
+  mongodb:
     image: mongo:5.0
     mem_limit: 128m
 
@@ -50,4 +50,4 @@ services:
     restart: always
     depends_on:
       - opensearch
-      - mongo
+      - mongodb

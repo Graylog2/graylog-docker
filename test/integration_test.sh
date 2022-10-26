@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -uxeo pipefail
+set -ux
 
 GRAYLOG_PORT=9000
 

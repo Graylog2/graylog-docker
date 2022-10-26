@@ -62,14 +62,15 @@ GRAYLOG_VERSION=$(cd .. && ./release.py --get-graylog-version)
 EOF
 
   docker-compose --file docker-compose.tpl config  > ./docker-compose.yml
-  docker-compose build
-  docker-compose up -d
+  docker-compose down -v
+  docker-compose build --pull
+  docker-compose up -d --remove-orphans
 }
 
 compose_down() {
 
   # Shutdown
-  docker-compose down
+  docker-compose down -v
 }
 
 wait_for_port() {

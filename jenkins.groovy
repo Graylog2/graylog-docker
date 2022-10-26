@@ -7,6 +7,10 @@ pipeline
       buildDiscarder logRotator(artifactDaysToKeepStr: '90', artifactNumToKeepStr: '100', daysToKeepStr: '90', numToKeepStr: '100')
       timestamps()
       timeout(time: 1, unit: 'HOURS')
+
+      // The test exposes some hardcoded ports, so the tests can't be executed
+      // at the same time on the same machine.
+      lock('docker-integrations-test')
    }
 
    stages

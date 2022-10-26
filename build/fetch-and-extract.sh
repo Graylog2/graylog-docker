@@ -9,6 +9,7 @@ for url in "$@"; do
   echo "fetching $url ..."
   curl \
     --silent \
+    --fail \
     --location \
     --retry 3 \
     --output $local \

@@ -1,4 +1,4 @@
-FROM eclipse-temurin:8-jre-jammy
+FROM eclipse-temurin:17-jre-jammy
 
 ARG VCS_REF
 ARG BUILD_DATE

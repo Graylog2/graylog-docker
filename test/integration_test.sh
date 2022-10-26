@@ -64,7 +64,7 @@ EOF
   docker-compose --file docker-compose.tpl config  > ./docker-compose.yml
   docker-compose down -v
   docker-compose build --pull
-  docker-compose up -d
+  docker-compose up -d --remove-orphans
 }
 
 compose_down() {

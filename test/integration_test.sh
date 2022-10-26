@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ux
+set -uxeo pipefail
 
 GRAYLOG_PORT=9000
 
@@ -61,8 +61,9 @@ VCS_REF=$(git rev-parse --short HEAD)
 GRAYLOG_VERSION=$(cd .. && ./release.py --get-graylog-version)
 EOF
 
+  docker-compose down -v
   docker-compose --file docker-compose.tpl config  > ./docker-compose.yml
-  docker-compose build
+  docker-compose build --pull
   docker-compose up -d
 }
 

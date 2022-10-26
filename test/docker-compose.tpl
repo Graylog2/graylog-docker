@@ -29,7 +29,7 @@ services:
       args:
         - VCS_REF
         - GRAYLOG_VERSION
-    entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 --  /docker-entrypoint.sh
+    entrypoint: /usr/bin/tini -- wait-for-it opensearch:9200 --  /docker-entrypoint.sh
     environment:
       # CHANGE ME!
       - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
@@ -41,7 +41,7 @@ services:
     mem_limit: 1g
     links:
       - mongo
-      - elasticsearch
+      - opensearch
     ports:
       # Graylog web interface and REST API
       - 9000:9000
@@ -51,5 +51,5 @@ services:
       - 5555:5555
     restart: always
     depends_on:
-      - elasticsearch
+      - opensearch
       - mongo

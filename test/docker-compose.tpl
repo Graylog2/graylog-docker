@@ -2,21 +2,26 @@ version: '2'
 services:
   # MongoDB: https://hub.docker.com/_/mongo/
   mongo:
-    image: mongo:4.2
+    image: mongo:5.0
     mem_limit: 128m
-  # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/6.x/docker.html
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.0
+
+  opensearch:
+    image: "opensearchproject/opensearch:1.3.6"
     environment:
-      - http.host=0.0.0.0
-      - discovery.type=single-node
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m -Dlog4j2.formatMsgNoLookups=true"
+      - "http.host=0.0.0.0"
+      - "discovery.type=single-node"
+      - "logger.deprecation.level=warn"
+      - "action.auto_create_index=false"
+      - "bootstrap.memory_lock=true"
+      - "plugins.security.ssl.http.enabled=false"
+      - "plugins.security.disabled=true"
     ulimits:
       memlock:
         soft: -1
         hard: -1
     mem_limit: 1g
+
   graylog:
     build:
       context: ..

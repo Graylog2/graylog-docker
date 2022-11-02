@@ -15,18 +15,17 @@ WORKDIR /tmp
 # hadolint ignore=DL3008,DL3015
 RUN \
   apt-get update  > /dev/null && \
+  apt-get upgrade -y > /dev/null && \
   apt-get install --assume-yes \
     ca-certificates \
     curl > /dev/null
 
 COPY build/fetch-and-extract.sh /bin/fetch-and-extract
-RUN chmod +x /bin/fetch-and-extract
-
 RUN if [ -z "${LOCAL_BUILD_TGZ}" ]; then \
-    fetch-and-extract \
+    chmod +x /bin/fetch-and-extract && fetch-and-extract \
     "https://downloads.graylog.org/releases/graylog-enterprise/graylog-enterprise-${GRAYLOG_VERSION}.tgz" \
     "https://downloads.graylog.org/releases/graylog-enterprise/graylog-enterprise-${GRAYLOG_VERSION}.tgz.sha256.txt" \
-     ; fi
+   ; fi
 
 
 # Does nothing if empty
@@ -38,13 +37,16 @@ RUN if [ "${LOCAL_BUILD_TGZ}" ]; then \
     fi
 
 # Reduce image size by removing large cross platform chromedriver binaries
+# hadolint ignore=DL3059
 RUN if [ "${TARGETPLATFORM}" != "linux/arm64" ]; then \
         rm /opt/graylog/bin/*_arm64; \
     fi
+# hadolint ignore=DL3059
 RUN if [ "${TARGETPLATFORM}" = "linux/arm64" ]; then \
         rm /opt/graylog/bin/*_amd64; \
     fi
 
+# hadolint ignore=DL3059
 RUN \
   install \
     --directory \
@@ -60,8 +62,8 @@ RUN \
 
 RUN mv /opt/graylog ${GRAYLOG_HOME} && chown -R ${GRAYLOG_UID}:${GRAYLOG_GID} ${GRAYLOG_HOME}
 RUN mv ${GRAYLOG_HOME}/plugin ${GRAYLOG_HOME}/plugins-default
-RUN install -d -o "${GRAYLOG_UID}" -g "${GRAYLOG_GID}" -m 0755 ${GRAYLOG_HOME}/plugins-merged
-RUN install -d -o "${GRAYLOG_UID}" -g "${GRAYLOG_GID}" -m 0755 ${GRAYLOG_HOME}/plugin
+RUN install -d -o "${GRAYLOG_UID}" -g "${GRAYLOG_GID}" -m 0755 ${GRAYLOG_HOME}/plugins-merged && \
+    install -d -o "${GRAYLOG_UID}" -g "${GRAYLOG_GID}" -m 0755 ${GRAYLOG_HOME}/plugin
 
 COPY config ${GRAYLOG_HOME}/data/config
 
@@ -96,6 +98,7 @@ RUN \
   echo "export GRAYLOG_GID=${GRAYLOG_GID}"         >> /etc/profile.d/graylog.sh && \
   echo "export PATH=${GRAYLOG_HOME}/bin:${PATH}"   >> /etc/profile.d/graylog.sh && \
   apt-get update  > /dev/null && \
+  apt-get upgrade -y > /dev/null && \
   apt-get install --no-install-recommends --assume-yes \
     curl \
     tini \

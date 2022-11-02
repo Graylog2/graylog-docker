@@ -3,7 +3,7 @@
 
 # This will work on linux
 # Mac users should before install hadolint via `brew install hadolint`
-	HADOLINT_VERSION='1.13.0'
+	HADOLINT_VERSION='2.10.0'
 	HADOLINT_PATH='/usr/local/bin/hadolint'
 	if ! [ -x "$(command -v hadolint)" ]; then
 	  sudo wget -O "${HADOLINT_PATH}" "https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-x86_64"

@@ -20,7 +20,7 @@ finish() {
     docker-compose down
   fi
 
-  rm test/*_result.json 2> /dev/null
+  rm -f test/*_result.json 2> /dev/null
 
   exit $rv
 }

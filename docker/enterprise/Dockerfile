@@ -14,7 +14,7 @@ ARG TARGETPLATFORM
 
 WORKDIR /tmp
 
-# hadolint ignore=DL3008,DL3015
+# hadolint ignore=DL3008,DL3015,DL3005
 RUN \
   apt-get update  > /dev/null && \
   apt-get upgrade -y > /dev/null && \
@@ -92,7 +92,7 @@ COPY --chown=${GRAYLOG_UID}:${GRAYLOG_GID} --from=graylog-downloader ${GRAYLOG_H
 WORKDIR ${GRAYLOG_HOME}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-# hadolint ignore=DL3027,DL3008
+# hadolint ignore=DL3027,DL3008,DL3005
 RUN \
   echo "export BUILD_DATE=${BUILD_DATE}"           >> /etc/profile.d/graylog.sh && \
   echo "export GRAYLOG_VERSION=${GRAYLOG_VERSION}" >> /etc/profile.d/graylog.sh && \

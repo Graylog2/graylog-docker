@@ -19,7 +19,7 @@ ENV GRAYLOG_PLUGIN_DIR=/usr/share/graylog-forwarder/plugin
 ENV GRAYLOG_DATA_DIR=/var/lib/graylog-forwarder/data
 ENV GRAYLOG_MESSAGE_JOURNAL_DIR=/var/lib/graylog-forwarder/journal
 
-# hadolint ignore=DL3008
+# hadolint ignore=DL3008,DL3005
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get -y install --no-install-recommends apt-utils && \

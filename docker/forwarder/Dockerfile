@@ -21,6 +21,7 @@ ENV GRAYLOG_MESSAGE_JOURNAL_DIR=/var/lib/graylog-forwarder/journal
 
 # hadolint ignore=DL3008
 RUN apt-get update && \
+    apt-get upgrade  && \
     apt-get -y install --no-install-recommends apt-utils && \
     apt-get -y install --no-install-recommends ca-certificates curl tini && \
     apt-get clean && \

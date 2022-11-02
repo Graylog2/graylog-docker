@@ -14,6 +14,7 @@ WORKDIR /tmp
 # hadolint ignore=DL3008,DL3015
 RUN \
   apt-get update  > /dev/null && \
+  apt-get upgrade  > /dev/null && \
   apt-get install --assume-yes \
     ca-certificates \
     curl > /dev/null
@@ -78,6 +79,7 @@ RUN \
   echo "export GRAYLOG_GID=${GRAYLOG_GID}"         >> /etc/profile.d/graylog.sh && \
   echo "export PATH=${GRAYLOG_HOME}/bin:${PATH}"   >> /etc/profile.d/graylog.sh && \
   apt-get update  > /dev/null && \
+  apt-get upgrade  > /dev/null && \
   apt-get install --no-install-recommends --assume-yes \
     curl \
     tini \

@@ -7,7 +7,7 @@ hadolint() {
 	docker run -i hadolint/hadolint:$HADOLINT_VERSION < $1
 }
 
-# both dockerfiles
+# lint all dockerfiles
 hadolint docker/oss/Dockerfile
 hadolint docker/enterprise/Dockerfile
 hadolint docker/forwarder/Dockerfile

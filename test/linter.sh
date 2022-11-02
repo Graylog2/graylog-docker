@@ -4,7 +4,7 @@
 HADOLINT_VERSION='2.10.0'
 
 hadolint() {
-	docker run -i hadolint/hadolint:$HADOLINT_VERSION < $1
+	docker run --rm -i hadolint/hadolint:$HADOLINT_VERSION < $1
 }
 
 # lint all dockerfiles

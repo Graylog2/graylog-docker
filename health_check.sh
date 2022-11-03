@@ -92,8 +92,9 @@ then
 	exit 1
 fi
 
-
-if curl --silent --fail "${check_url}"/api
+# FIX https://github.com/Graylog2/graylog-docker/issues/156
+# ignore self-signed certificates for the real URL, not only for localhost
+if curl --silent --insecure --fail "${check_url}"/api
 then
   	exit 0
 fi

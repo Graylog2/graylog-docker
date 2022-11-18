@@ -39,11 +39,11 @@ RUN if [ "${LOCAL_BUILD_TGZ}" ]; then \
 # Reduce image size by removing large cross platform chromedriver binaries
 # hadolint ignore=DL3059
 RUN if [ "${TARGETPLATFORM}" != "linux/arm64" ]; then \
-        rm /opt/graylog/bin/*_arm64; \
+        rm -f /opt/graylog/bin/*_arm64; \
     fi
 # hadolint ignore=DL3059
 RUN if [ "${TARGETPLATFORM}" = "linux/arm64" ]; then \
-        rm /opt/graylog/bin/*_amd64; \
+        rm -f /opt/graylog/bin/*_amd64; \
     fi
 
 # hadolint ignore=DL3059

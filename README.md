@@ -4,7 +4,7 @@
 
 [hub]: https://hub.docker.com/r/graylog/graylog/
 
-The latest stable version of Graylog is **`5.0.0-beta.5`**.
+The latest stable version of Graylog is **`5.0.0-rc.1`**.
 
 ## What is Graylog?
 
@@ -21,7 +21,7 @@ This is the open source [Graylog ](https://hub.docker.com/r/graylog/graylog/) im
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.0.0-beta.5-1` |
+| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.0.0-rc.1-1` |
 
 
 > Note: There is no 'latest' tag. You'll need to specify which version you want.
@@ -32,7 +32,7 @@ This is the [Graylog Enterprise](https://hub.docker.com/r/graylog/graylog-enterp
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.0.0-beta.5-1` |
+| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.0.0-rc.1-1` |
 
 
 
@@ -40,11 +40,11 @@ This is the [Graylog Enterprise](https://hub.docker.com/r/graylog/graylog-enterp
 
 This image runs the [Graylog Forwarder](https://hub.docker.com/r/graylog/graylog-forwarder/). Documentation on the Forwarder can be found [here](https://docs.graylog.org/docs/forwarder).
 
-The latest stable version is **`5.0-beta.1`**, with support for Java 17 on platform `linux/amd64` and `linux/arm64`.
+The latest stable version is **`5.0-rc.1`**, with support for Java 17 on platform `linux/amd64` and `linux/arm64`.
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.0-beta.1`, `forwarder-5.0-beta.1-1` |
+| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.0-rc.1`, `forwarder-5.0-rc.1-1` |
 
 
 ## Architecture

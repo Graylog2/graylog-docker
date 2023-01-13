@@ -5,8 +5,6 @@
 
 cd ../..
 
-patch config/graylog.conf patches/graylog-server.conf.patch
-
 apt-get install -y python3-pip
 pip3 install pyyaml
 

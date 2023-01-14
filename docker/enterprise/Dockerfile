@@ -65,8 +65,6 @@ RUN mv ${GRAYLOG_HOME}/plugin ${GRAYLOG_HOME}/plugins-default
 RUN install -d -o "${GRAYLOG_UID}" -g "${GRAYLOG_GID}" -m 0755 ${GRAYLOG_HOME}/plugins-merged && \
     install -d -o "${GRAYLOG_UID}" -g "${GRAYLOG_GID}" -m 0755 ${GRAYLOG_HOME}/plugin
 
-RUN cp ${GRAYLOG_HOME}/graylog.conf.example ${GRAYLOG_HOME}/data/config/graylog.conf
-
 # -------------------------------------------------------------------------------------------------
 #
 # final layer
@@ -80,11 +78,6 @@ ARG GRAYLOG_USER=graylog
 ARG GRAYLOG_UID=1100
 ARG GRAYLOG_GROUP=graylog
 ARG GRAYLOG_GID=1100
-
-ENV GRAYLOG_HTTP_BIND_ADDRESS=0.0.0.0:9000
-ENV GRAYLOG_ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-ENV GRAYLOG_MONGODB_URI=mongodb://mongo/graylog
-ENV GRAYLOG_INTEGRATIONS_SCRIPTS_DIR=${GRAYLOG_HOME}/data/scripts
 
 COPY --chown=${GRAYLOG_UID}:${GRAYLOG_GID} --from=graylog-downloader ${GRAYLOG_HOME} ${GRAYLOG_HOME}
 

@@ -16,11 +16,6 @@ then
   export GRAYLOG_SERVER_JAVA_OPTS
 fi
 
-# Maintain support for the old `log4j2.xml` path.  If absent, use what Graylog Server provides.
-if [[ -z "${LOG4J_CONFIGURATION_FILE}" && -r "${GRAYLOG_HOME}/data/config/log4j2.xml" ]]; then
-  export LOG4J_CONFIGURATION_FILE="${GRAYLOG_HOME}/data/config/log4j2.xml"
-fi
-
 # Convert all environment variables with names ending in __FILE into the content of
 # the file that they point at and use the name without the trailing __FILE.
 # This can be used to carry in Docker secrets.
@@ -77,6 +72,23 @@ rm -f ${GRAYLOG_PLUGIN_DIR}/*
 find ${GRAYLOG_HOME}/plugins-default/ -type f -exec cp {} ${GRAYLOG_PLUGIN_DIR}/ \;
 find ${GRAYLOG_HOME}/plugin ! -readable -prune -o -type f -a -readable -exec cp {} ${GRAYLOG_PLUGIN_DIR}/ \;
 
+# Maintain support for the old (or custom) `graylog.conf` path.
+# If absent, use what's in the release artifact + Docker-specific env var defaults.
+if [ -r "${GRAYLOG_HOME}/data/config/graylog.conf" ]; then
+  export GRAYLOG_CONFIG="${GRAYLOG_HOME}/data/config/graylog.conf"
+else
+  export GRAYLOG_CONFIG="${GRAYLOG_HOME}/graylog.conf.example"
+  export GRAYLOG_HTTP_BIND_ADDRESS=${GRAYLOG_HTTP_BIND_ADDRESS:-0.0.0.0:9000}
+  export GRAYLOG_ELASTICSEARCH_HOSTS=${GRAYLOG_ELASTICSEARCH_HOSTS:-http://elasticsearch:9200}
+  export GRAYLOG_MONGODB_URI=${GRAYLOG_MONGODB_URI:-mongodb://mongo/graylog}
+  export GRAYLOG_INTEGRATIONS_SCRIPTS_DIR=${GRAYLOG_INTEGRATIONS_SCRIPTS_DIR:-${GRAYLOG_HOME}/data/scripts}
+fi
+
+# Maintain support for the old `log4j2.xml` path.
+# If absent, use what Graylog Server provides.
+if [[ -z "${LOG4J_CONFIGURATION_FILE}" && -r "${GRAYLOG_HOME}/data/config/log4j2.xml" ]]; then
+  export LOG4J_CONFIGURATION_FILE="${GRAYLOG_HOME}/data/config/log4j2.xml"
+fi
 
 setup() {
   # Create data directories
@@ -100,7 +112,7 @@ graylog() {
     -Dgraylog2.installation_source=docker \
     "${GRAYLOG_HOME}/graylog.jar" \
     "$@" \
-    -f "${GRAYLOG_HOME}/data/config/graylog.conf"
+    -f "${GRAYLOG_CONFIG}"
 }
 
 run() {

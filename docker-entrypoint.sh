@@ -16,6 +16,11 @@ then
   export GRAYLOG_SERVER_JAVA_OPTS
 fi
 
+# Maintain support for the old `log4j2.xml` path.  If absent, use what Graylog Server provides.
+if [[ -z "${LOG4J_CONFIGURATION_FILE}" && -r "${GRAYLOG_HOME}/data/config/log4j2.xml" ]]; then
+  export LOG4J_CONFIGURATION_FILE="${GRAYLOG_HOME}/data/config/log4j2.xml"
+fi
+
 # Convert all environment variables with names ending in __FILE into the content of
 # the file that they point at and use the name without the trailing __FILE.
 # This can be used to carry in Docker secrets.

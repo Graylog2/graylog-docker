@@ -23,8 +23,8 @@ RUN \
 COPY build/fetch-and-extract.sh /bin/fetch-and-extract
 RUN if [ -z "${LOCAL_BUILD_TGZ}" ]; then \
     chmod +x /bin/fetch-and-extract && fetch-and-extract \
-    "https://downloads.graylog.org/releases/graylog-enterprise/graylog-enterprise-${GRAYLOG_VERSION}.tgz" \
-    "https://downloads.graylog.org/releases/graylog-enterprise/graylog-enterprise-${GRAYLOG_VERSION}.tgz.sha256.txt" \
+    "https://packages.graylog2.org/releases/graylog-enterprise/graylog-enterprise-${GRAYLOG_VERSION}.tgz" \
+    "https://packages.graylog2.org/releases/graylog-enterprise/graylog-enterprise-${GRAYLOG_VERSION}.tgz.sha256.txt" \
    ; fi
 
 

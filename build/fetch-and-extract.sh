@@ -4,15 +4,14 @@ mkdir -p /tmp/download
 
 # download
 for url in "$@"; do
-  local=/tmp/download/${url##*/}
+  file=/tmp/download/${url##*/}
 
-  echo "fetching $url ..."
+  echo "fetching: $url"
   curl \
-    --silent \
-    --fail \
-    --location \
+    -fsSL \
     --retry 3 \
-    --output $local \
+    --retry-delay 2 \
+    --output "$file" \
     "$url"
 done
 
@@ -27,5 +26,6 @@ done
 mkdir -p /opt/graylog
 
 for file in /tmp/download/*.tgz; do
+  echo "extracting: $file"
   tar --extract --gzip --file "$file" --strip-components=1 --directory /opt/graylog
 done

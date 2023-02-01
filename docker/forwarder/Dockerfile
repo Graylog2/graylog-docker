@@ -34,7 +34,7 @@ RUN curl \
     --location \
     --retry 3 \
     --output "$GRAYLOG_FORWARDER_FILE" \
-    "https://downloads.graylog.org/releases/cloud/forwarder/${GRAYLOG_FORWARDER_VERSION}/graylog-forwarder-${GRAYLOG_FORWARDER_VERSION}-bin.tar.gz" && \
+    "https://packages.graylog2.org/releases/cloud/forwarder/${GRAYLOG_FORWARDER_VERSION}/graylog-forwarder-${GRAYLOG_FORWARDER_VERSION}-bin.tar.gz" && \
     install -d -o root -g root -m 0755 "$GRAYLOG_FORWARDER_ROOT" && \
     tar -C "$GRAYLOG_FORWARDER_ROOT" -xzf "$GRAYLOG_FORWARDER_FILE" && \
     chown -R root.root "$GRAYLOG_FORWARDER_ROOT" && \

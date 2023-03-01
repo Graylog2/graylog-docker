@@ -3,7 +3,7 @@ graylog:
   minor_version: "0"
   # For pre-releases: 0-beta.1, 0-rc.1
   # For GA releases:  0
-  patch_version: "3"
+  patch_version: "4"
   release: 1
 forwarder:
   version: "5.0"

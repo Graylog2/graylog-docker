@@ -52,6 +52,7 @@ export GRAYLOG_NODE_ID_FILE="${GRAYLOG_NODE_ID_FILE:-$GDN_DATA_ROOT/node-id}"
 
 # Settings for the graylog-datanode script
 export DATANODE_JVM_OPTIONS_FILE="${DATANODE_JVM_OPTIONS_FILE:-$GDN_JVM_OPTIONS_FILE}"
+export JAVA_OPTS="-Dlog4j.configurationFile=${GDN_CONFIG_DIR}/log4j2.xml $JAVA_OPTS"
 
 # Make sure the data node can write to the data dir
 chown -R "$GDN_USER":"$GDN_GROUP" "$GRAYLOG_DATA_DIR"

@@ -5,12 +5,12 @@ ARG BUILD_DATE
 ARG BUILD_VERSION
 ARG SNAPSHOT_URL
 ARG LOCAL_ARTIFACT
-ARG GDN_CONFIG_DIR=/etc/graylog/datanode
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Will be persistet in the container image
 ENV GDN_APP_ROOT=/usr/share/graylog-datanode
 ENV GDN_DATA_ROOT=/var/lib/graylog-datanode
+ENV GDN_CONFIG_DIR=/etc/graylog/datanode
 ENV GDN_CONFIG_FILE=$GDN_CONFIG_DIR/datanode.conf
 ENV GDN_FEATURE_FLAG_FILE=$GDN_CONFIG_DIR/feature-flag.conf
 ENV GDN_JVM_OPTIONS_FILE=$GDN_CONFIG_DIR/jvm.options
@@ -58,10 +58,11 @@ RUN install -d -o root -g root -m 0755 "$GDN_APP_ROOT" \
     && mv "$GDN_APP_ROOT/config/"* "$GDN_CONFIG_DIR"/ \
     && rmdir "$GDN_APP_ROOT/config" \
     && chown -R "$GDN_USER":"$GDN_GROUP" "$GDN_CONFIG_DIR" \
-    && chown -R root:root "$GDN_APP_ROOT" \
+    && chown -R root:root "$GDN_APP_ROOT"
 
 RUN apt-get purge -y curl \
-    && apt-get autoremove -y --purge
+    && apt-get autoremove -y --purge \
+    && rm -rf /var/log/*
 
 COPY entrypoint.sh /entrypoint.sh
 

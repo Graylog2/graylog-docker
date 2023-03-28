@@ -1,5 +1,5 @@
 ---
-name: "DEV Container Images"
+name: "Data Node DEV Image"
 
 on:
   workflow_dispatch:

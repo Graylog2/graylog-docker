@@ -54,7 +54,7 @@ COPY "$LOCAL_ARTIFACT" /tmp/graylog-datanode.tgz
 RUN install -d -o root -g root -m 0755 "$GDN_APP_ROOT" \
     && curl -fsSL --retry 3 "$SNAPSHOT_URL" | \
        tar -C "$GDN_APP_ROOT" --strip-components=1 -xzf - \
-    && rm -f "/tmp/graylog-datanode.tgz" \
+    && rm -rf "/tmp/graylog-datanode.tgz" \
     && mv "$GDN_APP_ROOT/config/"* "$GDN_CONFIG_DIR"/ \
     && rmdir "$GDN_APP_ROOT/config" \
     && chown -R "$GDN_USER":"$GDN_GROUP" "$GDN_CONFIG_DIR" \

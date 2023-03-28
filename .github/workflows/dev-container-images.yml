@@ -13,8 +13,7 @@ jobs:
     strategy:
       matrix:
         image:
-          - file: "docker/datanode/Dockerfile"
-            name: "graylog/graylog-datanode"
+          - name: "graylog/graylog-datanode"
             context: "docker/datanode"
         arch:
           - name: "linux-x64"

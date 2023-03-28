@@ -54,7 +54,7 @@ COPY "$LOCAL_ARTIFACT" /tmp/graylog-datanode.tgz
 
 RUN install -d -o root -g root -m 0755 "$GDN_APP_ROOT" \
     && export SNAPSHOT_URL="$SNAPSHOT_URL_X64" \
-    && [ "$TARGETPLATFORM" = "linux/arm64"] && export SNAPSHOT_URL="$SNAPSHOT_URL_AARCH64" \
+    && [ "$TARGETPLATFORM" = "linux/arm64" ] && export SNAPSHOT_URL="$SNAPSHOT_URL_AARCH64" \
     && curl -fsSL --retry 3 "$SNAPSHOT_URL" | \
        tar -C "$GDN_APP_ROOT" --strip-components=1 -xzf - \
     && rm -rf "/tmp/graylog-datanode.tgz" \

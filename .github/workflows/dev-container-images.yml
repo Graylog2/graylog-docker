@@ -35,7 +35,7 @@ jobs:
         shell: "bash"
         run: |
           snapshot_url=$(curl -fsSL \
-            -G -d limit=1 -d artifact=graylog-datanode-linux-x64 \
+            -G -d limit=1 -d artifact=graylog-datanode-${{ matrix.arch.name }} \
             https://downloads.graylog.org/nightly-builds | \
             jq -r '.artifacts[].url')
 

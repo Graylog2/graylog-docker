@@ -10,12 +10,6 @@ jobs:
 
     runs-on: "ubuntu-latest"
 
-    strategy:
-      matrix:
-        image:
-          - name: "graylog/graylog-datanode"
-            context: "docker/datanode"
-
     steps:
       - uses: "actions/checkout@v3"
 
@@ -45,12 +39,16 @@ jobs:
           username: "${{ secrets.DOCKERHUB_USERNAME }}"
           password: "${{ secrets.DOCKERHUB_PASSWORD }}"
 
-      - name: "Build and push image: ${{ matrix.image.name }}"
+      - name: "Build and push image"
         uses: "docker/build-push-action@v4"
         with:
-          context: "${{ matrix.image.context }}"
+          context: "docker/datanode"
           platforms: "linux/amd64,linux/arm64"
           pull: true
           push: true
-          tags: "${{ matrix.image.name }}:dev"
-          build-args: "SNAPSHOT_URL_X64=${{ env.SNAPSHOT_URL_X64 }},SNAPSHOT_URL_AARCH64=${{ env.SNAPSHOT_URL_AARCH64 }},BUILD_VERSION=${{ env.SNAPSHOT_VERSION }},BUILD_DATE=${{ env.BUILD_DATE }}"
+          tags: "graylog/graylog-datanode:dev"
+          build-args: |
+            SNAPSHOT_URL_X64=${{ env.SNAPSHOT_URL_X64 }}
+            SNAPSHOT_URL_AARCH64=${{ env.SNAPSHOT_URL_AARCH64 }}
+            BUILD_VERSION=${{ env.SNAPSHOT_VERSION }}
+            BUILD_DATE=${{ env.BUILD_DATE }}

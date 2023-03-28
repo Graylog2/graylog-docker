@@ -15,11 +15,6 @@ jobs:
         image:
           - name: "graylog/graylog-datanode"
             context: "docker/datanode"
-        arch:
-          - name: "linux-x64"
-            platform: "linux/amd64"
-          - name: "linux-aarch64"
-            platform: "linux/arm64"
 
     steps:
       - uses: "actions/checkout@v3"
@@ -30,15 +25,20 @@ jobs:
       - name: "Set up Docker Buildx"
         uses: "docker/setup-buildx-action@v2"
 
-      - name: "Get and set ${{ matrix.arch.name }} snapshot URL"
+      - name: "Get and set snapshot URLs"
         shell: "bash"
         run: |
-          snapshot_url=$(curl -fsSL \
-            -G -d limit=1 -d artifact=graylog-datanode-${{ matrix.arch.name }} \
+          snapshot_url_x64=$(curl -fsSL \
+            -G -d limit=1 -d artifact=graylog-datanode-linux-x64 \
+            https://downloads.graylog.org/nightly-builds | \
+            jq -r '.artifacts[].url')
+          snapshot_url_aarch64=$(curl -fsSL \
+            -G -d limit=1 -d artifact=graylog-datanode-linux-aarch64 \
             https://downloads.graylog.org/nightly-builds | \
             jq -r '.artifacts[].url')
 
-          echo "SNAPSHOT_URL=$snapshot_url" | tee -a "$GITHUB_ENV"
+          echo "SNAPSHOT_URL_X64=$snapshot_url_x64" | tee -a "$GITHUB_ENV"
+          echo "SNAPSHOT_URL_AARCH64=$snapshot_url_aarch64" | tee -a "$GITHUB_ENV"
 
       - name: "Login to Docker Hub"
         uses: "docker/login-action@v2"
@@ -46,12 +46,12 @@ jobs:
           username: "${{ secrets.DOCKERHUB_USERNAME }}"
           password: "${{ secrets.DOCKERHUB_PASSWORD }}"
 
-      - name: "Build and push image: ${{ matrix.image.name }} - ${{ matrix.arch.name }}"
+      - name: "Build and push image: ${{ matrix.image.name }}"
         uses: "docker/build-push-action@v4"
         with:
           context: "${{ matrix.image.context }}"
-          platforms: "${{ matrix.arch.platform }}"
+          platforms: "linux/amd64,linux/arm64"
           pull: true
           push: true
           tags: "${{ matrix.image.name }}:dev"
-          build-args: "SNAPSHOT_URL=${{ env.SNAPSHOT_URL }}"
+          build-args: "SNAPSHOT_URL_X64=${{ env.SNAPSHOT_URL_X64 }} SNAPSHOT_URL_AARCH64=${{ env.SNAPSHOT_URL_AARCH64 }}"

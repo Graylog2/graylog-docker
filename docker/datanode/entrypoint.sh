@@ -70,8 +70,9 @@ fi
 export GRAYLOG_DATANODE_OPENSEARCH_LOCATION="$opensearch_dist"
 
 # Settings for the graylog-datanode script
-export DATANODE_JVM_OPTIONS_FILE="${DATANODE_JVM_OPTIONS_FILE:-$GDN_JVM_OPTIONS_FILE}"
-export JAVA_OPTS="-Dlog4j.configurationFile=${GDN_CONFIG_DIR}/log4j2.xml $JAVA_OPTS"
+export DATANODE_JVM_OPTIONS_FILE="${DATANODE_JVM_OPTIONS_FILE:-"$GDN_JVM_OPTIONS_FILE"}"
+export DATANODE_LOG4J_CONFIG_FILE="${DATANODE_LOG4J_CONFIG_FILE:-"$GDN_LOG4J_CONFIG_FILE"}"
+export JAVA_OPTS="$JAVA_OPTS"
 
 # Create required OpenSearch directories
 install -d -o "$GDN_USER" -g "$GDN_GROUP" -m 0700 \

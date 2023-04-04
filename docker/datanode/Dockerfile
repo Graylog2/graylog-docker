@@ -5,7 +5,6 @@ ARG BUILD_DATE
 ARG BUILD_VERSION
 ARG SNAPSHOT_URL_X64
 ARG SNAPSHOT_URL_AARCH64
-ARG LOCAL_ARTIFACT
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Will be persistet in the container image
@@ -15,6 +14,7 @@ ENV GDN_CONFIG_DIR=/etc/graylog/datanode
 ENV GDN_CONFIG_FILE=$GDN_CONFIG_DIR/datanode.conf
 ENV GDN_FEATURE_FLAG_FILE=$GDN_CONFIG_DIR/feature-flag.conf
 ENV GDN_JVM_OPTIONS_FILE=$GDN_CONFIG_DIR/jvm.options
+ENV GDN_LOG4J_CONFIG_FILE=$GDN_CONFIG_DIR/log4j2.xml
 ENV GDN_GROUP=graylog
 ENV GDN_USER=graylog
 
@@ -46,12 +46,6 @@ RUN apt-get update \
       /var/lib/apt/lists/* \
       /var/log/*
 
-# Setting LOCAL_ARTIFACT to a filename in the build context and setting
-# SNAPSHOT_URL to "file:///tmp/graylog-datanode.tgz" allows the build with
-# a local artifact build.
-# The COPY operation is does nothing if LOCAL_ARTIFACT is not set.
-COPY "$LOCAL_ARTIFACT" /tmp/graylog-datanode.tgz
-
 RUN install -d -o root -g root -m 0755 "$GDN_APP_ROOT" \
     && if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
          export SNAPSHOT_URL="$SNAPSHOT_URL_AARCH64"; \
@@ -60,7 +54,6 @@ RUN install -d -o root -g root -m 0755 "$GDN_APP_ROOT" \
        fi \
     && curl -fsSL --retry 3 "$SNAPSHOT_URL" | \
        tar -C "$GDN_APP_ROOT" --strip-components=1 -xzf - \
-    && rm -rf "/tmp/graylog-datanode.tgz" \
     && mv "$GDN_APP_ROOT/config/"* "$GDN_CONFIG_DIR"/ \
     && rmdir "$GDN_APP_ROOT/config" \
     && chown -R "$GDN_USER":"$GDN_GROUP" "$GDN_CONFIG_DIR" \

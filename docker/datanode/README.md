@@ -14,10 +14,10 @@ services:
     image: "graylog/graylog-datanode:dev"
   environment:
     GRAYLOG_DATANODE_PASSWORD_SECRET: "<password-secret>"
-    GRAYLOG_DATANODE_ROOT_PASSWORD_SHA2: "<roo-pw-sha2>"
+    GRAYLOG_DATANODE_ROOT_PASSWORD_SHA2: "<root-pw-sha2>"
     GRAYLOG_DATANODE_MONGODB_URI: "mongodb://mongodb:27017/graylog"
   ports:
-    - "127.0.0.1:9001:9001"  # Graylog REST API
+    - "127.0.0.1:9001:9001"  # Graylog Data Node REST API
     - "127.0.0.1:9200:9200"  # OpenSearch REST API
     - "127.0.0.1:9300:9300"  # OpenSearch Transport API
   volumes:

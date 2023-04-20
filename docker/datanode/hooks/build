@@ -8,10 +8,9 @@ cd ../..
 apt-get install -y python3-pip
 pip3 install pyyaml
 
-# Build Graylog Forwarder
+# Build Graylog
 docker build --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
-             --build-arg GRAYLOG_FORWARDER_VERSION="$(./release.py --get-forwarder-version)" \
-             --build-arg GRAYLOG_FORWARDER_IMAGE_VERSION="$(./release.py --get-forwarder-image-version)" \
+             --build-arg GRAYLOG_VERSION="$(./release.py --get-graylog-version)" \
              --build-arg BUILD_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
-             --file docker/forwarder/Dockerfile \
+             --file docker/datanode/Dockerfile \
              --tag $IMAGE_NAME .

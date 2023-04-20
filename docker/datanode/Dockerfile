@@ -1,10 +1,11 @@
 FROM ubuntu:22.04
 
 # Build time variables - not persistent in the container image
+ARG GRAYLOG_VERSION
+ARG VCS_REF
 ARG BUILD_DATE
-ARG BUILD_VERSION
-ARG SNAPSHOT_URL_X64
-ARG SNAPSHOT_URL_AARCH64
+ARG SNAPSHOT_URL_X64=https://downloads.graylog.org/releases/graylog-datanode/graylog-datanode-${GRAYLOG_VERSION}-linux-x64.tgz
+ARG SNAPSHOT_URL_AARCH64=https://downloads.graylog.org/releases/graylog-datanode/graylog-datanode-${GRAYLOG_VERSION}-linux-aarch64.tgz
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Will be persistet in the container image
@@ -63,20 +64,21 @@ RUN apt-get purge -y curl \
     && apt-get autoremove -y --purge \
     && rm -rf /var/log/*
 
-COPY entrypoint.sh /entrypoint.sh
+COPY docker/datanode/entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["tini", "--", "/entrypoint.sh"]
 CMD ["graylog-datanode"]
 
 # Put at the very end to avoid rebuilding all layers for ARG changes like
-# BUILD_DATE, BUILD_REV, and BUILD_VERSION.
+# BUILD_DATE, VCS_REV, and GRAYLOG_VERSION.
 LABEL org.opencontainers.image.authors="Graylog, Inc. <hello@graylog.com>"
 LABEL org.opencontainers.image.created="$BUILD_DATE"
 LABEL org.opencontainers.image.description="Container image to run the Graylog Data Node"
 LABEL org.opencontainers.image.documentation="https://docs.graylog.org/"
 LABEL org.opencontainers.image.licenses="SSPL-1.0"
-LABEL org.opencontainers.image.source="https://github.com/Graylog2/graylog2-server"
+LABEL org.opencontainers.image.revision="$VCS_REF"
+LABEL org.opencontainers.image.source="https://github.com/Graylog2/graylog-docker"
 LABEL org.opencontainers.image.title="Graylog Data Node"
 LABEL org.opencontainers.image.url="https://www.graylog.org/"
 LABEL org.opencontainers.image.vendor="Graylog, Inc."
-LABEL org.opencontainers.image.version="$BUILD_VERSION"
+LABEL org.opencontainers.image.version="$GRAYLOG_VERSION"

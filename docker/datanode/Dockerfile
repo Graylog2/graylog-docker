@@ -63,7 +63,7 @@ RUN apt-get purge -y curl \
     && apt-get autoremove -y --purge \
     && rm -rf /var/log/*
 
-COPY entrypoint.sh /entrypoint.sh
+COPY docker/datanode/entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["tini", "--", "/entrypoint.sh"]
 CMD ["graylog-datanode"]

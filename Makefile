@@ -1,5 +1,3 @@
-export GIT_SHA1=$(git rev-parse --short HEAD)
-
 default: docker_build
 
 docker_build:

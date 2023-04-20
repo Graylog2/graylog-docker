@@ -9,8 +9,8 @@ apt-get install -y python3-pip
 pip3 install pyyaml
 
 # Build Graylog
-docker build --build-arg VCS_REF=$GIT_SHA1 \
-             --build-arg GRAYLOG_VERSION=`./release.py --get-graylog-version` \
-             --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+docker build --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
+             --build-arg GRAYLOG_VERSION="$(./release.py --get-graylog-version)" \
+             --build-arg BUILD_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
              --file docker/oss/Dockerfile \
              --tag $IMAGE_NAME .

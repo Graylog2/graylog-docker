@@ -114,6 +114,7 @@ pipeline
                       .
                 """
 
+/* Disabled until the datanode permission problems are fixed.
                 sh """
                     docker buildx build \
                       --platform linux/amd64,linux/arm64/v8 \
@@ -127,6 +128,7 @@ pipeline
                       --push \
                       .
                 """
+*/
 
                 sh """
                     docker buildx build \

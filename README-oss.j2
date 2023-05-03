@@ -1,0 +1,17 @@
+{% extends "README-base.j2" %}
+
+{% block title %}Graylog{% endblock %}
+{% block image_name %}graylog{% endblock %}
+
+{% block content %}
+This is the open source [Graylog ](https://hub.docker.com/r/graylog/graylog/) image. It contains [Graylog](https://github.com/Graylog2/graylog2-server) as well as the [Integrations](https://docs.graylog.org/docs/integrations) plugin.
+
+| Java Version  | Platform  | Tags  |
+|---|---|---|
+| OpenJDK 8  | `linux/amd64`, `linux/arm64` | `{{ graylog.major_version }}.{{ graylog.minor_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}` |
+| OpenJDK 11  | `linux/amd64`, `linux/arm64`  | `{{ graylog.major_version }}.{{ graylog.minor_version }}-jre11`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-jre11`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}-jre11`  |
+{% endblock %}
+
+{% block license %}
+Graylog itself is licensed under the Server Side Public License (SSPL), see [license information](https://www.mongodb.com/licensing/server-side-public-license).
+{% endblock %}

@@ -18,6 +18,7 @@ services:
       GRAYLOG_DATANODE_PASSWORD_SECRET: "<password-secret>"
       GRAYLOG_DATANODE_ROOT_PASSWORD_SHA2: "<root-pw-sha2>"
       GRAYLOG_DATANODE_MONGODB_URI: "mongodb://mongodb:27017/graylog"
+      GRAYLOG_DATANODE_SINGLE_NODE_ONLY: true
     ulimits:
       memlock:
         hard: -1
@@ -54,4 +55,5 @@ volumes:
 | `GRAYLOG_DATANODE_MONGODB_URI` | none | yes | URI to the MongoDB instance and database. |
 | `GRAYLOG_DATANODE_DATA_DIR` | `/var/lib/graylog-datanode` | no | The data root directory. (e.g., OpenSearch data) |
 | `GRAYLOG_DATANODE_NODE_NAME` | container hostname | no | The OpenSearch node name. |
+| `GRAYLOG_DATANODE_SINGLE_NODE_ONLY` | `false` | no | Starts OpenSearch in single node mode when set to `true`. |
 | `GRAYLOG_DATANODE_OPENSEARCH_DISCOVERY_SEED_HOSTS` | none | no | tbd |

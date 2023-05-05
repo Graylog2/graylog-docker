@@ -12,6 +12,8 @@ tbd
 services:
   graylog-datanode:
     image: "graylog/graylog-datanode:dev"
+    depends_on:
+      - "mongodb"
     environment:
       GRAYLOG_DATANODE_PASSWORD_SECRET: "<password-secret>"
       GRAYLOG_DATANODE_ROOT_PASSWORD_SHA2: "<root-pw-sha2>"
@@ -30,8 +32,16 @@ services:
     volumes:
       - "graylog-datanode:/var/lib/graylog-datanode"
 
+  mongodb:
+    image: "mongo:5.0"
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - "mongodb:/data/db"
+
 volumes:
   graylog-datanode:
+  mongodb:
 
 ```
 

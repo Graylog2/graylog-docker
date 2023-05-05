@@ -16,6 +16,13 @@ services:
       GRAYLOG_DATANODE_PASSWORD_SECRET: "<password-secret>"
       GRAYLOG_DATANODE_ROOT_PASSWORD_SHA2: "<root-pw-sha2>"
       GRAYLOG_DATANODE_MONGODB_URI: "mongodb://mongodb:27017/graylog"
+    ulimits:
+      memlock:
+        hard: -1
+        soft: -1
+      nofile:
+        soft: 65536
+        hard: 65536
     ports:
       - "127.0.0.1:9001:9001"  # Graylog Data Node REST API
       - "127.0.0.1:9200:9200"  # OpenSearch REST API

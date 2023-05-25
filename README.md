@@ -4,7 +4,7 @@
 
 [hub]: https://hub.docker.com/r/graylog/graylog/
 
-The latest stable version of Graylog is **`5.1.0`**.
+The latest stable version of Graylog is **`5.1.1`**.
 
 ## What is Graylog?
 
@@ -21,7 +21,7 @@ This is the open source [Graylog ](https://hub.docker.com/r/graylog/graylog/) im
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.1`, `5.1.0`, `5.1.0-1` |
+| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.1`, `5.1.1`, `5.1.1-1` |
 
 
 > Note: There is no 'latest' tag. You'll need to specify which version you want.
@@ -32,7 +32,7 @@ This is the [Graylog Enterprise](https://hub.docker.com/r/graylog/graylog-enterp
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.1`, `5.1.0`, `5.1.0-1` |
+| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.1`, `5.1.1`, `5.1.1-1` |
 
 
 

@@ -18,6 +18,7 @@ ENV GRAYLOG_BIN_DIR=/usr/share/graylog-forwarder/bin
 ENV GRAYLOG_PLUGIN_DIR=/usr/share/graylog-forwarder/plugin
 ENV GRAYLOG_DATA_DIR=/var/lib/graylog-forwarder/data
 ENV GRAYLOG_MESSAGE_JOURNAL_DIR=/var/lib/graylog-forwarder/journal
+ENV GRAYLOG_NODE_ID_FILE=/var/lib/graylog-forwarder/node-id
 
 # hadolint ignore=DL3008
 RUN apt-get update && \

@@ -44,7 +44,7 @@ The latest stable version is **`5.1`**, with support for Java 17 on platform `li
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.1`, `forwarder-5.1-1` |
+| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.1`, `forwarder-5.1-2` |
 
 
 ## Architecture

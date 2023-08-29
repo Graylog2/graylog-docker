@@ -48,7 +48,7 @@ jobs:
           platforms: "linux/amd64,linux/arm64"
           pull: true
           push: true
-          tags: "graylog/graylog-datanode:dev"
+          tags: "graylog/graylog-datanode:5.2-dev"
           build-args: |
             SNAPSHOT_URL_X64=${{ env.SNAPSHOT_URL_X64 }}
             SNAPSHOT_URL_AARCH64=${{ env.SNAPSHOT_URL_AARCH64 }}

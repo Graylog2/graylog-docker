@@ -47,6 +47,8 @@ RUN apt-get update \
       /var/lib/apt/lists/* \
       /var/log/*
 
+RUN env
+
 RUN install -d -o root -g root -m 0755 "$GDN_APP_ROOT" \
     && if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
          export SNAPSHOT_URL="$SNAPSHOT_URL_AARCH64"; \

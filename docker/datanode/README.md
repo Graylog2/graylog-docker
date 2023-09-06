@@ -20,7 +20,6 @@ services:
       GRAYLOG_DATANODE_ROOT_PASSWORD_SHA2: "<root-pw-sha2>"
       GRAYLOG_DATANODE_MONGODB_URI: "mongodb://mongodb:27017/graylog"
       GRAYLOG_DATANODE_SINGLE_NODE_ONLY: "true"
-      GRAYLOG_DATANODE_CONFIG_LOCATION: "/var/lib/graylog-datanode/bin/config"
       GRAYLOG_DATANODE_REST_API_USERNAME: "user"
       GRAYLOG_DATANODE_REST_API_PASSWORD: "password"
     ulimits:
@@ -63,7 +62,6 @@ Enable `hostname: "datanode"` in `docker-compose.yml` and `datanode` as an alias
 | `GRAYLOG_DATANODE_NODE_NAME` | container hostname | no | The OpenSearch node name.                                 |
 | `GRAYLOG_DATANODE_SINGLE_NODE_ONLY` | `"false"` | no | Starts OpenSearch in single node mode when set to `true`. |
 | `GRAYLOG_DATANODE_OPENSEARCH_DISCOVERY_SEED_HOSTS` | none | no | tbd                                                       |
-| `GRAYLOG_DATANODE_CONFIG_LOCATION` | none | yes | tbd                                                       |
 | `GRAYLOG_DATANODE_REST_API_USERNAME` | none | yes | tbd                                                       |
 | `GRAYLOG_DATANODE_REST_API_PASSWORD` | none | yes | tbd                                                       |
 

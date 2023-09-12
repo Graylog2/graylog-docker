@@ -7,6 +7,7 @@ ARG BUILD_DATE
 ARG SNAPSHOT_URL_X64=https://downloads.graylog.org/releases/graylog-datanode/graylog-datanode-${GRAYLOG_VERSION}-linux-x64.tgz
 ARG SNAPSHOT_URL_AARCH64=https://downloads.graylog.org/releases/graylog-datanode/graylog-datanode-${GRAYLOG_VERSION}-linux-aarch64.tgz
 ARG DEBIAN_FRONTEND=noninteractive
+ARG TARGETPLATFORM
 
 # Will be persistet in the container image
 ENV GDN_APP_ROOT=/usr/share/graylog-datanode

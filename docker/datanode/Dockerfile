@@ -4,7 +4,13 @@ FROM ubuntu:22.04
 ARG GRAYLOG_VERSION
 ARG VCS_REF
 ARG BUILD_DATE
-ARG LOCAL_BUILD_TGZ
+# The LOCAL_BUILD_TGZ variable defaults to an empty file. If the variable is
+# empty, Docker copies the full context dir into the container. It basically
+# executes the following:
+#   COPY "" "/tmp/datanode-local.tar.gz"
+# That creates a /tmp/datanode-local.tar.gz in the container with all files
+# from the build context.
+ARG LOCAL_BUILD_TGZ=.empty
 ARG SNAPSHOT_URL_X64=https://downloads.graylog.org/releases/graylog-datanode/graylog-datanode-${GRAYLOG_VERSION}-linux-x64.tgz
 ARG SNAPSHOT_URL_AARCH64=https://downloads.graylog.org/releases/graylog-datanode/graylog-datanode-${GRAYLOG_VERSION}-linux-aarch64.tgz
 ARG DEBIAN_FRONTEND=noninteractive
@@ -50,19 +56,24 @@ RUN apt-get update \
       /var/log/*
 
 RUN install -d -o root -g root -m 0755 "$GDN_APP_ROOT"
+
 COPY "${LOCAL_BUILD_TGZ}" "/tmp/datanode-local.tar.gz"
-RUN if [ -f /tmp/datanode-local.tar.gz ]; then \
-    mv /tmp/datanode-local.tar.gz /tmp/datanode.tar.gz \
-  ; fi
-RUN if [ -z "${LOCAL_BUILD_TGZ}" ]; then \
+
+# An empty /tmp/datanode-local.tar.gz file indicates that we don't use a
+# custom LOCAL_BUILD_TGZ file.
+RUN if [ -f /tmp/datanode-local.tar.gz ] && [ -s /tmp/datanode-local.tar.gz ]; then \
+      mv /tmp/datanode-local.tar.gz /tmp/datanode.tar.gz; \
+    fi; \
+    if [ "${LOCAL_BUILD_TGZ}" == ".empty" ]; then \
       if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
          export SNAPSHOT_URL="$SNAPSHOT_URL_AARCH64"; \
        else \
          export SNAPSHOT_URL="$SNAPSHOT_URL_X64"; \
       fi; \
-      curl -fsSL --retry 3 "$SNAPSHOT_URL" -o /tmp/datanode.tar.gz \
-    ; fi
-RUN tar -C "$GDN_APP_ROOT" --strip-components=1 -xzf /tmp/datanode.tar.gz \
+      curl -fsSL --retry 3 "$SNAPSHOT_URL" -o /tmp/datanode.tar.gz; \
+    fi; \
+    tar -C "$GDN_APP_ROOT" --strip-components=1 -xzf /tmp/datanode.tar.gz \
+    && rm -rf /tmp/datanode-local.tar.gz /tmp/datanode.tar.gz \
     && mv "$GDN_APP_ROOT/config/"* "$GDN_CONFIG_DIR"/ \
     && rmdir "$GDN_APP_ROOT/config" \
     && chown -R "$GDN_USER":"$GDN_GROUP" "$GDN_CONFIG_DIR" \

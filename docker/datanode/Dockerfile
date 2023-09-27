@@ -4,17 +4,18 @@ FROM ubuntu:22.04
 ARG GRAYLOG_VERSION
 ARG VCS_REF
 ARG BUILD_DATE
-# The LOCAL_BUILD_TGZ variable defaults to an empty file. If the variable is
-# empty, Docker copies the full context dir into the container. It basically
-# executes the following:
-#   COPY "" "/tmp/datanode-local.tar.gz"
-# That creates a /tmp/datanode-local.tar.gz in the container with all files
-# from the build context.
-ARG LOCAL_BUILD_TGZ=.empty
 ARG SNAPSHOT_URL_X64=https://downloads.graylog.org/releases/graylog-datanode/graylog-datanode-${GRAYLOG_VERSION}-linux-x64.tgz
 ARG SNAPSHOT_URL_AARCH64=https://downloads.graylog.org/releases/graylog-datanode/graylog-datanode-${GRAYLOG_VERSION}-linux-aarch64.tgz
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TARGETPLATFORM
+
+# We default to an empty file instead of leaving LOCAL_BUILD_TGZ blank
+# because Docker would execute the following COPY command with a blank
+# value:
+#   COPY "" "/tmp/datanode-local.tar.gz"
+# That creates a /tmp/graylog.tar.gz *directory* in the container with
+# all files from the build context.
+ARG LOCAL_BUILD_TGZ=.empty
 
 # Will be persistet in the container image
 ENV GDN_APP_ROOT=/usr/share/graylog-datanode
@@ -64,7 +65,7 @@ COPY "${LOCAL_BUILD_TGZ}" "/tmp/datanode-local.tar.gz"
 RUN if [ -f /tmp/datanode-local.tar.gz ] && [ -s /tmp/datanode-local.tar.gz ]; then \
       mv /tmp/datanode-local.tar.gz /tmp/datanode.tar.gz; \
     fi; \
-    if [ "${LOCAL_BUILD_TGZ}" == ".empty" ]; then \
+    if [ "${LOCAL_BUILD_TGZ}" = ".empty" ]; then \
       if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
          export SNAPSHOT_URL="$SNAPSHOT_URL_AARCH64"; \
        else \

@@ -4,11 +4,18 @@ FROM ubuntu:jammy as graylog-downloader
 ARG VCS_REF
 ARG BUILD_DATE
 ARG GRAYLOG_VERSION
-ARG LOCAL_BUILD_TGZ
 ARG GRAYLOG_HOME=/usr/share/graylog
 ARG GRAYLOG_UID=1100
 ARG GRAYLOG_GID=1100
 ARG TARGETPLATFORM
+
+# We default to an empty file instead of leaving LOCAL_BUILD_TGZ blank
+# because Docker would execute the following COPY command with a blank
+# value:
+#   COPY "" "/tmp/graylog.tgz"
+# That creates a /tmp/graylog.tgz *directory* in the container with
+# all files from the build context.
+ARG LOCAL_BUILD_TGZ=.empty
 
 WORKDIR /tmp
 
@@ -21,19 +28,22 @@ RUN \
     curl > /dev/null
 
 COPY build/fetch-and-extract.sh /bin/fetch-and-extract
-RUN if [ -z "${LOCAL_BUILD_TGZ}" ]; then \
-    chmod +x /bin/fetch-and-extract && fetch-and-extract \
-    "https://packages.graylog2.org/releases/graylog-enterprise/graylog-enterprise-${GRAYLOG_VERSION}.tgz" \
-    "https://packages.graylog2.org/releases/graylog-enterprise/graylog-enterprise-${GRAYLOG_VERSION}.tgz.sha256.txt" \
-   ; fi
+RUN if [ "${LOCAL_BUILD_TGZ}" = ".empty" ]; then \
+      chmod +x /bin/fetch-and-extract \
+      && fetch-and-extract \
+         "https://packages.graylog2.org/releases/graylog-enterprise/graylog-enterprise-${GRAYLOG_VERSION}.tgz" \
+         "https://packages.graylog2.org/releases/graylog-enterprise/graylog-enterprise-${GRAYLOG_VERSION}.tgz.sha256.txt"; \
+    fi
 
 
-# Does nothing if empty
 COPY "${LOCAL_BUILD_TGZ}" "/tmp/graylog.tgz"
 
-RUN if [ "${LOCAL_BUILD_TGZ}" ]; then \
+# An empty /tmp/graylog.tgz file indicates that we don't use a
+# custom LOCAL_BUILD_TGZ file.
+RUN if [ -f "/tmp/graylog.tgz" ] && [ -s "/tmp/graylog.tgz" ]; then \
         mkdir /opt/graylog && \
         tar --extract --gzip --file "/tmp/graylog.tgz" --strip-components=1 --directory /opt/graylog; \
+        rm -rf /tmp/graylog.tgz; \
     fi
 
 # Reduce image size by removing large cross platform chromedriver binaries

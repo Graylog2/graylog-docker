@@ -4,6 +4,7 @@ FROM ubuntu:22.04
 ARG GRAYLOG_VERSION
 ARG VCS_REF
 ARG BUILD_DATE
+ARG LOCAL_BUILD_TGZ
 ARG SNAPSHOT_URL_X64=https://downloads.graylog.org/releases/graylog-datanode/graylog-datanode-${GRAYLOG_VERSION}-linux-x64.tgz
 ARG SNAPSHOT_URL_AARCH64=https://downloads.graylog.org/releases/graylog-datanode/graylog-datanode-${GRAYLOG_VERSION}-linux-aarch64.tgz
 ARG DEBIAN_FRONTEND=noninteractive
@@ -48,14 +49,20 @@ RUN apt-get update \
       /var/lib/apt/lists/* \
       /var/log/*
 
-RUN install -d -o root -g root -m 0755 "$GDN_APP_ROOT" \
-    && if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+RUN install -d -o root -g root -m 0755 "$GDN_APP_ROOT"
+COPY "${LOCAL_BUILD_TGZ}" "/tmp/datanode-local.tar.gz"
+RUN if [ -f /tmp/datanode-local.tar.gz ]; then \
+    mv /tmp/datanode-local.tar.gz /tmp/datanode.tar.gz \
+  ; fi
+RUN if [ -z "${LOCAL_BUILD_TGZ}" ]; then \
+      if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
          export SNAPSHOT_URL="$SNAPSHOT_URL_AARCH64"; \
        else \
          export SNAPSHOT_URL="$SNAPSHOT_URL_X64"; \
-       fi \
-    && curl -fsSL --retry 3 "$SNAPSHOT_URL" | \
-       tar -C "$GDN_APP_ROOT" --strip-components=1 -xzf - \
+      fi; \
+      curl -fsSL --retry 3 "$SNAPSHOT_URL" -o /tmp/datanode.tar.gz \
+    ; fi
+RUN tar -C "$GDN_APP_ROOT" --strip-components=1 -xzf /tmp/datanode.tar.gz \
     && mv "$GDN_APP_ROOT/config/"* "$GDN_CONFIG_DIR"/ \
     && rmdir "$GDN_APP_ROOT/config" \
     && chown -R "$GDN_USER":"$GDN_GROUP" "$GDN_CONFIG_DIR" \

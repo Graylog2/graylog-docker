@@ -1,3 +1,4 @@
 .git/
 hooks/
 test/
+/venv/

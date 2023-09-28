@@ -100,12 +100,15 @@ wait_for_port() {
 
 wait_for_application() {
 
-  c=0
   echo 'Waiting until Graylog has been started'
-  until curl --silent --head "${URL}"
+
+  RETRY=0
+  until curl --silent --head "${URL}" || [[ $RETRY -ge 10 ]]
   do
-    # Only 10 retries
-    ((c++)) && ((c==10)) && (echo "Couldn't reach Graylog via network" ; exit 1)
+    RETRY=$((RETRY + 1))
+    if [[ $RETRY -le 10 ]]; then
+      echo "Waiting 10s until Graylog has been started - retry #$RETRY"
+    fi
     sleep 10s
   done
 

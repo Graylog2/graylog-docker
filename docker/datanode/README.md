@@ -51,8 +51,8 @@ Enable `hostname: "datanode"` in `docker-compose.yml` and `datanode` as an alias
 
 ### Environment Variables
 
-| Variable | Default | Required | Description|
-| :--- | :--- | :--- |:----------------------------------------------------------------------------------------|
+| Variable | Default | Required | Description |
+| :--- | :--- | :--- |:----------------------------------------------------------|
 | `GRAYLOG_DATANODE_PASSWORD_SECRET` | none | yes | Password secret to seed secret storage. Must be the same value as the `password_secret` in the Graylog server configuration. |
 | `GRAYLOG_DATANODE_ROOT_PASSWORD_SHA2` | none | yes | Password hash for the root user. |
 | `GRAYLOG_DATANODE_ROOT_USERNAME` | `admin` | yes | Name of the root user. |

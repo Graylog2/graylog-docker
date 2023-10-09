@@ -12,7 +12,7 @@ tbd
 services:
   graylog-datanode:
 #    hostname: "datanode"
-    image: "graylog/graylog-datanode:5.2-dev"
+    image: "graylog/graylog-datanode:5.2"
     depends_on:
       - "mongodb"
     environment:

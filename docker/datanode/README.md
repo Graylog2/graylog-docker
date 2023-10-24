@@ -9,7 +9,9 @@ The latest stable version of Graylog Data Node is **`5.2.0-rc.1`**.
 ## What is Graylog Data Node?
 
 Graylog is a centralized logging solution that enables aggregating and searching through logs. 
-The Data Node is our wrapper around OpenSearch to provide better support/management.
+The Data Node is a management component for OpenSearch to configure and adapt it for use with Graylog.
+It ensures that the data layer for Graylog is properly secured with certificates, provides cluster membership handling and adoption of new nodes for use with Graylog.
+The Data Node will make sure the appropriate OpenSearch version and necessary extensions, are in place so that Graylog can function as intended.
 
 
 ## Image Details

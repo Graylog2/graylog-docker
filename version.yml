@@ -6,5 +6,5 @@ graylog:
   patch_version: "0"
   release: 1
 forwarder:
-  version: "5.2-rc.1"
+  version: "5.2"
   release: 1

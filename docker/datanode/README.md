@@ -1,10 +1,10 @@
 # Graylog Data Node Docker Image
 
-[![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog.svg)][hub] [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog.svg)][hub]
+[![Docker Stars](https://img.shields.io/docker/stars/graylog/graylog-datanode.svg)][hub] [![Docker Pulls](https://img.shields.io/docker/pulls/graylog/graylog-datanode.svg)][hub]
 
 [hub]: https://hub.docker.com/r/graylog/graylog/
 
-The latest stable version of Graylog Data Node is **`5.2.0-rc.1`**.
+The latest stable version of Graylog Data Node is **`5.2.0`**.
 
 ## What is Graylog Data Node?
 
@@ -21,9 +21,9 @@ There are images for the `linux/amd64` and `linux/arm64` platforms available. Al
 #### `graylog/graylog-datanode`
 
 
-| Java Version  | Platform  | Tags  |
-|---|---|---|
-| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.2.0-rc.1-1` |
+| Java Version  | Platform  | Tags                      |
+|---|---|---------------------------|
+| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.2`, `5.2.0`, `5.2.0-1` |
 
 
 > Note: There is no 'latest' tag. You'll need to specify which version you want.

@@ -1,0 +1,62 @@
+name: "Bump Version"
+run-name: "Bump Version - ${{ inputs.product }} ${{ inputs.version }} (branch: ${{ inputs.branch }})"
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "The branch to check out"
+        required: true
+      version:
+        description: "The new version and revision. (Example: \"6.0.0-beta.1-1\")"
+        required: true
+      product:
+        description: "The product to bump"
+        required: true
+        type: "choice"
+        default: "graylog"
+        options:
+          - "graylog"
+          - "forwarder"
+
+defaults:
+  run:
+    shell: "bash"
+
+# Avoid having multiple workflows modifying the repo at the same time
+concurrency: "repo-write"
+
+jobs:
+  bump:
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "Checkout ${{ inputs.branch }}"
+        uses: "actions/checkout@v4"
+        with:
+          ref: "${{ inputs.branch }}"
+          token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: "Install dependencies"
+        run: "pip3 install -r requirements.txt"
+
+      - name: "Bump ${{ inputs.product }} version to ${{ inputs.version }}"
+        run: "./release.py --bump ${{ inputs.product }} --version ${{ inputs.version }}"
+
+      - name: "Generate README"
+        run: "./release.py --generate-readme"
+
+      - name: "Commit and push"
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add version.yml README.md
+          git commit -m "Bump to ${{ inputs.version }}"
+          if [ "${{ inputs.product }}" = "forwarder" ]; then
+            git tag -m "Tag forwarder-${{ inputs.version }}" "forwarder-${{ inputs.version }}"
+          else
+            git tag -m "Tag ${{ inputs.version }}" "${{ inputs.version }}"
+          fi
+          git push origin "${{ inputs.branch }}"
+          git push --tags

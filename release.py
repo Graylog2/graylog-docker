@@ -56,13 +56,21 @@ with open('version.yml', 'r') as version_file:
         print(f'Bumping {args.bump} to {args.version}')
 
         # 6.0.0-alpha.1-1 => version="6.0.0", suffixes=["alpha.1", "1"]
-        # 6.0.0           => version="6.0.0", suffixes=[]
+        # 6.0.0-1         => version="6.0.0", suffixes=["1"]
         version, *suffixes = args.version.split('-', 2)
         # 6.0.0 => major=6, minor=0, patch= 0
         major, minor, patch = version.split('.', 2)
 
-        suffix = suffixes[0] if len(suffixes) > 0 else None
-        release = suffixes[1] if len(suffixes) > 1 else 1
+        suffix = None
+        release = None
+        if len(suffixes) == 0:
+            raise RuntimeError("Missing revision suffix!")
+        elif len(suffixes) > 1:
+            suffix = suffixes[0]
+            release = suffixes[1]
+        else:
+            suffix = None
+            release = suffixes[0]
 
         version_parsed[args.bump]['major_version'] = major
         version_parsed[args.bump]['minor_version'] = minor

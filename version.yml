@@ -3,7 +3,7 @@
 graylog:
   major_version: '6'
   minor_version: '1'
-  patch_version: 0-alpha.4
+  patch_version: 0-alpha.5
   release: 1
 forwarder:
   version: '6.0'

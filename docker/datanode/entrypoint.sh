@@ -43,7 +43,6 @@ check_env "GDN_JVM_OPTIONS_FILE"
 check_env "GDN_USER"
 check_env "GDN_GROUP"
 check_env "GRAYLOG_DATANODE_PASSWORD_SECRET"
-check_env "GRAYLOG_DATANODE_ROOT_PASSWORD_SHA2"
 check_env "GRAYLOG_DATANODE_MONGODB_URI"
 
 # Default Graylog settings

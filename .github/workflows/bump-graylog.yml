@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: "The branch to check out"
+        description: "The release branch to check out (use the same branch above!)"
         required: true
       version:
         description: "The new version and revision. (Example: \"6.0.0-beta.1-1\")"

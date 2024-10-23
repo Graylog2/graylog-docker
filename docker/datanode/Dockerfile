@@ -4,8 +4,8 @@ FROM ubuntu:22.04
 ARG GRAYLOG_VERSION
 ARG VCS_REF
 ARG BUILD_DATE
-ARG SNAPSHOT_URL_X64=https://downloads.graylog.org/releases/graylog-datanode/graylog-datanode-${GRAYLOG_VERSION}-linux-x64.tgz
-ARG SNAPSHOT_URL_AARCH64=https://downloads.graylog.org/releases/graylog-datanode/graylog-datanode-${GRAYLOG_VERSION}-linux-aarch64.tgz
+ARG DOWNLOAD_URL_X64=https://downloads.graylog.org/releases/graylog-datanode/graylog-datanode-${GRAYLOG_VERSION}-linux-x64.tgz
+ARG DOWNLOAD_URL_AARCH64=https://downloads.graylog.org/releases/graylog-datanode/graylog-datanode-${GRAYLOG_VERSION}-linux-aarch64.tgz
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TARGETPLATFORM
 
@@ -67,11 +67,11 @@ RUN if [ -f /tmp/datanode-local.tar.gz ] && [ -s /tmp/datanode-local.tar.gz ]; t
     fi; \
     if [ "${LOCAL_BUILD_TGZ}" = ".empty" ]; then \
       if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-         export SNAPSHOT_URL="$SNAPSHOT_URL_AARCH64"; \
+         export DOWNLOAD_URL="$DOWNLOAD_URL_AARCH64"; \
        else \
-         export SNAPSHOT_URL="$SNAPSHOT_URL_X64"; \
+         export DOWNLOAD_URL="$DOWNLOAD_URL_X64"; \
       fi; \
-      curl -fsSL --retry 3 "$SNAPSHOT_URL" -o /tmp/datanode.tar.gz; \
+      curl -fsSL --retry 3 "$DOWNLOAD_URL" -o /tmp/datanode.tar.gz; \
     fi; \
     tar -C "$GDN_APP_ROOT" --strip-components=1 -xzf /tmp/datanode.tar.gz \
     && rm -rf /tmp/datanode-local.tar.gz /tmp/datanode.tar.gz \

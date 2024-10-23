@@ -10,9 +10,23 @@ patch config/graylog.conf patches/graylog-server.conf.patch
 apt-get install -y python3-pip
 pip3 install pyyaml
 
+graylog_version="$(./release.py --get-graylog-version)"
+build_args=()
+
+if [[ "$graylog_version" =~ SNAPSHOT ]]; then
+	download_url_x64="$(curl -fsSL -G -d artifact=graylog-enterprise-linux-x64 -d limit=1 https://downloads.graylog.org/nightly-builds | jq -r '.artifacts[0].url')"
+	download_url_aarch64="$(sed -e 's,linux-x64,linux-aarch64,' <<< "$download_url_x64")"
+	download_url="$(sed -e 's,-linux-x64,,' <<< "$download_url_x64")"
+
+	build_args+=(--build-arg DOWNLOAD_URL="$download_url")
+	build_args+=(--build-arg DOWNLOAD_URL_X64="$download_url_x64")
+	build_args+=(--build-arg DOWNLOAD_URL_AARCH64="$download_url_aarch64")
+fi
+
 # Build Graylog Enterprise & Integration Included
 docker build --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
-             --build-arg GRAYLOG_VERSION="$(./release.py --get-graylog-version)" \
+             --build-arg GRAYLOG_VERSION="$graylog_version" \
              --build-arg BUILD_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
+	     ${build_args[*]} \
              --file docker/enterprise/Dockerfile \
              --tag $IMAGE_NAME .

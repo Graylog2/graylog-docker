@@ -2,14 +2,28 @@
 FROM ubuntu:jammy as graylog-downloader
 
 ARG VCS_REF
+ARG BUILD_DATE
 ARG GRAYLOG_VERSION
+ARG GRAYLOG_PRODUCT=graylog
 ARG GRAYLOG_HOME=/usr/share/graylog
 ARG GRAYLOG_UID=1100
 ARG GRAYLOG_GID=1100
+ARG TARGETPLATFORM
+
+# We default to an empty file instead of leaving LOCAL_BUILD_TGZ blank
+# because Docker would execute the following COPY command with a blank
+# value:
+#   COPY "" "/tmp/graylog.tgz"
+# That creates a /tmp/graylog.tgz *directory* in the container with
+# all files from the build context.
+ARG LOCAL_BUILD_TGZ=.empty
+
+# Allows building a custom artifact. (e.g., snapshot builds)
+ARG DOWNLOAD_URL=none
 
 WORKDIR /tmp
 
-# hadolint ignore=DL3008,DL3015,DL3059
+# hadolint ignore=DL3008,DL3015
 RUN \
   apt-get update  > /dev/null && \
   apt-get upgrade -y > /dev/null && \
@@ -18,10 +32,27 @@ RUN \
     curl > /dev/null
 
 COPY build/fetch-and-extract.sh /bin/fetch-and-extract
-RUN chmod +x /bin/fetch-and-extract && fetch-and-extract \
-    "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz" \
-    "https://packages.graylog2.org/releases/graylog/graylog-${GRAYLOG_VERSION}.tgz.sha256.txt"
 
+RUN if [ "${LOCAL_BUILD_TGZ}" = ".empty" ] && [ "${DOWNLOAD_URL}" = "none" ]; then \
+      chmod +x /bin/fetch-and-extract \
+      && fetch-and-extract \
+         "https://downloads.graylog.org/releases/${GRAYLOG_PRODUCT}/${GRAYLOG_PRODUCT}-${GRAYLOG_VERSION}.tgz" \
+         "https://downloads.graylog.org/releases/${GRAYLOG_PRODUCT}/${GRAYLOG_PRODUCT}-${GRAYLOG_VERSION}.tgz.sha256.txt"; \
+    fi
+
+RUN if [ "${DOWNLOAD_URL}" != "none" ]; then \
+      chmod +x /bin/fetch-and-extract && fetch-and-extract "${DOWNLOAD_URL}"; \
+    fi
+
+COPY "${LOCAL_BUILD_TGZ}" "/tmp/graylog.tgz"
+
+# An empty /tmp/graylog.tgz file indicates that we don't use a
+# custom LOCAL_BUILD_TGZ file.
+RUN if [ -f "/tmp/graylog.tgz" ] && [ -s "/tmp/graylog.tgz" ]; then \
+        mkdir /opt/graylog && \
+        tar --extract --gzip --file "/tmp/graylog.tgz" --strip-components=1 --directory /opt/graylog; \
+        rm -rf /tmp/graylog.tgz; \
+    fi
 
 RUN \
   install \
@@ -134,7 +165,7 @@ HEALTHCHECK \
 
 LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
       org.label-schema.name="Graylog Docker Image" \
-      org.label-schema.description="Official Graylog Docker image" \
+      org.label-schema.description="Official Graylog Docker Image" \
       org.label-schema.url="https://www.graylog.org/" \
       org.label-schema.vcs-ref=${VCS_REF} \
       org.label-schema.vcs-url="https://github.com/Graylog2/graylog-docker" \

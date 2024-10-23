@@ -53,13 +53,25 @@ then
   NC_OPTS=
 fi
 
+get_snapshot_url() {
+    curl -fsSL -G -d artifact=graylog -d limit=1 https://downloads.graylog.org/nightly-builds | \
+	    jq -r '.artifacts[0].url'
+}
 
 compose_up() {
+  local graylog_version="$(cd .. && ./release.py --get-graylog-version)"
 
+  echo "Using Graylog version: $graylog_version"
   cat << EOF > .env
 VCS_REF=$(git rev-parse --short HEAD)
-GRAYLOG_VERSION=$(cd .. && ./release.py --get-graylog-version)
+GRAYLOG_VERSION=$graylog_version
 EOF
+
+  if [[ "$graylog_version" =~ SNAPSHOT ]]; then
+    local snapshot_url="$(get_snapshot_url)"
+    echo "Using snapshot: $snapshot_url"
+    echo "DOWNLOAD_URL=$snapshot_url" >> .env
+  fi
 
   docker-compose --file docker-compose.tpl config  > ./docker-compose.yml
   docker-compose down -v

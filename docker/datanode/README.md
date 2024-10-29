@@ -35,16 +35,9 @@ Please refer to the [Graylog Docker documentation](https://docs.graylog.org/docs
 
 If you want to quickly spin up an instance for testing, you can use our [Docker Compose template](https://github.com/Graylog2/docker-compose).
 
-Notably, this image **requires** that two important configuration options be set (although in practice you will likely need to set more):
-1. `password_secret` (environment variable `GRAYLOG_DATANODE_PASSWORD_SECRET`)
+Notably, this image **requires** one important configuration option to be set (although in practice you will likely need to set more):
+*  `password_secret` (environment variable `GRAYLOG_DATANODE_PASSWORD_SECRET`)
     * A shared common secret with Graylog. Please refer to the Graylog docs on how to create it (and then, copy it over)
-2. `root_password_sha2` (environment variable `GRAYLOG_DATANODE_ROOT_PASSWORD_SHA2`)
-    * A SHA2 hash of a password you will use for your initial login as Graylog's root user.
-        * The default username is `admin`.  This value is customizable via configuration option `root_username` (environment variable `GRAYLOG_ROOT_USERNAME`).
-    * In general, these credentials will only be needed to initially set up the system or reconfigure the system in the event of an authentication backend failure.
-    * This password cannot be changed using the API or via the Web interface.
-    * May be generated with something like: `echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum | cut -d" " -f1`
-
 
 Every [Graylog DataNode configuration option](https://docs.graylog.org/docs/server-conf) can be set via environment variable. To get the environment variable name for a given configuration option, simply prefix the option name with `GRAYLOG_DATANODE_` and put it all in upper case. Another option is to store the configuration file outside of the container and edit it directly.
 
@@ -60,7 +53,6 @@ services:
       - "mongodb"
     environment:
       GRAYLOG_DATANODE_PASSWORD_SECRET: "<password-secret>"
-      GRAYLOG_DATANODE_ROOT_PASSWORD_SHA2: "<root-pw-sha2>"
       GRAYLOG_DATANODE_ROOT_USERNAME: "<admin user name>"
       GRAYLOG_DATANODE_MONGODB_URI: "mongodb://mongodb:27017/graylog"
     ulimits:
@@ -97,7 +89,6 @@ Enable `hostname: "datanode"` in `docker-compose.yml` and `datanode` as an alias
 | Variable | Default | Required | Description |
 | :--- | :--- | :--- |:----------------------------------------------------------|
 | `GRAYLOG_DATANODE_PASSWORD_SECRET` | none | yes | Password secret to seed secret storage. Must be the same value as the `password_secret` in the Graylog server configuration. |
-| `GRAYLOG_DATANODE_ROOT_PASSWORD_SHA2` | none | yes | Password hash for the root user. |
 | `GRAYLOG_DATANODE_ROOT_USERNAME` | `admin` | yes | Name of the root user. |
 | `GRAYLOG_DATANODE_MONGODB_URI` | none | yes | URI to the MongoDB instance and database. |
 | `GRAYLOG_DATANODE_DATA_DIR` | `/var/lib/graylog-datanode` | no | The data root directory. (e.g., OpenSearch data) |

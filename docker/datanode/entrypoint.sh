@@ -86,6 +86,5 @@ chown -R "$GDN_USER":"$GDN_GROUP" "$GRAYLOG_DATANODE_DATA_DIR"
 exec setpriv --reuid="$GDN_USER" --regid="$GDN_GROUP" --init-groups \
 	"${GRAYLOG_DATANODE_BIN_DIR}/graylog-datanode" \
 	datanode \
-	-np \
 	-f "$GDN_CONFIG_FILE" \
 	-ff "$GDN_FEATURE_FLAG_FILE"

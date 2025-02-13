@@ -1,3 +1,6 @@
+# Workaround for issue: https://github.com/docker/setup-qemu-action/issues/198
+FROM --platform=$BUILDPLATFORM multiarch/qemu-user-static AS qemu
+
 # layer for download and verifying
 FROM ubuntu:jammy as graylog-downloader
 
@@ -22,6 +25,9 @@ ARG LOCAL_BUILD_TGZ=.empty
 ARG DOWNLOAD_URL=none
 
 WORKDIR /tmp
+
+# Workaround for issue: https://github.com/docker/setup-qemu-action/issues/198
+COPY --from=qemu /usr/bin/qemu-*-static /usr/bin/
 
 # hadolint ignore=DL3008,DL3015
 RUN \

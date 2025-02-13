@@ -1,6 +1,3 @@
-# Workaround for issue: https://github.com/docker/setup-qemu-action/issues/198
-FROM --platform=$BUILDPLATFORM multiarch/qemu-user-static AS qemu
-
 FROM ubuntu:22.04
 
 # Build time variables - not persistent in the container image
@@ -32,9 +29,6 @@ ENV GDN_GROUP=graylog
 ENV GDN_USER=graylog
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
-# Workaround for issue: https://github.com/docker/setup-qemu-action/issues/198
-COPY --from=qemu /usr/bin/qemu-*-static /usr/bin/
 
 RUN groupadd -r "$GDN_GROUP" \
     && useradd --no-log-init -r \

@@ -25,11 +25,11 @@ WORKDIR /tmp
 
 # hadolint ignore=DL3008,DL3015
 RUN \
-  apt-get update && \
-  apt-get upgrade -y && \
+  apt-get update  > /dev/null && \
+  apt-get upgrade -y > /dev/null && \
   apt-get install --assume-yes \
     ca-certificates \
-    curl
+    curl > /dev/null
 
 COPY build/fetch-and-extract.sh /bin/fetch-and-extract
 

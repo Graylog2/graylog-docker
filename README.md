@@ -40,11 +40,11 @@ This is the [Graylog Enterprise](https://hub.docker.com/r/graylog/graylog-enterp
 
 This image runs the [Graylog Forwarder](https://hub.docker.com/r/graylog/graylog-forwarder/). Documentation on the Forwarder can be found [here](https://docs.graylog.org/docs/forwarder).
 
-The latest stable version is **`6.1`**, with support for Java 17 on platform `linux/amd64` and `linux/arm64`.
+The latest stable version is **`6.3-beta.1`**, with support for Java 17 on platform `linux/amd64` and `linux/arm64`.
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `6.1`, `forwarder-6.1-1` |
+| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `6.3-beta.1`, `forwarder-6.3-beta.1-1` |
 
 
 ## Architecture

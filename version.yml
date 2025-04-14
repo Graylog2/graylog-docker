@@ -6,5 +6,5 @@ graylog:
   patch_version: 0-rc.1
   release: 1
 forwarder:
-  version: 6.3-beta.4
+  version: 6.3-rc.1
   release: 1

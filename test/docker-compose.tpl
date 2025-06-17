@@ -28,6 +28,7 @@ services:
       args:
         - VCS_REF
         - GRAYLOG_VERSION
+        - DOWNLOAD_URL
     entrypoint: /usr/bin/tini -- wait-for-it opensearch:9200 --  /docker-entrypoint.sh
     environment:
       # CHANGE ME!

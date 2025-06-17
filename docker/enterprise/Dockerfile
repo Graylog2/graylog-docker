@@ -4,6 +4,7 @@ FROM ubuntu:jammy as graylog-downloader
 ARG VCS_REF
 ARG BUILD_DATE
 ARG GRAYLOG_VERSION
+ARG GRAYLOG_PRODUCT=graylog-enterprise
 ARG GRAYLOG_HOME=/usr/share/graylog
 ARG GRAYLOG_UID=1100
 ARG GRAYLOG_GID=1100
@@ -17,6 +18,9 @@ ARG TARGETPLATFORM
 # all files from the build context.
 ARG LOCAL_BUILD_TGZ=.empty
 
+# Allows building a custom artifact. (e.g., snapshot builds)
+ARG DOWNLOAD_URL=none
+
 WORKDIR /tmp
 
 # hadolint ignore=DL3008,DL3015
@@ -28,13 +32,17 @@ RUN \
     curl > /dev/null
 
 COPY build/fetch-and-extract.sh /bin/fetch-and-extract
-RUN if [ "${LOCAL_BUILD_TGZ}" = ".empty" ]; then \
+
+RUN if [ "${LOCAL_BUILD_TGZ}" = ".empty" ] && [ "${DOWNLOAD_URL}" = "none" ]; then \
       chmod +x /bin/fetch-and-extract \
       && fetch-and-extract \
-         "https://packages.graylog2.org/releases/graylog-enterprise/graylog-enterprise-${GRAYLOG_VERSION}.tgz" \
-         "https://packages.graylog2.org/releases/graylog-enterprise/graylog-enterprise-${GRAYLOG_VERSION}.tgz.sha256.txt"; \
+         "https://downloads.graylog.org/releases/${GRAYLOG_PRODUCT}/${GRAYLOG_PRODUCT}-${GRAYLOG_VERSION}.tgz" \
+         "https://downloads.graylog.org/releases/${GRAYLOG_PRODUCT}/${GRAYLOG_PRODUCT}-${GRAYLOG_VERSION}.tgz.sha256.txt"; \
     fi
 
+RUN if [ "${DOWNLOAD_URL}" != "none" ]; then \
+      chmod +x /bin/fetch-and-extract && fetch-and-extract "${DOWNLOAD_URL}"; \
+    fi
 
 COPY "${LOCAL_BUILD_TGZ}" "/tmp/graylog.tgz"
 
@@ -150,7 +158,6 @@ RUN \
     /usr/share/X11 \
     /usr/share/doc/* 2> /dev/null
 
-
 COPY docker-entrypoint.sh /
 COPY health_check.sh /
 
@@ -170,8 +177,8 @@ HEALTHCHECK \
 # -------------------------------------------------------------------------------------------------
 
 LABEL maintainer="Graylog, Inc. <hello@graylog.com>" \
-      org.label-schema.name="Graylog Docker Image" \
-      org.label-schema.description="Official Graylog Docker image - with Enterprise Plugins" \
+      org.label-schema.name="Graylog Enterprise Docker Image" \
+      org.label-schema.description="Official Graylog Enterprise Docker Image" \
       org.label-schema.url="https://www.graylog.org/" \
       org.label-schema.vcs-ref=${VCS_REF} \
       org.label-schema.vcs-url="https://github.com/Graylog2/graylog-docker" \

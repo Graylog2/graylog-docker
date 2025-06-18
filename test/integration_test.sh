@@ -71,6 +71,8 @@ EOF
     local snapshot_url="$(get_snapshot_url)"
     echo "Using snapshot: $snapshot_url"
     echo "DOWNLOAD_URL=$snapshot_url" >> .env
+  else
+    echo "DOWNLOAD_URL=none" >> .env
   fi
 
   docker-compose --file docker-compose.tpl config  > ./docker-compose.yml

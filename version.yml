@@ -1,9 +1,9 @@
 # For pre-releases: patch_version=0-beta.1, patch_version=0-rc.1
 # For GA releases:  patch_version=0
 graylog:
-  major_version: '6'
-  minor_version: '3'
-  patch_version: 0-rc.1
+  major_version: '7'
+  minor_version: '0'
+  patch_version: 0-alpha.1
   release: 1
 forwarder:
   version: 6.5-beta.3

@@ -1,5 +1,8 @@
+# Needs to be at the very top so we can use it in FROM later
+ARG JAVA_VERSION=17
+
 # layer for download and verifying
-FROM ubuntu:jammy as graylog-downloader
+FROM ubuntu:jammy AS graylog-downloader
 
 ARG VCS_REF
 ARG BUILD_DATE
@@ -75,7 +78,7 @@ COPY config ${GRAYLOG_HOME}/data/config
 # -------------------------------------------------------------------------------------------------
 #
 # final layer
-FROM eclipse-temurin:17-jre-jammy
+FROM eclipse-temurin:${JAVA_VERSION}-jre-jammy
 
 ARG VCS_REF
 ARG GRAYLOG_VERSION

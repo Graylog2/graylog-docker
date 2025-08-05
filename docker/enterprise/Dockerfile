@@ -88,9 +88,7 @@ COPY config ${GRAYLOG_HOME}/data/config
 # -------------------------------------------------------------------------------------------------
 #
 # final layer
-ARG JAVA_VERSION=17
-
-FROM eclipse-temurin:${JAVA_VERSION}-jre-jammy
+FROM eclipse-temurin:17-jre-jammy
 
 ARG VCS_REF
 ARG GRAYLOG_VERSION

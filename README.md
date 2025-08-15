@@ -4,7 +4,7 @@
 
 [hub]: https://hub.docker.com/r/graylog/graylog/
 
-The latest stable version of Graylog is **`7.0.0-alpha.1`**.
+The latest development version of Graylog is **`7.0.0-alpha.1`**.
 
 ## What is Graylog?
 

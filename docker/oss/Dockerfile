@@ -2,7 +2,7 @@
 ARG JAVA_VERSION=17
 
 # layer for download and verifying
-FROM ubuntu:jammy AS graylog-downloader
+FROM ubuntu:noble AS graylog-downloader
 
 ARG VCS_REF
 ARG BUILD_DATE
@@ -78,7 +78,7 @@ COPY config ${GRAYLOG_HOME}/data/config
 # -------------------------------------------------------------------------------------------------
 #
 # final layer
-FROM eclipse-temurin:${JAVA_VERSION}-jre-jammy
+FROM eclipse-temurin:${JAVA_VERSION}-jre-noble
 
 ARG VCS_REF
 ARG GRAYLOG_VERSION

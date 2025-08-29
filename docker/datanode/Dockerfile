@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 # Build time variables - not persistent in the container image
 ARG GRAYLOG_VERSION

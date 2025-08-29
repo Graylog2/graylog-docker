@@ -1,5 +1,5 @@
 # Needs to be at the very top so we can use it in FROM later
-ARG JAVA_VERSION=17
+ARG JAVA_VERSION=21
 
 # layer for download and verifying
 FROM ubuntu:noble AS graylog-downloader

@@ -1,12 +1,9 @@
 name: "Bump Version"
-run-name: "Bump Version - ${{ inputs.product }} ${{ inputs.version }} (branch: ${{ inputs.branch }})"
+run-name: "Bump Version - ${{ inputs.product }} ${{ inputs.version }}"
 
 on:
   workflow_dispatch:
     inputs:
-      branch:
-        description: "The release branch to check out (use the same branch above!)"
-        required: true
       version:
         description: "The new version and revision. (Example: \"6.0.0-beta.1-1\")"
         required: true
@@ -31,10 +28,9 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
-      - name: "Checkout ${{ inputs.branch }}"
+      - name: "Checkout repository"
         uses: "actions/checkout@v4"
         with:
-          ref: "${{ inputs.branch }}"
           token: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: "Install dependencies"
@@ -46,7 +42,13 @@ jobs:
       - name: "Generate README"
         run: "./release.py --generate-readme"
 
-      - name: "Commit and push"
+      - name: "Setup environment"
+        run: |
+          # We extract the branch name from the version so we can run this
+          # workflow from a PR branch and still push to the versioned branch.
+          echo "target_branch=$(cut -d . -f 1,2 <<< "${{ inputs.version }}")" | tee -a "$GITHUB_ENV"
+
+      - name: "Commit and push to ${{ env.target_branch }}"
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -58,5 +60,5 @@ jobs:
           else
             git tag -m "Tag ${{ inputs.version }}" "${{ inputs.version }}"
           fi
-          git push origin "${{ inputs.branch }}"
+          git push origin "${{ env.target_branch }}"
           git push --tags

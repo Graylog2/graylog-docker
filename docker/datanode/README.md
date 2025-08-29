@@ -23,7 +23,7 @@ There are images for the `linux/amd64` and `linux/arm64` platforms available. Al
 
 | Java Version  | Platform  | Tags                      |
 |---|---|---------------------------|
-| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `5.2`, `5.2.0`, `5.2.0-1` |
+| OpenJDK 21 | `linux/amd64`, `linux/arm64` | `5.2`, `5.2.0`, `5.2.0-1` |
 
 
 > Note: There is no 'latest' tag. You'll need to specify which version you want.

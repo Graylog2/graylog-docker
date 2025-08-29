@@ -26,9 +26,9 @@ This is the open source [Graylog ](https://hub.docker.com/r/graylog/graylog/) im
 | Java Version  | Platform  | Tags  |
 |---|---|---|
 {% if 'alpha' in graylog.patch_version or 'beta' in graylog.patch_version or 'rc' in graylog.patch_version -%}
-| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}` |
+| OpenJDK 21 | `linux/amd64`, `linux/arm64` | `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}` |
 {% else -%}
-| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `{{ graylog.major_version }}.{{ graylog.minor_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}` |
+| OpenJDK 21 | `linux/amd64`, `linux/arm64` | `{{ graylog.major_version }}.{{ graylog.minor_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}` |
 {% endif %}
 
 > Note: There is no 'latest' tag. You'll need to specify which version you want.
@@ -40,9 +40,9 @@ This is the [Graylog Enterprise](https://hub.docker.com/r/graylog/graylog-enterp
 | Java Version  | Platform  | Tags  |
 |---|---|---|
 {% if 'alpha' in graylog.patch_version or 'beta' in graylog.patch_version or 'rc' in graylog.patch_version -%}
-| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}` |
+| OpenJDK 21 | `linux/amd64`, `linux/arm64` | `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}` |
 {% else -%}
-| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `{{ graylog.major_version }}.{{ graylog.minor_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}` |
+| OpenJDK 21 | `linux/amd64`, `linux/arm64` | `{{ graylog.major_version }}.{{ graylog.minor_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}`, `{{ graylog.major_version }}.{{ graylog.minor_version }}.{{ graylog.patch_version }}-{{ graylog.release }}` |
 {% endif %}
 
 
@@ -50,11 +50,11 @@ This is the [Graylog Enterprise](https://hub.docker.com/r/graylog/graylog-enterp
 
 This image runs the [Graylog Forwarder](https://hub.docker.com/r/graylog/graylog-forwarder/). Documentation on the Forwarder can be found [here](https://docs.graylog.org/docs/forwarder).
 
-The latest stable version is **`{{ forwarder.version }}`**, with support for Java 17 on platform `linux/amd64` and `linux/arm64`.
+The latest stable version is **`{{ forwarder.version }}`**, with support for Java 21 on platform `linux/amd64` and `linux/arm64`.
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 17 | `linux/amd64`, `linux/arm64` | `{{ forwarder.version }}`, `forwarder-{{ forwarder.version }}-{{ forwarder.release }}` |
+| OpenJDK 21 | `linux/amd64`, `linux/arm64` | `{{ forwarder.version }}`, `forwarder-{{ forwarder.version }}-{{ forwarder.release }}` |
 
 
 ## Architecture

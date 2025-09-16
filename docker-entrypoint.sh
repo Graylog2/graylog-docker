@@ -86,6 +86,28 @@ setup() {
   done
 }
 
+setupCertificates() {
+  # Add custom certificates to store
+  # Changing the original files requires write permissions, which is not possible
+  # in a container with read-only filesystem and/or non-root container.
+  if [ -d /certificates ] && [ "$(ls -A /certificates)" ]; then
+    DEFAULTTRUSTSTORE="$JAVA_HOME"/lib/security/cacerts
+
+    # Import default keystore into custom keystore
+    keytool -importkeystore -destkeystore "/tmp/custom.keystore" -srckeystore "${DEFAULTTRUSTSTORE}" -srcstorepass changeit -deststorepass changeit -noprompt
+    # Import the additional certificate into JVM truststore if it doesn't exist
+    for i in /certificates/*crt; do
+      if [ ! -f "$i" ]; then
+        continue
+      fi
+      if ! keytool -list -keystore /tmp/custom.keystore -alias "$(basename "$i" .crt)" -storepass changeit > /dev/null; then
+        keytool -import -noprompt -alias "$(basename "$i" .crt)" -file "$i" -keystore "/tmp/custom.keystore" -storepass changeit
+      fi
+    done
+    export JAVA_TOOL_OPTIONS="${JAVA_TOOL_OPTIONS} -Djavax.net.ssl.trustStore=/tmp/custom.keystore -Djavax.net.ssl.trustStorePassword=changeit"
+  fi
+}
+
 graylog() {
 
   exec "${JAVA_HOME}/bin/java" \
@@ -101,6 +123,7 @@ graylog() {
 
 run() {
   setup
+  setupCertificates
 
   # if being called without an argument assume "server" for backwards compatibility
   if [ $# = 0 ]; then

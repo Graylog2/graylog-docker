@@ -46,7 +46,7 @@ jobs:
         run: |
           # We extract the branch name from the version so we can run this
           # workflow from a PR branch and still push to the versioned branch.
-          echo "target_branch=$(sed -E 's,^([0-9]+\.[0-9]+).*,\1,')" | tee -a "$GITHUB_ENV"
+          echo "target_branch=$(sed -E 's,^([0-9]+\.[0-9]+).*,\1,' <<< "${{ inputs.version }}")" | tee -a "$GITHUB_ENV"
 
       - name: "Commit and push to ${{ env.target_branch }}"
         run: |

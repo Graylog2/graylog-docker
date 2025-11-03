@@ -45,7 +45,7 @@ The latest stable version is **`7.0`**, with support for Java 21 on platform `li
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 21 | `linux/amd64`, `linux/arm64` | `7.0`, `forwarder-7.0-2` |
+| OpenJDK 21 | `linux/amd64`, `linux/arm64` | `7.0`, `forwarder-7.0-1` |
 
 
 ## Architecture

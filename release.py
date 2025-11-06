@@ -18,6 +18,8 @@ parser.add_argument('--bump', dest='bump',
                     choices=['graylog', 'forwarder'], help="Bump the given version")
 parser.add_argument('--version', dest='version',
                     help="The new version and revision")
+parser.add_argument(
+    '--to-json', help="Convert config to JSON", action='store_true')
 
 if len(sys.argv) == 1:
     parser.print_help(sys.stderr)
@@ -32,6 +34,10 @@ version_parsed = None
 
 with open('version.yml', 'r') as version_file:
     version_parsed = yaml.safe_load(version_file)
+
+    if args.to_json:
+        import json
+        print(json.dumps(version_parsed))
 
     if args.get_graylog_version:
         print(str(version_parsed['graylog']['major_version']) + '.' + str(version_parsed['graylog']

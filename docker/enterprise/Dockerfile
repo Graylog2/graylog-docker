@@ -80,13 +80,15 @@ RUN \
     /opt/graylog/data/data \
     /opt/graylog/data/scripts
 
+# hadolint ignore=DL3059
+RUN install --directory --mode=0750 /opt/graylog/config
 
 RUN mv /opt/graylog ${GRAYLOG_HOME} && chown -R ${GRAYLOG_UID}:${GRAYLOG_GID} ${GRAYLOG_HOME}
 RUN mv ${GRAYLOG_HOME}/plugin ${GRAYLOG_HOME}/plugins-default
 RUN install -d -o "${GRAYLOG_UID}" -g "${GRAYLOG_GID}" -m 0755 ${GRAYLOG_HOME}/plugins-merged && \
     install -d -o "${GRAYLOG_UID}" -g "${GRAYLOG_GID}" -m 0755 ${GRAYLOG_HOME}/plugin
 
-COPY config ${GRAYLOG_HOME}/data/config
+COPY config ${GRAYLOG_HOME}/config
 
 # -------------------------------------------------------------------------------------------------
 #

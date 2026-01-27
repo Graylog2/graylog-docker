@@ -75,7 +75,7 @@ find ${GRAYLOG_HOME}/plugin ! -readable -prune -o -type f -a -readable -exec cp 
 
 setup() {
   # Create data directories
-  for d in journal log plugin config contentpacks
+  for d in config contentpacks data journal scripts
   do
     dir=${GRAYLOG_HOME}/data/${d}
     [[ -d "${dir}" ]] || mkdir -p "${dir}"
@@ -109,15 +109,31 @@ setupCertificates() {
 }
 
 graylog() {
+  local log_config="${GRAYLOG_HOME}/config/log4j2.xml"
+  local graylog_config="${GRAYLOG_HOME}/config/graylog.conf"
+  local legacy_log_config="${GRAYLOG_HOME}/data/config/log4j2.xml"
+  local legacy_graylog_config="${GRAYLOG_HOME}/data/config/graylog.conf"
+
+  # Backward compatibility for setups that have existing (and potentially custom)
+  # logging and server configuration files in the data/config directory.
+  # See: https://github.com/Graylog2/docker-compose/issues/99
+  if [ -f "$legacy_log_config" ]; then
+    log_config="$legacy_log_config"
+    echo "WARNING: Using deprecated <$legacy_log_config> file. Switch to <$log_config>!"
+  fi
+  if [ -f "$legacy_graylog_config" ]; then
+    graylog_config="$legacy_graylog_config"
+    echo "WARNING: Using deprecated <$legacy_graylog_config> file. Switch to <$graylog_config>!"
+  fi
 
   exec "${JAVA_HOME}/bin/java" \
     ${GRAYLOG_SERVER_JAVA_OPTS} \
     -jar \
-    -Dlog4j.configurationFile="${GRAYLOG_HOME}/data/config/log4j2.xml" \
+    -Dlog4j.configurationFile="${log_config}" \
     -Dgraylog2.installation_source=docker \
     "${GRAYLOG_HOME}/graylog.jar" \
     "$@" \
-    -f "${GRAYLOG_HOME}/data/config/graylog.conf"
+    -f "${graylog_config}"
 }
 
 run() {

@@ -118,12 +118,12 @@ graylog() {
   # logging and server configuration files in the data/config directory.
   # See: https://github.com/Graylog2/docker-compose/issues/99
   if [ -f "$legacy_log_config" ]; then
-    log_config="$legacy_log_config"
     echo "WARNING: Using deprecated <$legacy_log_config> file. Switch to <$log_config>!"
+    log_config="$legacy_log_config"
   fi
   if [ -f "$legacy_graylog_config" ]; then
-    graylog_config="$legacy_graylog_config"
     echo "WARNING: Using deprecated <$legacy_graylog_config> file. Switch to <$graylog_config>!"
+    graylog_config="$legacy_graylog_config"
   fi
 
   exec "${JAVA_HOME}/bin/java" \

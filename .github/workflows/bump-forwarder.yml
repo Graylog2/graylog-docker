@@ -1,11 +1,14 @@
-name: "Bump Version - Graylog"
-run-name: "Bump Version - Graylog ${{ inputs.version }}"
+name: "Bump Version - Forwarder"
+run-name: "Bump Version - Forwarder ${{ inputs.version }}"
 
 on:
   workflow_dispatch:
     inputs:
       version:
         description: "The new version and revision. (Example: \"6.0.0-beta.1-1\")"
+        required: true
+      target-branch:
+        description: "The branch to push the changes to"
         required: true
 
 defaults:
@@ -29,24 +32,18 @@ jobs:
         run: "pip3 install -r requirements.txt"
 
       - name: "Bump version to ${{ inputs.version }}"
-        run: "./release.py --bump graylog --version ${{ inputs.version }}"
+        run: "./release.py --bump forwarder --version ${{ inputs.version }}"
 
       - name: "Generate README"
         run: "./release.py --generate-readme"
 
-      - name: "Setup environment"
-        run: |
-          # We extract the branch name from the version so we can run this
-          # workflow from a PR branch and still push to the versioned branch.
-          echo "target_branch=$(sed -E 's,^([0-9]+\.[0-9]+).*,\1,' <<< "${{ inputs.version }}")" | tee -a "$GITHUB_ENV"
-
-      - name: "Commit and push to ${{ env.target_branch }}"
+      - name: "Commit and push to ${{ inputs.target-branch }}"
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git add version.yml README.md
           git commit -m "Bump to ${{ inputs.version }}"
-          git tag -m "Tag ${{ inputs.version }}" "${{ inputs.version }}"
-          git push origin "${{ env.target_branch }}"
+          git tag -m "Tag forwarder-${{ inputs.version }}" "forwarder-${{ inputs.version }}"
+          git push origin "${{ inputs.target-branch }}"
           git push --tags

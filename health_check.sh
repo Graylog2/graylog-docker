@@ -14,13 +14,23 @@ source /etc/profile
 proto=http
 http_bind_address=127.0.0.1:9000
 
+graylog_config="${GRAYLOG_HOME}/config/graylog.conf"
+legacy_graylog_config="${GRAYLOG_HOME}/data/config/graylog.conf"
+
+# Backward compatibility for setups that have an existing (and potentially custom)
+# server configuration file in the data/config directory.
+# See: https://github.com/Graylog2/docker-compose/issues/99
+if [[ -f "$legacy_graylog_config" ]]; then
+	graylog_config="$legacy_graylog_config"
+fi
+
 # check if configuration file is given and grep for variable
-if [[ -f "${GRAYLOG_HOME}"/data/config/graylog.conf ]]
+if [[ -f "$graylog_config" ]]
 then
 	# try to grep the variable from a mounted configuration
-	http_publish_uri=$(grep "^http_publish_uri" "${GRAYLOG_HOME}"/data/config/graylog.conf | awk -F '=' '{print $2}' | awk '{$1=$1};1')
-	http_bind_address=$(grep "^http_bind_address" "${GRAYLOG_HOME}"/data/config/graylog.conf | awk -F '=' '{print $2}' | awk '{$1=$1};1')
-	http_enable_tls=$(grep "^http_enable_tls" "${GRAYLOG_HOME}"/data/config/graylog.conf | awk -F '=' '{print $2}' | awk '{$1=$1};1')
+	http_publish_uri=$(grep "^http_publish_uri" "$graylog_config" | awk -F '=' '{print $2}' | awk '{$1=$1};1')
+	http_bind_address=$(grep "^http_bind_address" "$graylog_config" | awk -F '=' '{print $2}' | awk '{$1=$1};1')
+	http_enable_tls=$(grep "^http_enable_tls" "$graylog_config" | awk -F '=' '{print $2}' | awk '{$1=$1};1')
 
 	# FIX https://github.com/Graylog2/graylog-docker/issues/102
 	# This will remove the protocol from the URI if set via

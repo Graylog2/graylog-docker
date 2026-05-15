@@ -6,7 +6,7 @@
         </Console>
 
         <!-- Internal Graylog log appender. Please do not disable. This makes internal log messages available via REST calls. -->
-        <Memory name="graylog-internal-logs" bufferSizeBytes="20MB">
+        <Memory name="graylog-internal-logs" bufferSizeBytes="10MB">
             <PatternLayout pattern="%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %-5p [%c{1}] %m%n"/>
         </Memory>
 
@@ -28,12 +28,13 @@
         <Logger name="org.apache.kafka.clients.producer.ProducerConfig" level="warn"/>
         <!-- Silence useless session validation messages -->
         <Logger name="org.apache.shiro.session.mgt.AbstractValidatingSessionManager" level="warn"/>
-        <!-- Silence Azure SDK messages -->
+        <!-- Silence informational Azure SDK messages -->
         <Logger name="com.azure" level="warn"/>
         <Logger name="reactor.core.publisher.Operators" level="off"/>
         <Logger name="com.azure.messaging.eventhubs.PartitionPumpManager" level="off"/>
         <Logger name="com.azure.core.amqp.implementation.ReactorReceiver" level="off"/>
         <Logger name="com.azure.core.amqp.implementation.ReactorDispatcher" level="off"/>
+        <Logger name="com.azure.core.amqp.implementation.MessageFlux" level="off"/>
         <!-- Silence Apache Hadoop/Avro log chatter -->
         <Logger name="org.apache.hadoop" level="warn"/>
         <Logger name="org.apache.parquet.hadoop.InternalParquetRecordReader" level="warn"/>
@@ -51,7 +52,9 @@
             <RegexFilter regex=".*An error occurred while aborting the stream.*" onMatch="DENY" onMismatch="ACCEPT"/>
         </Logger>
         <Logger name="org.apache.iceberg.metrics.LoggingMetricsReporter" level="warn"/>
-        <Root level="warn">
+        <!-- Silence AWS Kinesis log chatter -->
+        <Logger name="software.amazon.kinesis" level="warn"/>
+        <Root level="info">
             <AppenderRef ref="STDOUT"/>
             <AppenderRef ref="graylog-internal-logs"/>
         </Root>

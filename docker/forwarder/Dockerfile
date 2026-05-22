@@ -54,12 +54,10 @@ RUN if [ -f "/tmp/local-forwarder.tgz" ] && [ -s "/tmp/local-forwarder.tgz" ]; t
         mv "/tmp/local-forwarder.tgz" "$GRAYLOG_FORWARDER_FILE"; \
     fi
 
-RUN test "LOCAL_BUILD_TGZ" != ".empty" && curl \
-    --silent \
-    --location \
-    --retry 3 \
-    --output "$GRAYLOG_FORWARDER_FILE" \
-    "https://downloads.graylog.org/releases/cloud/forwarder/${GRAYLOG_FORWARDER_VERSION}/graylog-forwarder-${GRAYLOG_FORWARDER_VERSION}-bin.tar.gz"
+RUN if [ "${LOCAL_BUILD_TGZ}" = ".empty" ]; then \
+      curl -fsSL --retry 3 --output "$GRAYLOG_FORWARDER_FILE" \
+        "https://downloads.graylog.org/releases/cloud/forwarder/${GRAYLOG_FORWARDER_VERSION}/graylog-forwarder-${GRAYLOG_FORWARDER_VERSION}-bin.tar.gz"; \
+    fi
 
 RUN install -d -o root -g root -m 0755 "$GRAYLOG_FORWARDER_ROOT" && \
     tar -C "$GRAYLOG_FORWARDER_ROOT" -xzf "$GRAYLOG_FORWARDER_FILE" && \

@@ -1,3 +1,37 @@
+###############################################################################
+# Build layer - download and extract artifact
+###############################################################################
+FROM eclipse-temurin:21-jre-noble AS builder
+
+ARG GRAYLOG_FORWARDER_VERSION
+ARG DEBIAN_FRONTEND=noninteractive
+
+# We default to an empty file instead of leaving LOCAL_BUILD_TGZ blank
+# because Docker would execute the following COPY command with a blank
+# value:
+#   COPY "" "/tmp/forwarder.tgz"
+# That creates a /tmp/forwarder.tgz *directory* in the container with
+# all files from the build context.
+ARG LOCAL_BUILD_TGZ=.empty
+
+COPY "${LOCAL_BUILD_TGZ}" "/tmp/local-forwarder.tgz"
+
+# An empty /tmp/forwarder.tgz file indicates that we don't use a
+# custom LOCAL_BUILD_TGZ file.
+RUN if [ -f "/tmp/local-forwarder.tgz" ] && [ -s "/tmp/local-forwarder.tgz" ]; then \
+        mv "/tmp/local-forwarder.tgz" "/tmp/forwarder.tgz"; \
+    fi; \
+    if [ "${LOCAL_BUILD_TGZ}" = ".empty" ]; then \
+      curl -fsSL --retry 3 --output "/tmp/forwarder.tgz" \
+        "https://downloads.graylog.org/releases/cloud/forwarder/${GRAYLOG_FORWARDER_VERSION}/graylog-forwarder-${GRAYLOG_FORWARDER_VERSION}-bin.tar.gz"; \
+    fi && \
+    install -d -o root -g root -m 0755 "/tmp/forwarder"; \
+    tar -C "/tmp/forwarder" -xvzf "/tmp/forwarder.tgz"; \
+    rm -f "/tmp/forwarder.tgz" "/tmp/local-forwarder.tgz"
+
+###############################################################################
+# Final layer
+###############################################################################
 FROM eclipse-temurin:21-jre-noble
 
 ARG LABEL_MAINTAINER="Graylog, Inc. <hello@graylog.com>"
@@ -13,16 +47,7 @@ ARG BUILD_DATE
 ARG GRAYLOG_FORWARDER_VERSION
 ARG GRAYLOG_FORWARDER_IMAGE_VERSION
 ARG GRAYLOG_FORWARDER_ROOT=/usr/share/${SLUG}-forwarder
-ARG GRAYLOG_FORWARDER_FILE=/tmp/${SLUG}-forwarder-bin.tar.gz
 ARG DEBIAN_FRONTEND=noninteractive
-
-# We default to an empty file instead of leaving LOCAL_BUILD_TGZ blank
-# because Docker would execute the following COPY command with a blank
-# value:
-#   COPY "" "/tmp/forwarder.tgz"
-# That creates a /tmp/forwarder.tgz *directory* in the container with
-# all files from the build context.
-ARG LOCAL_BUILD_TGZ=.empty
 
 ENV FORWARDER_CONFIG_FILE=/etc/${SLUG}/forwarder/forwarder.conf
 ENV FORWARDER_JVM_OPTIONS_FILE=/etc/${SLUG}/forwarder/jvm.options
@@ -46,30 +71,17 @@ RUN apt-get update && \
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-COPY "${LOCAL_BUILD_TGZ}" "/tmp/local-forwarder.tgz"
+RUN install -d -o root -g root -m 0755 "$GRAYLOG_FORWARDER_ROOT"
 
-# An empty /tmp/forwarder.tgz file indicates that we don't use a
-# custom LOCAL_BUILD_TGZ file.
-RUN if [ -f "/tmp/local-forwarder.tgz" ] && [ -s "/tmp/local-forwarder.tgz" ]; then \
-        mv "/tmp/local-forwarder.tgz" "$GRAYLOG_FORWARDER_FILE"; \
-    fi
+COPY --from=builder --chown=root:root /tmp/forwarder "${GRAYLOG_FORWARDER_ROOT}/"
 
-RUN if [ "${LOCAL_BUILD_TGZ}" = ".empty" ]; then \
-      curl -fsSL --retry 3 --output "$GRAYLOG_FORWARDER_FILE" \
-        "https://downloads.graylog.org/releases/cloud/forwarder/${GRAYLOG_FORWARDER_VERSION}/graylog-forwarder-${GRAYLOG_FORWARDER_VERSION}-bin.tar.gz"; \
-    fi
-
-RUN install -d -o root -g root -m 0755 "$GRAYLOG_FORWARDER_ROOT" && \
-    tar -C "$GRAYLOG_FORWARDER_ROOT" -xzf "$GRAYLOG_FORWARDER_FILE" && \
-    chown -R root.root "$GRAYLOG_FORWARDER_ROOT" && \
-    install -d -o root -g root -m 0755 "$FORWARDER_DATA_DIR" && \
+RUN install -d -o root -g root -m 0755 "$FORWARDER_DATA_DIR" && \
     install -d -o root -g root -m 0755 "$(dirname $FORWARDER_CONFIG_FILE)" && \
     touch "$FORWARDER_CONFIG_FILE" && \
     echo "forwarder_server_hostname =" >> "$FORWARDER_CONFIG_FILE" && \
     echo "forwarder_grpc_api_token =" >> "$FORWARDER_CONFIG_FILE" && \
     mv "${GRAYLOG_FORWARDER_ROOT}/config/jvm.options" "$FORWARDER_JVM_OPTIONS_FILE" && \
-    rmdir "${GRAYLOG_FORWARDER_ROOT}/config" && \
-    rm -f "$GRAYLOG_FORWARDER_FILE" "/tmp/local-forwarder.tgz"
+    rmdir "${GRAYLOG_FORWARDER_ROOT}/config"
 
 COPY docker/forwarder/forwarder-entrypoint.sh /
 

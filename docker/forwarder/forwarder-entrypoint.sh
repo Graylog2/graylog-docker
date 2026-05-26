@@ -26,4 +26,4 @@ done
 /usr/bin/install -d -o root -g root -m 0755 "$GRAYLOG_DATA_DIR"
 /usr/bin/install -d -o root -g root -m 0755 "$GRAYLOG_MESSAGE_JOURNAL_DIR"
 
-exec "${GRAYLOG_BIN_DIR}/graylog-forwarder" run -f "$FORWARDER_CONFIG_FILE"
+exec "${GRAYLOG_BIN_SCRIPT}" run -f "$FORWARDER_CONFIG_FILE"

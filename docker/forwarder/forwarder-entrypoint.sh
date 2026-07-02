@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -eo pipefail
 
 # Convert all environment variables with names ending in __FILE into the content of
 # the file that they point at and use the name without the trailing __FILE.

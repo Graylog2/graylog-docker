@@ -41,7 +41,7 @@ if [ "${CUSTOM_ENV_PREFIX}" ]; then
   resolve_file_secrets "${CUSTOM_ENV_PREFIX}"
 fi
 
-# Re-export GRAYLOG_ prefixed env setting overrides if this Docker image build uses a different ENV_PREFIX
+# Re-export GRAYLOG_ prefixed env setting overrides if this Docker image build uses a CUSTOM_ENV_PREFIX
 if [ "${CUSTOM_ENV_PREFIX}" ]; then
   for UNPREFIXED_VAR_NAME in $(env | grep '^GRAYLOG_[^=]*=' | sed -r 's/^GRAYLOG_([^=]*)=.*/\1/g'); do
     NEW_NAME="${CUSTOM_ENV_PREFIX}${UNPREFIXED_VAR_NAME}"

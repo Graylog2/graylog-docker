@@ -42,6 +42,7 @@ ARG LABEL_VCS_URL="https://github.com/Graylog2/graylog-docker"
 ARG LABEL_VENDOR="Graylog, Inc."
 ARG SLUG="graylog"
 ARG CUSTOM_ENV_PREFIX=""
+ENV CUSTOM_ENV_PREFIX=${CUSTOM_ENV_PREFIX}
 
 ARG VCS_REF
 ARG BUILD_DATE

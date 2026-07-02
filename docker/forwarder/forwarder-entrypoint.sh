@@ -18,8 +18,8 @@ resolve_file_secrets() {
   fi
   for VAR_NAME in $(env | grep "^${PREFIX}[^=]\+__FILE=.\+" | sed -r "s/^(${PREFIX}[^=]*)__FILE=.*/\1/g"); do
     VAR_NAME_FILE="${VAR_NAME}__FILE"
-    if [ "${!VAR_NAME+x}" ]; then
-      echo >&2 "ERROR: Both ${VAR_NAME} and ${VAR_NAME_FILE} are set but are exclusive"
+    if [ "${!VAR_NAME}" ]; then
+      echo >&2 "ERROR: Both ${VAR_NAME} and ${VAR_NAME_FILE} are set but are mutually exclusive"
       exit 1
     fi
     VAR_FILENAME="${!VAR_NAME_FILE}"

@@ -56,16 +56,7 @@ export GRAYLOG_DATANODE_OPENSEARCH_LOGS_LOCATION="${GRAYLOG_DATANODE_OPENSEARCH_
 export GRAYLOG_DATANODE_OPENSEARCH_HTTP_PORT="${GRAYLOG_DATANODE_OPENSEARCH_HTTP_PORT:-9200}"
 export GRAYLOG_DATANODE_OPENSEARCH_TRANSPORT_PORT="${GRAYLOG_DATANODE_OPENSEARCH_TRANSPORT_PORT:-9300}"
 export GRAYLOG_DATANODE_NODE_NAME="${GRAYLOG_DATANODE_NODE_NAME:-"$HOSTNAME"}"
-
-# TODO: Bundle the OpenSearch version property in the tarball so we can read it
-opensearch_dist="$(find "$GDN_APP_ROOT/dist" -maxdepth 1 -name 'opensearch-*-linux-*' -type d | sort -V | tail -1)"
-
-if [ -z "$opensearch_dist" ]; then
-	echo "ERROR: No OpenSearch distribution found in $GDN_APP_ROOT/dist"
-	exit 1
-fi
-
-export GRAYLOG_DATANODE_OPENSEARCH_LOCATION="$opensearch_dist"
+export GRAYLOG_DATANODE_OPENSEARCH_LOCATION="$GDN_APP_ROOT/dist"
 
 # Settings for the graylog-datanode script
 export DATANODE_JVM_OPTIONS_FILE="${DATANODE_JVM_OPTIONS_FILE:-"$GDN_JVM_OPTIONS_FILE"}"

@@ -1,7 +1,7 @@
 ###############################################################################
 # Build layer - download and extract artifact
 ###############################################################################
-FROM eclipse-temurin:21-jre-noble AS builder
+FROM eclipse-temurin:24-jre-noble AS builder
 
 ARG GRAYLOG_FORWARDER_VERSION
 ARG DEBIAN_FRONTEND=noninteractive
@@ -32,7 +32,7 @@ RUN if [ -f "/tmp/local-forwarder.tgz" ] && [ -s "/tmp/local-forwarder.tgz" ]; t
 ###############################################################################
 # Final layer
 ###############################################################################
-FROM eclipse-temurin:21-jre-noble
+FROM eclipse-temurin:24-jre-noble
 
 ARG LABEL_MAINTAINER="Graylog, Inc. <hello@graylog.com>"
 ARG LABEL_NAME="Graylog Forwarder Docker Image"

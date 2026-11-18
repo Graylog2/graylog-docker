@@ -22,7 +22,7 @@ This is the open source [Graylog ](https://hub.docker.com/r/graylog/graylog/) im
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 21 | `linux/amd64`, `linux/arm64` | `7.0`, `7.0.16`, `7.0.16-1` |
+| OpenJDK 21 | `linux/amd64`, `linux/arm64` | `7.0`, `7.0.16`, `7.0.16-2` |
 
 
 > Note: There is no 'latest' tag. You'll need to specify which version you want.
@@ -33,7 +33,7 @@ This is the [Graylog Enterprise](https://hub.docker.com/r/graylog/graylog-enterp
 
 | Java Version  | Platform  | Tags  |
 |---|---|---|
-| OpenJDK 21 | `linux/amd64`, `linux/arm64` | `7.0`, `7.0.16`, `7.0.16-1` |
+| OpenJDK 21 | `linux/amd64`, `linux/arm64` | `7.0`, `7.0.16`, `7.0.16-2` |
 
 
 

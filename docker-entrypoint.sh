@@ -126,10 +126,7 @@ graylog() {
     graylog_config="$legacy_graylog_config"
   fi
 
-  # -XX:-UseBASE64Intrinsics is a workaround for CVE-2026-114938 (java4shell)
-  # It can be removed once the JRE's are patched.
   exec "${JAVA_HOME}/bin/java" \
-    -XX:-UseBASE64Intrinsics \
     ${GRAYLOG_SERVER_JAVA_OPTS} \
     -jar \
     -Dlog4j.configurationFile="${log_config}" \

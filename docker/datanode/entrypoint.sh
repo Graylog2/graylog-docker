@@ -45,6 +45,12 @@ check_env "GDN_GROUP"
 check_env "GRAYLOG_DATANODE_PASSWORD_SECRET"
 check_env "GRAYLOG_DATANODE_MONGODB_URI"
 
+# If not running as root, GDN_RUN_AS_NONROOT must be explicitly set to 'true'
+if [ "$(id -u)" != "0" ] && [ "$GDN_RUN_AS_NONROOT" != "true" ]; then
+	echo >&2 "ERROR: Container is not running as root but GDN_RUN_AS_NONROOT is not set to 'true'"
+	exit 1
+fi
+
 # Default Graylog settings
 export GRAYLOG_DATANODE_BIN_DIR="${GDN_APP_ROOT}/bin"
 export GRAYLOG_DATANODE_DATA_DIR="${GRAYLOG_DATANODE_DATA_DIR:-$GDN_DATA_ROOT}"
@@ -63,18 +69,37 @@ export DATANODE_JVM_OPTIONS_FILE="${DATANODE_JVM_OPTIONS_FILE:-"$GDN_JVM_OPTIONS
 export DATANODE_LOG4J_CONFIG_FILE="${DATANODE_LOG4J_CONFIG_FILE:-"$GDN_LOG4J_CONFIG_FILE"}"
 export JAVA_OPTS="$JAVA_OPTS"
 
-# Create required OpenSearch directories
-install -d -o "$GDN_USER" -g "$GDN_GROUP" -m 0700 \
-	"$GRAYLOG_DATANODE_OPENSEARCH_CONFIG_LOCATION" \
-	"$GRAYLOG_DATANODE_OPENSEARCH_DATA_LOCATION" \
-	"$GRAYLOG_DATANODE_OPENSEARCH_LOGS_LOCATION"
+# Only perform privilege operations if running as root
+if [ "$(id -u)" = "0" ]; then
+	# Create required OpenSearch directories with root privileges
+	install -d -o "$GDN_USER" -g "$GDN_GROUP" -m 0700 \
+		"$GRAYLOG_DATANODE_OPENSEARCH_CONFIG_LOCATION" \
+		"$GRAYLOG_DATANODE_OPENSEARCH_DATA_LOCATION" \
+		"$GRAYLOG_DATANODE_OPENSEARCH_LOGS_LOCATION"
 
-# Make sure the data node can write to the data dir
-chown -R "$GDN_USER":"$GDN_GROUP" "$GRAYLOG_DATANODE_DATA_DIR"
+	# Make sure the data node can write to the data dir
+	chown -R "$GDN_USER":"$GDN_GROUP" "$GRAYLOG_DATANODE_DATA_DIR"
 
-# Starting the data node with dropped privileges
-exec setpriv --reuid="$GDN_USER" --regid="$GDN_GROUP" --init-groups \
-	"${GRAYLOG_DATANODE_BIN_DIR}/graylog-datanode" \
-	datanode \
-	-f "$GDN_CONFIG_FILE" \
-	-ff "$GDN_FEATURE_FLAG_FILE"
+	# Starting the data node with dropped privileges
+	exec setpriv --reuid="$GDN_USER" --regid="$GDN_GROUP" --init-groups \
+		"${GRAYLOG_DATANODE_BIN_DIR}/graylog-datanode" \
+		datanode \
+		-f "$GDN_CONFIG_FILE" \
+		-ff "$GDN_FEATURE_FLAG_FILE"
+else
+	# Non-root execution: create directories and set permissions
+	# (user can chmod directories it owns)
+	mkdir -p "$GRAYLOG_DATANODE_OPENSEARCH_CONFIG_LOCATION" \
+		"$GRAYLOG_DATANODE_OPENSEARCH_DATA_LOCATION" \
+		"$GRAYLOG_DATANODE_OPENSEARCH_LOGS_LOCATION"
+
+	chmod 0700 "$GRAYLOG_DATANODE_OPENSEARCH_CONFIG_LOCATION" \
+		"$GRAYLOG_DATANODE_OPENSEARCH_DATA_LOCATION" \
+		"$GRAYLOG_DATANODE_OPENSEARCH_LOGS_LOCATION"
+
+	# If not running as root, execute the datanode directly
+	exec "${GRAYLOG_DATANODE_BIN_DIR}/graylog-datanode" \
+		datanode \
+		-f "$GDN_CONFIG_FILE" \
+		-ff "$GDN_FEATURE_FLAG_FILE"
+fi
